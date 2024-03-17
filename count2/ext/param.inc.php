@@ -44,6 +44,21 @@ class Parameter extends Quant
 		return parent::__construct('Parameter', ... $args);
 	}
 	
+	public function __get($key)
+	{
+		if(!is_string($key = self::checkString($key))) return new \Error('Invalid argument');
+		else if(property_exists($this, $key)) return $this->{$key};
+		else if($this->has($key)) return $this->query[$key];
+		return null;
+	}
+	
+	public function __set($key, $value)
+	{
+		if(!is_string($key = self::checkString($key))) return new \Error('Invalid argument');
+		else if(property_exists($this, $key)) return $this->{$key} = $value;
+		return $this->set($key, $value);
+	}
+	
 	public static function checkString($string)
 	{
 		if(!is_string($string))
@@ -89,13 +104,13 @@ class Parameter extends Quant
 	public function has($key)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-		return (isset($this->$query[$key]));
+		return (isset($this->query[$key]));
 	}
 	
 	public function delete($key)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-		if(!$this->has($key)) return false; unset($this->$query[$key]); return true;
+		if(!$this->has($key)) return false; unset($this->query[$key]); return true;
 	}
 	
 	public function get($key)
@@ -109,12 +124,12 @@ class Parameter extends Quant
 	}
 	
 	//convert to 0/1 bzw. alles >0 ist (true)!!
-	public function getBool($key)
+	public function getBoolean($key)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
-	public function getInt($key)
+	public function getInteger($key)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
@@ -122,6 +137,11 @@ class Parameter extends Quant
 	public function getFloat($key)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+	}
+	
+	public function getDouble($key)
+	{
+		return $this->getFloat($key);
 	}
 	
 	public function getNumber($key)
@@ -132,6 +152,17 @@ class Parameter extends Quant
 	public function set($key, $value)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		$type = gettype($value);
+		
+		switch($type)
+		{
+			case 'string': return $this->setString($key, $value);
+			case 'boolean': return $this->setBoolean($key, $value);
+			case 'double': return $this->setFloat($key, $value);
+			case 'integer': return $this->setInteger($key, $value);
+		}
+		
+		return $this->set($key, (string)$value);
 	}
 	
 	public function setString($key, $value)
@@ -140,12 +171,12 @@ class Parameter extends Quant
 	}
 	
 	//convert to/from 0/1 bzw. alles >0 ist (true);
-	public function setBool($key, $value)
+	public function setBoolean($key, $value)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
-	public function setInt($key, $value)
+	public function setInteger($key, $value)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
@@ -153,6 +184,11 @@ class Parameter extends Quant
 	public function setFloat($key, $value)
 	{
 		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+	}
+	
+	public function setDouble($key, $value)
+	{
+		return $this->setFloat($key, $value);
 	}
 	
 	public function setNumber($key, $value)
