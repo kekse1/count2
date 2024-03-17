@@ -14,8 +14,8 @@ bessere `git`-Nutzung, sowie uebersichtlichere Dokumentation. ^_^
 ```
 
 ## Original version(s)
-The first and the second versions are [here](https://github.com/kekse1/count.php/?tab=readme-ov-file#the-original-version);
-see also this [**first** `.php` script](https://github.com/kekse1/count.php/blob/master/php/original.php).
+Here's the [last/previous version](original.php/count.php) (and [here's the repo](https://github.com/kekse1/count.php/)),
+and there's the [first/original version](original.php/original.php) (more [here](https://github.com/kekse1/count.php/#the-original-version)).
 
 # Copyright and License
 The Copyright is [(c) Sebastian Kucharczyk](COPYRIGHT.txt),
