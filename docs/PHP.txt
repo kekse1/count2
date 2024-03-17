@@ -1,0 +1,75 @@
+//
+//this is a stub.. just a small intro to remember myself again how php worx! ^_^
+//
+/*
+ * https://www.php.net/manual/de/index.php
+
+ * https://www.php.net/manual/de/language.oop5.php
+ * https://www.php.net/manual/de/language.oop5.decon.php
+ * https://www.php.net/manual/de/language.oop5.properties.php
+ * https://www.php.net/manual/de/language.oop5.magic.php
+
+ * https://www.php.net/manual/de/function.flock.php
+ 
+ * https://www.php-kurs.info/tutorial-php_klassen.html
+ * https://www.ionos.de/digitalguide/websites/web-entwicklung/php-classes/
+ 
+ * https://stackoverflow.com/questions/8060590/get-data-from-object-composition
+ */
+
+//
+class Person
+{
+	private $name;
+	protected $age; //Zugriff nur innerhalb der Klasse und abgeleiteten Klassen
+	
+	public function __construct($name, $age)
+	{
+		$this->name = $name;
+		$this->age = $age;
+	}
+	
+	//wird bei "exit()" oder "die()" *NICHT* extra weiter aufgerufen! ebenso bei exceptions..
+	public function __destruct()
+	{
+		$succ = true;
+		echo "Person {$this->name} wurde {$succ} geloescht."
+	}
+	
+	public function getName()
+	{
+		return $this->name;
+	}
+	
+	public static function sum(... $params)
+	{
+		$total = 0;
+		
+		foreach($params as $param)
+		{
+			if(is_numeric($param)) $total += $param;
+		}
+		
+		return $total;
+	}
+	
+	public function sum(... $params)
+	{
+		return self::sum(... $params);
+	}
+}
+
+class Employee extends Person
+{
+	public function getSalary()
+	{
+		return $this->age * 10;
+	}
+}
+
+//
+$person = new Person('Sebastian');
+$total = Person::sum(2, 4, 6, 8);
+unset($person); //__destruct(); und "null" wird hier gesetzt!
+
+//
