@@ -5,6 +5,7 @@
 
 //TODO/old "getParam()"!
 //TODO/old "secure{Host,Path}()"
+//TODO/MAX_STRING_LENGTH (224)!!
 //
 
 namespace kekse;
@@ -13,31 +14,144 @@ require_once('quant.inc.php');
 
 class Parameter extends Quant
 {
-	public $params;
+	public $query;
 
 	public function __construct($params, ... $args)
 	{
 		parent::__construct('Parameter', ... $args);
 
-		if(is_string($params))
+		if(is_string($params) || is_array($params))
 		{
-			$this->params = self::parse($params);
-		}
-		else if(is_array($params))
-		{
-			$this->params = [ ... $params ];
+			$this->query = self::parse($params);
 		}
 		else
 		{
-			$this->params = [];
+			$this->query = [];
 		}
 	}
-
+	
+	public static function removeBinary($string, $null = false)
+	{
+		if(!is_string($string))
+		{
+			return null;
+		}
+		
+		$result;
+		$len = strlen($string);
+		
+		if($len > 0)
+		{
+			$result = '';
+			$byte;
+			
+			for($i = 0; $i < $len; ++$i)
+			{
+				if(($byte = ord($string[$i])) >= 32 && $byte !== 127)
+				{
+					$result .= $string[$i];
+				}
+			}
+		}
+		
+		if($null && strlen($result) === 0)
+		{
+			return null;
+		}
+		
+		return $result;
+	}
+	
 	public function __destruct()
 	{
-		parent::__destruct();
+		unset($this->query);
+		return parent::__destruct();
 	}
 
+	public function __toString()
+	{
+		return '(Parameter[' . $this->getSize() . '])';
+	}
+	
+	public function getSize()
+	{
+		return count($this->query);
+	}
+
+	public function has($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		return (isset($this->$query[$key]));
+	}
+	
+	public function delete($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!$this->has($key)) return false; unset($this->$query[$key]); return true;
+	}
+	
+	public function get($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function getString($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	//convert to 0/1
+	public function getBool($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function getInt($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function getFloat($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function getNumber($key)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function set($key, $value)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function setString($key, $value)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	//convert to/from 0/1
+	public function setBool($key, $value)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function setInt($key, $value)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function setFloat($key, $value)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
+	public function setNumber($key, $value)
+	{
+		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+	}
+	
 	public static function encode($value)
 	{
 		if(is_string($value))
@@ -129,20 +243,18 @@ class Parameter extends Quant
 
 	public static function parse($string)
 	{
-		if(is_string($string))
+		if(is_array($string))
 		{
-			if($string[0] === '?')
-			{
-				$string = substr($string, 1);
-			}
+			$string = self::render($string);
 		}
-		else if(is_array($string))
-		{
-			return [ ... $string ];
-		}
-		else
+		else if(!is_string($string))
 		{
 			return [];
+		}
+		
+		if($string[0] === '?')
+		{
+			$string = substr($string, 1);
 		}
 		
 		$setCurrent = function() use(&$key, &$value, &$result)

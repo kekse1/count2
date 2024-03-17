@@ -5,13 +5,17 @@
 
 namespace kekse;
 
+require_once('timing.inc.php');
+
 class Quant
 {
 	public $__name;
 	public $__args;
+	public $__time;
 
 	public function __construct($name, ... $args)
 	{
+		$this->time = timestamp();
 		$this->__args = $args;
 
 		if(is_string($name))
