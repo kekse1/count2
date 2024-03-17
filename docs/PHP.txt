@@ -10,6 +10,10 @@
  * https://www.php.net/manual/de/language.oop5.magic.php
 
  * https://www.php.net/manual/de/function.flock.php
+
+ * https://www.php.net/manual/en/language.exceptions.php
+ * https://www.php.net/manual/en/function.set-exception-handler.php
+ * https://www.php.net/manual/en/function.set-error-handler.ph
  
  * https://www.php-kurs.info/tutorial-php_klassen.html
  * https://www.ionos.de/digitalguide/websites/web-entwicklung/php-classes/

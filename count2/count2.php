@@ -5,4 +5,11 @@
 
 	//FileSystem.list($dir) [z.b. @ module einlesen??]
 
+namespace kekse\count2;
+
+//
+die('TODO');
+
+//
+
 ?>
