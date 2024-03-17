@@ -100,7 +100,7 @@ class Parameter extends Quant
 		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
 	}
 	
-	//convert to 0/1
+	//convert to 0/1 bzw. alles >0 ist (true)!!
 	public function getBool($key)
 	{
 		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
@@ -131,7 +131,7 @@ class Parameter extends Quant
 		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
 	}
 	
-	//convert to/from 0/1
+	//convert to/from 0/1 bzw. alles >0 ist (true);
 	public function setBool($key, $value)
 	{
 		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
