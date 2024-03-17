@@ -8,9 +8,12 @@ namespace kekse;
 class Quant
 {
 	public $__name;
+	public $__args;
 
 	public function __construct($name, ... $args)
 	{
+		$this->__args = $args;
+
 		if(is_string($name))
 		{
 			$this->__name = $name;

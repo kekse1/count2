@@ -13,6 +13,9 @@ aber immerhin verzichte ich dann auf die IP-Adressen.. und zuletzt
 bessere `git`-Nutzung, sowie uebersichtlichere Dokumentation. ^_^
 ```
 
+## Implementation
+See the [docs/implementation.md](docs/implementation.md) for a bit of my PHP sense (in here)..
+
 ## Original version(s)
 Here's the [last/previous version](original.php/count.php) (and [here's the repo](https://github.com/kekse1/count.php/)),
 and there's the [first/original version](original.php/original.php) (more [here](https://github.com/kekse1/count.php/#the-original-version)).
