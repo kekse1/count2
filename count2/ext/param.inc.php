@@ -9,10 +9,10 @@
 
 namespace kekse;
 
+define('KEKSE_LIMIT_PARAM', 32);
+
 require_once('quant.inc.php');
 require_once('string.inc.php');
-
-define('KEKSE_LIMIT_PARAM', 32);
 
 class Parameter extends Quant
 {
@@ -253,8 +253,18 @@ class Parameter extends Quant
 			$string = substr($string, 1);
 		}
 		
-		$setCurrent = function() use(&$key, &$value, &$result)
+		$setCurrent = function() use(&$key, &$value, &$result, &$count)
 		{
+			if(strlen($key) > KEKSE_LIMIT_STRING)
+			{
+				return null;
+			}
+			else if(is_string($value) && strlen($value) > KEKSE_LIMIT_STRING)
+			{
+				return null;
+			}
+			
+			$exceeding = ($count >= KEKSE_LIMIT_PARAM);
 			$key = self::decode($key);
 			
 			if($value === null)
@@ -273,18 +283,21 @@ class Parameter extends Quant
 				else
 				{
 					$result[$key] = 1;
+					++$count;
 				}
+				
+				return ($exceeding ? null : false);
 			}
-			else
-			{
-				$result[$key] = self::decode($value);
-				$value = null;
-			}
-			
+
+			$result[$key] = self::decode($value);
+			$value = null;
 			$key = '';
+
+			return ($exceeding ? null : true);
 		};
 
 		$result = [];
+		$count = 0;
 		$len = strlen($string);
 		$key = '';
 		$value = null;
@@ -300,7 +313,10 @@ class Parameter extends Quant
 			{
 				if(strlen($key) > 0)
 				{
-					$setCurrent();
+					if($setCurrent() === null)
+					{
+						break;
+					}
 				}
 				else
 				{
