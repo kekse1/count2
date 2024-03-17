@@ -5,12 +5,14 @@
 
 //TODO/old "getParam()"!
 //TODO/old "secure{Host,Path}()"
-//TODO/MAX_STRING_LENGTH (224)!!
 //
 
 namespace kekse;
 
 require_once('quant.inc.php');
+require_once('string.inc.php');
+
+define('KEKSE_LIMIT_PARAM', 32);
 
 class Parameter extends Quant
 {
@@ -30,36 +32,30 @@ class Parameter extends Quant
 		}
 	}
 	
-	public static function removeBinary($string, $null = false)
+	public static function checkString($string)
 	{
 		if(!is_string($string))
 		{
 			return null;
 		}
 		
-		$result;
 		$len = strlen($string);
 		
-		if($len > 0)
-		{
-			$result = '';
-			$byte;
-			
-			for($i = 0; $i < $len; ++$i)
-			{
-				if(($byte = ord($string[$i])) >= 32 && $byte !== 127)
-				{
-					$result .= $string[$i];
-				}
-			}
-		}
-		
-		if($null && strlen($result) === 0)
+		if($len === 0)
 		{
 			return null;
 		}
+		else if($len > KEKSE_LIMIT_STRING)
+		{
+			return null;
+		}
+		else
+		{
+			$string = trim($string);
+			$string = removeBinary($string, true);
+		}
 		
-		return $result;
+		return $string;
 	}
 	
 	public function __destruct()
@@ -80,76 +76,76 @@ class Parameter extends Quant
 
 	public function has($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 		return (isset($this->$query[$key]));
 	}
 	
 	public function delete($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 		if(!$this->has($key)) return false; unset($this->$query[$key]); return true;
 	}
 	
 	public function get($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function getString($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	//convert to 0/1 bzw. alles >0 ist (true)!!
 	public function getBool($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function getInt($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function getFloat($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function getNumber($key)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function set($key, $value)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function setString($key, $value)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	//convert to/from 0/1 bzw. alles >0 ist (true);
 	public function setBool($key, $value)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function setInt($key, $value)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function setFloat($key, $value)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public function setNumber($key, $value)
 	{
-		if(!is_string($key = self::removeBinary($key, true))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
 	}
 	
 	public static function encode($value)
