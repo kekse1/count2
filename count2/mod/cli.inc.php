@@ -15,7 +15,7 @@ class CLI extends \kekse\Quant
 	{
 		if(!self::isCLI)
 		{
-			return \kekse\Error::throw('Not allowed since PHP doesn\'t run in CLI mode!');
+			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
 		parent::__construct('CLI', ... $args);

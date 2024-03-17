@@ -20,7 +20,17 @@ class Parameter extends Quant
 
 	public function __construct($params, ... $args)
 	{
-		parent::__construct('Parameter', ... $args);
+		if(! (is_string($params) || is_array($params)))
+		{
+			if(isset($_SERVER) && isset($_SERVER['QUERY_STRING']))
+			{
+				$params = $_SERVER['QUERY_STRING'];
+			}
+			else
+			{
+				throw new \Exception('Invalid $params argument, and no `$_SERVER[\'QUERY_STRING\']` available.');
+			}
+		}
 
 		if(is_string($params) || is_array($params))
 		{
@@ -30,6 +40,8 @@ class Parameter extends Quant
 		{
 			$this->query = [];
 		}
+
+		return parent::__construct('Parameter', ... $args);
 	}
 	
 	public static function checkString($string)
@@ -76,76 +88,76 @@ class Parameter extends Quant
 
 	public function has($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 		return (isset($this->$query[$key]));
 	}
 	
 	public function delete($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 		if(!$this->has($key)) return false; unset($this->$query[$key]); return true;
 	}
 	
 	public function get($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function getString($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	//convert to 0/1 bzw. alles >0 ist (true)!!
 	public function getBool($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function getInt($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function getFloat($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function getNumber($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function set($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function setString($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	//convert to/from 0/1 bzw. alles >0 ist (true);
 	public function setBool($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function setInt($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function setFloat($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public function setNumber($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
 	}
 	
 	public static function encode($value)
@@ -156,7 +168,7 @@ class Parameter extends Quant
 		}
 		else if(!is_array($value))
 		{
-			throw new Error('Invalid $value argument (neither String nor Array)');
+			throw new \Error('Invalid $value argument (neither String nor Array)');
 		}
 
 		$result = [];
@@ -184,7 +196,7 @@ class Parameter extends Quant
 		}
 		else if(!is_array($value))
 		{
-			throw new Error('Invalid $value argument (neither String nor Array)');
+			throw new \Error('Invalid $value argument (neither String nor Array)');
 		}
 
 		$result = [];
