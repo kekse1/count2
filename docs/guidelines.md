@@ -10,12 +10,12 @@ Most counter related things should be defined below `kekse\count2`.
 
 ## **Error** vs. **Exception**
 
-> **Note**
-> I think you'd like to write `\Exception` etc. (so with the backslash `\`),
-> since most times we're working in the `namespace \kekse`.
-
 * `Error` if a programming error occures (so e.g. unexpected parameter type)
 * `Exception` if a user error like wrong `$_GET[]` params occures
+
+> **Warning**
+> I think you'd like to write `\Exception` etc. (so with the backslash `\`),
+> since most times we're working in the `namespace \kekse`.
 
 ## `require_once()`
 .. `require_once()` should be the most used function to import other modules.
