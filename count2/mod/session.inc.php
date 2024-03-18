@@ -10,20 +10,29 @@ require_once('ext/environment.inc.php');
 require_once('ext/parameter.inc.php');
 require_once('connection.inc.php');
 require_once('ext/terminal.inc.php');
+require_once('controller.inc.php');
 
 class Session extends \kekse\Quant
 {
+	public $controller = null;
+
 	public $configuration = null;
 	public $environment = null;
 
 	public $parameter = null;
 	public $connection = null;
 
+	public $console = null;
+
 	public function __construct(... $args)//$configuration = null, $environment = null, $parameter = null, $connection = null, ... $args)
 	{
 		for($i = 0; $i < count($args); ++$i)
 		{
-			if($args[$i] instanceof Configuration)
+			if($args[$i] instanceof Controller)
+			{
+				$this->controller = array_splice($args, $i--, 1)[0];
+			}
+			else if($args[$i] instanceof Configuration)
 			{
 				$this->configuration = array_splice($args, $i--, 1)[0];
 			}
@@ -39,6 +48,11 @@ class Session extends \kekse\Quant
 			{
 				$this->environment = array_splice($args, $i--, 1)[0];
 			}
+		}
+
+		if(!$this->controller)
+		{
+			throw new \Error('Missing Controller instance');
 		}
 
 		if(!\kekse\CLI::isCLI())

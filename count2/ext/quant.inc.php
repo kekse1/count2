@@ -54,6 +54,7 @@ class Quant
 	}
 }
 
+require_once('math.inc.php');
 require_once('environment.inc.php');
 require_once('filesystem.inc.php');
 require_once('numeric.inc.php');

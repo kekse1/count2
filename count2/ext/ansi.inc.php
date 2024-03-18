@@ -27,7 +27,7 @@ class ANSI extends Quant
 
 	public static function reset()
 	{
-		return "\e[0m";
+		return self::getSequence('reset');
 	}
 
 	public static function fg($red, $green, $blue)
@@ -40,12 +40,47 @@ class ANSI extends Quant
 
 	public static function bold()
 	{
-		return "\e[1m";
+		return self::getSequence('bold');
 	}
 
 	public static function underline()
 	{
-		return "\e[4m";
+		return self::getSequence('underline');
+	}
+
+	public static function getSequence($type)
+	{
+		if(is_string($type)) switch($type)
+		{
+			case 'escape': return "\e";
+			case 'reset': return '[0m';
+			case 'bold': return '[1m';
+			case 'reset_bold': return '[22m';
+			case 'faint': return '[2m';
+			case 'reset_faint': return '[22m';
+			case 'italic': return '[3m';
+			case 'reset_italic': return '[23m';
+			case 'underline': return '[4m';
+			case 'reset_underline': return '[24m';
+			case 'reset_color': return '[39m';
+			case 'red': return '[31m';
+			case 'green': return '[32m';
+			case 'yellow': return '[33m';
+			case 'blue': return '[34m';
+			case 'magenta': return '[35m';
+		}
+
+		return '';
+	}
+
+	public static function strlen($string)
+	{
+throw new \Error('TODO');
+	}
+
+	public static function less($string)
+	{
+throw new \Error('TODO');
 	}
 }
 

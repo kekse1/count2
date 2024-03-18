@@ -213,6 +213,16 @@ class Security extends Quant
 		
 		return true;
 	}
+
+	public static function limitString($string)
+	{
+		if(!is_string($string))
+		{
+			return null;
+		}
+
+		return substr($string, 0, KEKSE_LIMIT_STRING);
+	}
 }
 
 ?>

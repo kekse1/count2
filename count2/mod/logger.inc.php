@@ -6,6 +6,7 @@
 namespace kekse\count2;
 
 require_once('ext/quant.inc.php');
+require_once('ext/terminal.inc.php');
 
 class Logger extends \kekse\Quant
 {
@@ -32,6 +33,7 @@ class Logger extends \kekse\Quant
 	public static function handler(... $args)
 	{
 		var_dump($args);
+		//\kekse\Terminal::error(... $args);
 		exit(255);
 	}
 }
