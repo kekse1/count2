@@ -13,10 +13,11 @@ define('KEKSE_LIMIT_PARAM', 32);
 
 require_once('quant.inc.php');
 require_once('string.inc.php');
+require_once('number.inc.php');
 
 class Parameter extends Quant
 {
-	public $query;
+	private $query;
 
 	public function __construct($params, ... $args)
 	{
@@ -41,45 +42,59 @@ class Parameter extends Quant
 			$this->query = [];
 		}
 
+		if(!isset($this->query['time']))
+		{
+			$this->query['time'] = timestamp();
+		}
+		
 		return parent::__construct('Parameter', ... $args);
 	}
 	
 	public function __get($key)
 	{
-		if(!is_string($key = self::checkString($key))) return new \Error('Invalid argument');
+		if(!is_string($key = self::checkString($key, true))) return new \Error('Invalid argument');
 		else if(property_exists($this, $key)) return $this->{$key};
-		else if($this->has($key)) return $this->query[$key];
-		return null;
+		else $key = self::decode($key);
+		if(!$this->has($key)) return null;
+		return $this->query[$key];
 	}
 	
 	public function __set($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) return new \Error('Invalid argument');
+		if(!is_string($key = self::checkString($key, true))) return new \Error('Invalid argument');
 		else if(property_exists($this, $key)) return $this->{$key} = $value;
-		return $this->set($key, $value);
+		else $key = self::decode($key);
+		$result = $this->has($key);
+		$this->set($key, $value);
+		return $result;
 	}
 	
-	public static function checkString($string)
+	public static function checkString($string, $null = true)
 	{
 		if(!is_string($string))
 		{
-			return null;
+			return ($null ? null : '');
 		}
 		
 		$len = strlen($string);
 		
 		if($len === 0)
 		{
-			return null;
+			return ($null ? null : '');
 		}
 		else if($len > KEKSE_LIMIT_STRING)
 		{
-			return null;
+			return ($null ? null : '');
 		}
 		else
 		{
 			$string = trim($string);
 			$string = removeBinary($string, true);
+		}
+		
+		if($null && strlen($string) === 0)
+		{
+			return null;
 		}
 		
 		return $string;
@@ -93,72 +108,179 @@ class Parameter extends Quant
 
 	public function __toString()
 	{
-		return '(Parameter[' . $this->getSize() . '])';
+		return $this->render($this->query);
 	}
 	
 	public function getSize()
 	{
 		return count($this->query);
 	}
+	
+	public function getLength()
+	{
+		return $this->getSize();
+	}
 
 	public function has($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-		return (isset($this->query[$key]));
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key); return (isset($this->query[$key]));
 	}
 	
 	public function delete($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-		if(!$this->has($key)) return false; unset($this->query[$key]); return true;
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		if(!$this->has($key)) return false;
+		else unset($this->query[$key]);
+		return true;
 	}
 	
 	public function get($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		$result = $this->query[$key];
+		$type = self::getType($result);
+		
+		if($type === '') return null;
+		return $result;
 	}
 	
 	public function getString($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!$this->has($key)) return null;
+		$result = $this->query[$key];
+		
+		if(!is_string($result))
+		{
+			if(is_bool($result)) $result = ($result ? 'yes' : 'no');
+			if(is_number($result)) $result = (string)$result;
+		}
+		
+		return $result;
 	}
 	
-	//convert to 0/1 bzw. alles >0 ist (true)!!
 	public function getBoolean($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+
+		if(!$this->has($key)) return null;
+		$result = $this->query[$key];
+
+		if(!is_bool($result))
+		{
+			if(is_int($result)) $result = ($result !== 0);
+			else if(is_double($result)) $result = ($result !== 0.0);
+			else if(is_string($result))
+			{
+				switch(strtolower($result))
+				{
+					case '1': case '1.0': case 'yes': $result = true; break;
+					case '0': case '0.0': case 'no': $result = false; break;
+					default: $result = (strlen($result) > 0); break;
+				}
+			}
+			else $result = (strlen((string)$result) > 0);
+		}
+
+		return $result;
 	}
 	
 	public function getInteger($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-	}
-	
-	public function getFloat($key)
-	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!$this->has($key)) return null;
+		$result = $this->query[$key];
+		
+		if(!is_int($result))
+		{
+			if(is_bool($result)) $result = ($result ? 1 : 0);
+			else if(is_double($result)) $result = (int)$result;
+			else $result = (int)(string)$result;
+		}
+		
+		return $result;
 	}
 	
 	public function getDouble($key)
 	{
-		return $this->getFloat($key);
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!$this->has($key)) return null;
+		$result = $this->query[$key];
+		
+		if(!is_double($result))
+		{
+			if(is_bool($result)) $result = ($result ? 1.0 : 0.0);
+			else if(is_int($result)) $result = (double)$result;
+			else $result = (double)(string)$result;
+		}
+		
+		return $result;
 	}
 	
 	public function getNumber($key)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!$this->has($key)) return null;
+		$result = $this->query[$key];
+		
+		if(!is_number($result))
+		{
+			if(is_bool($result)) $result = ($result ? 1 : 0);
+			else
+			{
+				$result = (string)$result;
+				
+				if(str_contains($result, '.'))
+				{
+					$result = (double)$result;
+				}
+				else
+				{
+					$result = (int)$result;
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
+	public static function getType($value)
+	{
+		$type = gettype($value);
+		
+		switch($type)
+		{
+			case 'string': return 'string';
+			case 'boolean': return 'boolean';
+			case 'double': return 'double';
+			case 'integer': return 'integer';
+		}
+		
+		return '';
 	}
 	
 	public function set($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-		$type = gettype($value);
+		$type = self::getType($value);
 		
 		switch($type)
 		{
 			case 'string': return $this->setString($key, $value);
 			case 'boolean': return $this->setBoolean($key, $value);
-			case 'double': return $this->setFloat($key, $value);
+			case 'double': return $this->setDouble($key, $value);
 			case 'integer': return $this->setInteger($key, $value);
 		}
 		
@@ -167,33 +289,100 @@ class Parameter extends Quant
 	
 	public function setString($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!is_string($value))
+		{
+			if(is_bool($value)) $value = ($value ? 'yes' : 'no');
+			else $value = (string)$value;
+		}
+		
+		$value = self::decode(self::checkString($value, false));
+		
+		$result = ($this->has($key));
+		$this->query[$key] = $value;
+		return $result;
 	}
 	
-	//convert to/from 0/1 bzw. alles >0 ist (true);
 	public function setBoolean($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!is_bool($value))
+		{
+			if(is_int($value)) $value = ($value !== 0);
+			else if(is_double($value)) $value = ($value !== 0.0);
+			else if(is_string($value))
+			{
+				switch(strtolower($value))
+				{
+					case '1': case '1.0': case 'yes': $result = true; break;
+					case '0': case '0.0': case 'no': $result = false; break;
+					default: $result = (strlen($result) > 0); break;
+				}
+			}
+			else $value = (bool)(string)$value;
+		}
+		
+		$result = ($this->has($key));
+		$this->query[$key] = $value;
+		return $result;
 	}
 	
 	public function setInteger($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
-	}
-	
-	public function setFloat($key, $value)
-	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!is_int($value))
+		{
+			if(is_double($value)) $value = (int)$value;
+			else if(is_bool($value)) $value = ($value ? 1 : 0);
+			else $value = (int)(string)$value;
+		}
+
+		$result = ($this->has($key));
+		$this->query[$key] = $value;
+		return $result;
 	}
 	
 	public function setDouble($key, $value)
 	{
-		return $this->setFloat($key, $value);
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!is_double($value))
+		{
+			if(is_int($value)) $value = (double)$value;
+			else if(is_bool($value)) $value = ($value ? 1.0 : 0.0);
+			else $value = (double)(string)$value;
+		}
+		
+		$result = ($this->has($key));
+		$this->query[$key] = $value;
+		return $result;
 	}
-	
+
 	public function setNumber($key, $value)
 	{
-		if(!is_string($key = self::checkString($key))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		else $key = self::decode($key);
+		
+		if(!is_number($value))
+		{
+			if(is_bool($value)) $value = ($value ? 1 : 0);
+			else
+			{
+				$value = self::checkString(self::decode((string)$value), false);
+				if(str_contains($value, '.')) $value = (double)$value;
+				else $value = (int)$value;
+			}
+		}
+		
+		if(is_double($value)) return $this->setDouble($key, $value);
+		else if(is_int($value)) return $this->setInteger($key, $value);
 	}
 	
 	public static function encode($value)
@@ -313,33 +502,37 @@ class Parameter extends Quant
 			}
 			
 			$exceeding = ($count >= KEKSE_LIMIT_PARAM);
-			$key = self::decode($key);
+			$real = self::decode($key);
+			$key = '';
 			
 			if($value === null)
 			{
-				if(isset($result[$key]))
+				if(isset($result[$real]))
 				{
-					if(is_int($result[$key]))
+					if(is_int($result[$real]))
 					{
-						++$result[$key];
+						++$result[$real];
+					}
+					else if(is_bool($result[$real]))
+					{
+						$result[$real] = 2;
 					}
 					else
 					{
-						$result[$key] = 1;
+						$result[$real] = 1;
 					}
 				}
 				else
 				{
-					$result[$key] = 1;
+					$result[$real] = true;
 					++$count;
 				}
 				
 				return ($exceeding ? null : false);
 			}
 
-			$result[$key] = self::decode($value);
+			$result[$real] = self::decode($value);
 			$value = null;
-			$key = '';
 
 			return ($exceeding ? null : true);
 		};
@@ -373,13 +566,13 @@ class Parameter extends Quant
 			}
 			else if($string[$i] === '=')
 			{
-				if($value === null)
-				{
-					$value = '';
-				}
-				else if(strlen($key) === 0)
+				if(strlen($key) === 0)
 				{
 					$key = '=';
+				}
+				else if($value === null)
+				{
+					$value = '';
 				}
 				else
 				{

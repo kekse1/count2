@@ -15,7 +15,7 @@ class Quant
 
 	public function __construct($name, ... $args)
 	{
-		$this->time = timestamp();
+		$this->__time = timestamp();
 		$this->__args = $args;
 
 		if(is_string($name))
