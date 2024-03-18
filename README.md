@@ -14,10 +14,10 @@ bessere `git`-Nutzung, sowie uebersichtlichere Dokumentation. ^_^
 ```
 
 ## Documentation
-Someone gave me this tipp: to separate the 'user manual' and the technical internals/details.
+Someone gave me this tipp: to separate the 'user manual' from the 'developer pages' or 'internal/technical details'.
 
-That'd make it much easier for my audience. Additionally I just figured out it 'd also be easier
-to separate nearly all into even more (markdown) documents, so I just began(!) here.
+That'd make it much easier for my audience. Additionally I just figured out it 'd also be easier to separate nearly
+all into even more (markdown) documents, so I just began(!) here.
 
 ### Important infos for all users
 * [**Installation**](docs/installation.md)
@@ -26,7 +26,7 @@ to separate nearly all into even more (markdown) documents, so I just began(!) h
 * [**Configuration**](docs/configuration.md)
 
 ### More infos for developers and enthusiasts
-* [**Internal technical details**](docs/internals.md)
+* [**Technical details**](docs/internals.md)
 * [**Modules**](docs/modules.md)
 * [**Extensions**](docs/extensions.md)
 * [**Coding Guidelines**](docs/guidelines.md)
