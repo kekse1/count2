@@ -17,17 +17,6 @@ Most counter related things should be defined below `kekse\count2`.
 > I think you'd like to write `\Exception` etc. (so with the backslash `\`),
 > since most times we're working in the `namespace \kekse`.
 
-## `require_once()`
-.. `require_once()` should be the most used function to import other modules.
-
-I'd recommend (here) to `require_once()` in each module for any extension used,
-so not relying on a 'bigger'/parent construction or so. Since PHP should not
-import modules multiple times (so with `require_once()`), this won't do any harm
-to our efficience. 8?
-
-Furthermore.. **every** extension (see **`ext/`** directory) is being loaded by
-the **`ext/quant.inc.php`** (the `Quant` class, as generalization for any object).
-
 ## String security
 There are some functions available at `mod/security.inc.php`. The first one,
 marked bold, is the most recommended one:
