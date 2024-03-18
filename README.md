@@ -31,6 +31,9 @@ to separate nearly all into even more (markdown) documents, so I just began(!) h
 * [**Coding Guidelines**](docs/guidelines.md)
 * [**JSON vectors**](docs/json.md)
 
+#### Writing the `.md` documentation
+* [**Markdown** (hints, etc.)](docs/markdown.md)
+
 ## Original version(s)
 Here's the [last/previous version](original.php/count.php) (and [here's the repo](https://github.com/kekse1/count.php/)),
 and there's the [first/original version](original.php/original.php) (more [here](https://github.com/kekse1/count.php/#the-original-version)).
