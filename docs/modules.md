@@ -18,6 +18,8 @@ Using the [Extensions](extensions.md), residing in the `mod/` directory.
 * Notification
 * Raycast
 * Security
+* Session
 * Statistics
+* Summary
 * Text
 
