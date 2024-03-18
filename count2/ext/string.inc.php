@@ -21,7 +21,7 @@ function checkString($string)
 	return $string;
 }
 
-function removeBinary($string, $null = false)
+function removeBinary($string, $null = false, $removeSpaces = false)
 {
 	$len = strlen($string);
 	if($len > KEKSE_LIMIT_STRING) return null;
@@ -34,7 +34,11 @@ function removeBinary($string, $null = false)
 
 		for($i = 0; $i < $len; ++$i)
 		{
-			if(($byte = ord($string[$i])) > 31 && $byte !== 127)
+			if($removeSpaces && $string[$i] === ' ')
+			{
+				continue;
+			}
+			else if(($byte = ord($string[$i])) > 31 && $byte !== 127)
 			{
 				$result .= $string[$i];
 			}
@@ -47,6 +51,11 @@ function removeBinary($string, $null = false)
 	}
 
 	return $result;
+}
+
+function removeWhiteSpaces($string, $null = false)
+{
+	return removeBinary($string, $null, true);
 }
 
 ?>

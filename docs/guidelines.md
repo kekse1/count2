@@ -25,6 +25,9 @@ so not relying on a 'bigger'/parent construction or so. Since PHP should not
 import modules multiple times (so with `require_once()`), this won't do any harm
 to our efficience. 8?
 
+Furthermore.. **every** extension (see **`ext/`** directory) is being loaded by
+the **`ext/quant.inc.php`** (the `Quant` class, as generalization for any object).
+
 ## Documentation
 //TODO//
 

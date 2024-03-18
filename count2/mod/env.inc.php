@@ -21,16 +21,6 @@ class Environment extends \kekse\Quant
 		return parent::__destruct();
 	}
 
-	public static mode()
-	{
-		return php_sapi_name();
-	}
-
-	public static isCLI()
-	{
-		return (self::mode === 'cli');
-	}
-
 	public static function log(... $args)
 	{
 	}

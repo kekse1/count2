@@ -3,6 +3,7 @@
 # Extensions
 They reside in the `ext/` directory, used by the [Modules](modules.md).
 
+* [color](ext/color.md)
 * [getopt](ext/getopt.md)
 * [number](ext/number.md)
 * [parameter](ext/parameter.md)

@@ -1,7 +1,5 @@
 <?php
 
-//TODO/'mode' und 'isCLI' als get(), nicht als funktion.
-
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
@@ -9,11 +7,11 @@ namespace kekse\count2;
 
 require_once('env.inc.php');//TODO/
 
-class CLI extends \kekse\Environment
+class CLI extends Environment
 {
 	public function __construct(... $args)
 	{
-		if(!self::isCLI)
+		if(!self::isCLI())
 		{
 			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
@@ -26,14 +24,14 @@ class CLI extends \kekse\Environment
 		return parent::__destruct();
 	}
 
-	public static mode()
+	public static function getMode()
 	{
 		return php_sapi_name();
 	}
 
-	public static isCLI()
+	public static function isCLI()
 	{
-		return (self::mode === 'cli');
+		return (self::getMode() === 'cli');
 	}
 
 	public static function log(... $args)

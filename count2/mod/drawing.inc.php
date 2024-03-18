@@ -5,17 +5,34 @@
 
 namespace kekse\count2;
 
-require_once('ext/quant.inc.php');
+require_once('ext/color.inc.php');
+require_once('cli.inc.php');
 
 class Drawing extends \kekse\Quant
 {
 	private $image = null;
 
+	private $session;
+
 	private $mode;
 	private $type;
 
-	public function __construct($mode, $type, ... $args)
+	public function __construct($session, $mode, $type, ... $args)
 	{
+		if(!extension_loaded('gd'))
+		{
+			throw new \Exception('Unable to find the GD library module');
+		}
+		
+		if($session)
+		{
+			$this->session = $session;
+		}
+		else
+		{
+			$this->session = null;
+		}
+		
 		if(is_string($mode) && strlen($mode) > 0)
 		{
 			$this->mode = self::checkMode($mode);
@@ -106,8 +123,58 @@ class Drawing extends \kekse\Quant
 		return false;
 	}
 	
+	public static function px2pt($value)
+	{
+		return ($value * 0.75);
+	}
+	
+	public static function pt2px($value)
+	{
+		return ($value / 0.75);
+	}
+
+	public static function allocateColor($red, $green, $blue, $alpha)
+	{
+		if(is_array($red))
+		{
+			$len = count($red);
+
+			if($len === 4)
+			{
+				$alpha = $red[3];
+			}
+			else
+			{
+				$alpha = null;
+			}
+						
+			if($len >= 3)
+			{
+				$blue = $red[2];
+				$green = $red[1];
+				$red = $red[0];
+			}
+			else
+			{
+				$blue = $green = $red = null;
+			}
+		}
+		else if(!is_number($alpha))
+		{
+			$alpha = null;
+		}
+		
+		if($alpha === null)
+		{
+			return imagecolorallocate($red, $green, $blue);
+		}
+		
+		return imagecolorallocatealpha($red, $green, $blue, $alpha);
+	}
+	
 	public function createImage($width, $height, $color = null)
 	{
+throw new \Error('TODO');
 		$result = imagecreatetruecolor($width, $height);
 		imagesavealpha($result, true);
 
@@ -144,18 +211,25 @@ class Drawing extends \kekse\Quant
 	
 	public function drawValue($value)
 	{
+		//
 	}
 	
 	public function drawText($string)
 	{
+		//
 	}
 	
 	public function sendImageHeader()
 	{
+		if(!$this->session)
+		{
+			throw new \Exception('There\'s no [session] available');
+		}
+		
 		switch($this->type)
 		{
-			case 'png': break; //return HTTP->sendTypeHeader('image/png'); (w/ instance of http);
-			case 'jpg': break; //return HTTP->sendTypeHeader('image/jpeg'); (w/ instance of http);
+			case 'png': return $this->session->connection->sendTypeHeader('image/png');
+			case 'jpg': return $this->session->connection->sendTypeHeader('image/jpeg');
 		}
 
 		throw new \Error('Invalid [type] member, can\'t send valid image header');
@@ -163,6 +237,12 @@ class Drawing extends \kekse\Quant
 	
 	public function sendTextHeader()
 	{
+		if(!$this->session)
+		{
+			throw new \Exception('There\'s no [session] available');
+		}
+		
+		//TODO/config default etc..!!!
 		//return HTTP->sendTypeHeader($type); (w/ instance of http)
 	}
 }
