@@ -6,27 +6,19 @@
 namespace kekse;
 
 require_once('quant.inc.php');
-require_once('mod/session.inc.php');
 
 class Environment extends Quant
 {
-	public $session = null;
+	public $session;
 
-	public $file = [];
-	public $real = [];
+	public $file;
+	public $real;
 	
-	public function __construct(... $args)
+	public function __construct($session, ... $args)
 	{
-		for($i = 0; $i < count($args); ++$i)
-		{
-			if($args[$i] instanceof \kekse\count2\Session)
-			{
-				$this->session = array_splice($args, $i--, 1)[0];
-			}
-		}
+		$this->session = $session;
 
 		$details = self::getScriptDetails();
-		
 		$this->file = $details[0];
 		$this->real = $details[1];
 		

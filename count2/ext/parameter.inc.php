@@ -7,17 +7,19 @@ namespace kekse;
 
 define('KEKSE_LIMIT_PARAM', 32);
 
-require_once('mod/session.inc.php');
+require_once('quant.inc.php');
 
 class Parameter extends Quant
 {
-	public $session = null;
+	public $session;
 
 	private $query;
 
-	public function __construct($params, ... $args)
+	public function __construct($session, $params = null, ... $args)
 	{
-		if(! (is_string($params) || is_array($params) || $params instanceof Parameter))
+		$this->session = $session;
+
+		if(! (is_string($params) || is_array($params)))
 		{
 			if(isset($_SERVER['QUERY_STRING']))
 			{
@@ -29,30 +31,11 @@ class Parameter extends Quant
 			}
 		}
 
-		if($params instanceof Parameter)
-		{
-			$this->query = $params;
-		}
-		else if(is_string($params) || is_array($params))
-		{
-			$this->query = self::parse($params);
-		}
-		else
-		{
-			$this->query = [];
-		}
+		$this->query = self::parse($params);
 
 		if(!isset($this->query['time']))
 		{
 			$this->query['time'] = timestamp();
-		}
-
-		for($i = 0; $i < count($args); ++$i)
-		{
-			if($args[$i] instanceof \kekse\count2\Session)
-			{
-				$this->session = array_splice($args, $i--, 1)[0];
-			}
 		}
 		
 		return parent::__construct('Parameter', ... $args);

@@ -3,27 +3,19 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
+namespace kekse;
 
 require_once('ext/security.inc.php');
-require_once('session.inc.php');
 
-class Connection extends \kekse\Quant
+class Connection extends Quant
 {
-	public $session = null;
+	public $session;
 
 	private $headers = [];
 
-	public function __construct(... $args)
+	public function __construct($session, ... $args)
 	{
-		for($i = 0; $i < count($args); ++$i)
-		{
-			if($args[$i] instanceof Session)
-			{
-				$this->session = array_splice($args, $i--, 1)[0];
-			}
-		}
-
+		$this->session = $session;
 		return parent::__construct('Connection', ... $args);
 	}
 

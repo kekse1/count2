@@ -5,7 +5,6 @@ Using the [Extensions](extensions.md), residing in the `mod/` directory.
 
 * [Cache](mod/cache.md)
 * [Configuration](mod/configuration.md)
-* [Connection](mod/connection.md)
 * [Console](mod/console.md)
 * [Controller](md/controller.md)
 * [Cookies](mod/cookies.md)

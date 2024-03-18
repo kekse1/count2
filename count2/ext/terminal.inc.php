@@ -7,28 +7,23 @@ namespace kekse;
 
 require_once('ext/quant.inc.php');//TODO/
 require_once('ext/ansi.inc.php');
-require_once('mod/session.inc.php');
 
 class Terminal extends Quant
 {
-	public $session = null;
+	public $session;
+	public $console;
 
-	public function __construct(... $args)
+	public function __construct($session, $console, ... $args)
 	{
 		if(!self::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
+			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
-		for($i = 0; $i < count($args); ++$i)
-		{
-			if($args[$i] instanceof \kekse\count2\Session)
-			{
-				$this->session = array_splice($args, $i--, 1)[0];
-			}
-		}
+		$this->session = $session;
+		$this->console = $console;
 
-		return parent::__construct(... $args);
+		return parent::__construct('Terminal', ... $args);
 	}
 
 	public function __destruct()

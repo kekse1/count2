@@ -35,7 +35,7 @@ class Quant
 
 	public function __toString()
 	{
-		return '(' . $this->NAME . ')';
+		return '(' . $this->NAME . ';' . $this->getRuntime() . ')';
 	}
 
 	public function getName()
@@ -51,6 +51,11 @@ class Quant
 	public function getTime()
 	{
 		return $this->TIME;
+	}
+
+	public function getRuntime()
+	{
+		return timestamp($this->TIME);
 	}
 }
 
