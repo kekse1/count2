@@ -1,5 +1,14 @@
 {
 	"draw": {
-		"type": [ "boolean" ]
+		"type": [ "boolean" ],
+		"default": true
+	},
+	"zero": {
+		"type": [ "boolean" ],
+		"default": false
+	},
+	"header": {
+		"type": [ "string" ],
+		"default": "text/plain;charset=UTF-8"
 	}
 }

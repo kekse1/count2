@@ -1,4 +1,4 @@
 #!/usr/bin/env php
 <?php
-var_dump(gettype(true));
+var_dump(!!'');
 ?>

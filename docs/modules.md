@@ -13,6 +13,7 @@ Using the [Extensions](extensions.md), residing in the `mod/` directory.
 * [FileSystem](mod/filesystem.md)
 * [Fingerprint](mod/fingerprint.md)
 * [GEO](mod/geo.md)
+* [HTTP](mod/http.md)
 * [IP](mod/ip.md)
 * [Logger](mod/logger.md)
 * [Notification](mod/notification.md)

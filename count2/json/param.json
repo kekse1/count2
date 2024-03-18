@@ -1,5 +1,10 @@
 {
 	"draw": {
-		"type": [ "boolean", "string" ]
+		"type": [ "boolean", "string" ],
+		"default": true
+	},
+	"zero": {
+		"type": [ "boolean" ],
+		"default": false
 	}
 }
