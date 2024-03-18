@@ -8,10 +8,11 @@ They reside in the `ext/` directory, used by the [Modules](modules.md).
 * [environment](ext/environment.md)
 * [filesystem](ext/filesystem.md)
 * [getopt](ext/getopt.md)
+* [math](ext/math.md)
 * [numeric](ext/numeric.md)
 * [parameter](ext/parameter.md)
-* [terminal](ext/terminal.md)
 * [quant](ext/quant.md)
 * [security](ext/security.md)
+* [terminal](ext/terminal.md)
 * [timing](ext/timing.md)
 
