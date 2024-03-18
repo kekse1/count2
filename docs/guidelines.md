@@ -4,7 +4,16 @@
 Since I'm learning PHP **again**, I'm putting some comments into this file,
 to give a rough outline of how to implement "correctly"[tm]..
 
+## Namespace
+Most general abstractions are implemented in my own `kekse` namespace.
+Most counter related things should be defined below `kekse\count2`.
+
 ## **Error** vs. **Exception**
+
+> **Note**
+> I think you'd like to write `\Exception` etc. (so with the backslash `\`),
+> since most times we're working in the `namespace \kekse`.
+
 * `Error` if a programming error occures (so e.g. unexpected parameter type)
 * `Exception` if a user error like wrong `$_GET[]` params occures
 
