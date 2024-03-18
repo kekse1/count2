@@ -14,9 +14,10 @@ bessere `git`-Nutzung, sowie uebersichtlichere Dokumentation. ^_^
 ```
 
 ## Documentation
-Someone gave me this tipp: separate the 'user manual' and the technical 'internals'. That'd make
-it much easier for my audience. Additionally I just figured out it 'd also be easier to separate
-into even more `.md` (markdown) documents, so I began(!) with these ones (all still TODO):
+Someone gave me this tipp: to separate the 'user manual' and the technical internals/details.
+
+That'd make it much easier for my audience. Additionally I just figured out it 'd also be easier
+to separate nearly all into even more (markdown) documents, so I began(!) with these ones //(TODO)//:
 
 * [**Installation**](docs/installation.md)
 * [**Usage**](docs/usage.md)
