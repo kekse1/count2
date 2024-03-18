@@ -3,3 +3,14 @@
 # Usage
 //TODO//
 
+## WEB mode
+
+### Possible `$_GET[]` parameters
+Defined in the `json/param.json`.
+
+## CLI mode
+.. used the `ext/getopt.inc.php`, too. //TODO//..
+
+### Possible Command line parameters
+Defined in the `json/getopt.json`.
+
