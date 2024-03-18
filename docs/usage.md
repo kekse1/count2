@@ -9,3 +9,5 @@
 ## CLI mode
 //TODO/
 
+## Panel
+//TODO/

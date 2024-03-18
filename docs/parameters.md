@@ -1,36 +1,24 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
-# Possible parameters
-//TODO//
+# Index
+Here are all the possible parameters or configuration items for all these three elements:
 
-## WEB mode
-
-### Possible `$_GET[]` parameters
-Defined in the `json/param.json`.
-
-## CLI mode
-.. used the `ext/getopt.inc.php`, too. //TODO//..
-
-### Possible Command line parameters
-Defined in the `json/getopt.json`.
-
-<img src="https://kekse.biz/github.php?draw&override=github:count2">
-
-# Usage
-//TODO//
+* [**WEB** mode](#webmode)
+* [**CLI** mode](#climode)
+* [**Configuration**s](#configurations)
 
 ## WEB mode
 //TODO/
 
-## CLI mode
-//TODO/
-
-### Possible `$_GET[]` parameters
-Defined in the `json/param.json`.
+### `$_GET[]` parameters
+Vector defined in the [`json/param.json`](../count2/json/param.json).
 
 ## CLI mode
-.. used the `ext/getopt.inc.php`, too. //TODO//..
+//TODO//..
 
 ### Possible Command line parameters
-Defined in the `json/getopt.json`.
+Vector defined in the [`json/getopt.json`](../count2/json/getopt.json).
 
+## Configuration(s)
+Please also take a look at the [Configuration section](configuration.md)!
+Their vector is defined in the [`json/config.json`](../count2/json/config.json).
