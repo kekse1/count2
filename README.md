@@ -25,7 +25,7 @@ all into even more (markdown) documents, so I just began(!) here.
 * [**Parameters**](docs/parameters.md)
 * [**Configuration**](docs/configuration.md)
 
-### More infos for developers and enthusiasts
+### For developers and enthusiasts
 * [**Technical details**](docs/internals.md)
 * [**Modules**](docs/modules.md)
 * [**Extensions**](docs/extensions.md)
