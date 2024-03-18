@@ -10,7 +10,7 @@
 > `!TIP`
 
 > [!IMPORTANT]
-> `!IMPORTANT
+> `!IMPORTANT`
 
 > [!WARNING]
 > `!WARNING`
