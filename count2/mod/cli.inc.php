@@ -5,9 +5,9 @@
 
 namespace kekse\count2;
 
-require_once('env.inc.php');//TODO/
+require_once('ext/quant.inc.php');//TODO/
 
-class CLI extends Environment
+class CLI extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{

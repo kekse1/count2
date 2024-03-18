@@ -5,9 +5,8 @@ They reside in the `ext/` directory, used by the [Modules](modules.md).
 
 * [color](ext/color.md)
 * [getopt](ext/getopt.md)
-* [number](ext/number.md)
+* [numeric](ext/numeric.md)
 * [parameter](ext/parameter.md)
 * [quant](ext/quant.md)
-* [string](ext/string.md)
 * [timing](ext/timing.md)
 
