@@ -3,8 +3,8 @@
 # Index
 Here are all the possible parameters or configuration items for all these three elements:
 
-* [**WEB** mode](#webmode)
-* [**CLI** mode](#climode)
+* [**WEB** mode](#web-mode)
+* [**CLI** mode](#cli-mode)
 * [**Configuration**s](#configurations)
 
 ## WEB mode
