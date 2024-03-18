@@ -9,7 +9,7 @@ to give a rough outline of how to implement "correctly"[tm]..
 * `Exception` if a user error like wrong `$_GET[]` params occures
 
 ## `require_once()`
-.. should be the most used function to import other modules.
+.. `require_once()` should be the most used function to import other modules.
 
 I'd recommend (here) to `require_once()` in each module for any extension used,
 so not relying on a 'bigger'/parent construction or so. Since PHP should not
