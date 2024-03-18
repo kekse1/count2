@@ -245,6 +245,18 @@ throw new \Error('TODO');
 		//TODO/config default etc..!!!
 		//return HTTP->sendTypeHeader($type); (w/ instance of http)
 	}
+	
+	public static getFont($name)
+	{
+		if(!is_string($name) || $name === '')
+		{
+			return null;
+		}
+		else if(! str_ends_with($name, '..ttf'))
+		{
+			$name .= '.ttf';
+		}
+	}
 }
 
 ?>

@@ -3,13 +3,11 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
-
-require_once('ext/quant.inc.php');
+namespace kekse;
 
 define('KEKSE_LIMIT_STRING', 255);
 
-class Security extends \kekse\Quant
+class Security extends Quant
 {
 	public function __construct(... $args)
 	{

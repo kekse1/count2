@@ -5,7 +5,7 @@
 
 namespace kekse;
 
-function timestamp($diff)
+function timestamp($diff = null)
 {
 	if(PHP_INT_SIZE < 8)
 	{

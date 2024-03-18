@@ -5,8 +5,6 @@
 
 namespace kekse;
 
-require_once('./object.inc.php');
-
 class GetOpt extends Quant
 {
 	public function __construct(... $args)

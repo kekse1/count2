@@ -5,16 +5,31 @@
 
 namespace kekse\count2;
 
+require_once('mod/configuration.inc.php');
 require_once('ext/parameter.inc.php');
 require_once('mod/connection.inc.php');
 
 class Session extends \kekse\Quant
 {
+	public $configuration;
 	public $parameter;
 	public $connection;
 
-	public function __construct($parameter = null, $connection = null, ... $args)
+	public function __construct($configuration = null, $parameter = null, $connection = null, ... $args)
 	{
+		if(is_string($configuration))
+		{
+			$this->configuration = new Configuration($configuration);
+		}
+		else if($configuration)
+		{
+			$this->configuration = $configuration;
+		}
+		else
+		{
+			$this->configuration = null;
+		}
+		
 		if(is_string($parameter))
 		{
 			$this->parameter = new \kekse\Parameter($parameter);

@@ -5,8 +5,6 @@
 
 namespace kekse;
 
-require_once('security.inc.php');
-
 class Color extends Quant
 {
 	public function __construct($name, ... $args)

@@ -5,9 +5,6 @@
 
 namespace kekse;
 
-require_once('number.inc.php');
-require_once('timing.inc.php');
-
 class Quant
 {
 	public $NAME;
@@ -56,5 +53,11 @@ class Quant
 		return $this->TIME;
 	}
 }
+
+require_once('color.inc.php');
+require_once('filesystem.inc.php');
+require_once('numeric.inc.php');
+require_once('security.inc.php');
+require_once('timing.inc.php');
 
 ?>

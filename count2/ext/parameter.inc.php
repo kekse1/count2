@@ -11,9 +11,6 @@ namespace kekse;
 
 define('KEKSE_LIMIT_PARAM', 32);
 
-require_once('security.inc.php');
-require_once('number.inc.php');
-
 class Parameter extends Quant
 {
 	private $query;

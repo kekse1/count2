@@ -3,15 +3,13 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
-
-require_once('security.inc.php');
+namespace kekse;
 
 define('KEKSE_KEEP_HIDDEN', true);
 define('KEKSE_KEEP_HTACCESS', true);
 define('KEKSE_KEEP', true);
 
-class FileSystem extends \kekse\Quant
+class FileSystem extends Quant
 {
 	public function __construct(... $args)
 	{
@@ -365,10 +363,91 @@ class FileSystem extends \kekse\Quant
 		
 		return ($f === 0);
 	}
+
+	public static function resolvePath(... $args)
+	{
+		$result = self::joinPath(getcwd(), ... $args);
+		return self::joinPath($_SERVER['DOCUMENT_ROOT'], self::normalizePath($result));
+	}
 	
 	public static function joinPath(... $args)
 	{
-		return implode(PATH_SEPARATOR, $args);
+		$result = implode(DIRECTORY_SEPARATOR, $args);
+		return self::normalizePath($result);
+	}
+	
+	public static function normalizePath($path)
+	{
+		if(!is_string($path))
+		{
+			return null;
+		}
+		else
+		{
+			$path = Security::checkString($path, true, true);
+		}
+		
+		$len = strlen($path);
+		
+		if($len === 0 || $path === '.')
+		{
+			return '.';
+		}
+		else if($len > KEKSE_LIMIT_STRING)
+		{
+			return null;
+		}
+		
+		$abs = ($path[0] === DIRECTORY_SEPARATOR);
+		$dir = ($path[$len - 1] === DIRECTORY_SEPARATOR);
+		$split = explode(DIRECTORY_SEPARATOR, $path);
+		$result = [];
+		$minus = 0;
+		$item = '';
+		
+		while(count($split) > 0)
+		{
+			$item = array_shift($split);
+			
+			if(!$item)
+			{
+				continue;
+			}
+			
+			switch($item)
+			{
+				case '.': break;
+				case '..':
+					if(count($result) === 0)
+					{
+						++$minus;
+					}
+					else
+					{
+						array_pop($result);
+					}
+					break;
+				default:
+					array_push($result, $item);
+					break;
+			}
+		}
+		
+		if($abs)
+		{
+			array_unshift($result, '');
+		}
+		else while(--$minus >= 0)
+		{
+			array_unshift($result, '..');
+		}
+		
+		if($dir)
+		{
+			array_push($result, '');
+		}
+		
+		return implode(DIRECTORY_SEPARATOR, $result);
 	}
 }
 

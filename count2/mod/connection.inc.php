@@ -5,7 +5,7 @@
 
 namespace kekse\count2;
 
-require_once('security.inc.php');
+require_once('ext/security.inc.php');
 
 class Connection extends \kekse\Quant
 {
@@ -30,7 +30,7 @@ class Connection extends \kekse\Quant
 	{
 		if(!is_string($type)) throw new \Error('Invalid $type argument');
 		else if(str_starts_with($type, 'Content-Type:')) $type = substr($type, 13);
-		if(!($type = Security::checkString($type, true, true))) throw new \Error('Invalid $type argument');
+		if(!($type = \kekse\Security::checkString($type, true, true))) throw new \Error('Invalid $type argument');
 		$this->sendHeader('Content-Type', $type);
 		$this->typeSent = true;
 		return $type;
@@ -41,7 +41,7 @@ class Connection extends \kekse\Quant
 		if(is_int($length)) $length = (string)$length;
 		else if(!is_string($length)) throw new \Error('Invalid $length argument');
 		else if(str_starts_with($length, 'Content-Length')) $length = substr($length, 14);
-		if(!($length = Security::checkString($length, true, true))) throw new \Error('Invalid $length argument');
+		if(!($length = \kekse\Security::checkString($length, true, true))) throw new \Error('Invalid $length argument');
 		$this->sendHeader('Content-Length', $length);
 		$this->lengthSent = true;
 		return $type;
@@ -55,7 +55,7 @@ class Connection extends \kekse\Quant
 			
 			foreach($item as $key => $value)
 			{
-				if(!($key = Security::checkString($key, true, true)))
+				if(!($key = \kekse\Security::checkString($key, true, true)))
 				{
 					continue;
 				}
@@ -76,7 +76,7 @@ class Connection extends \kekse\Quant
 			
 			return $result;
 		}
-		else if(!($item = Security::checkString($item, true, true)))
+		else if(!($item = \kekse\Security::checkString($item, true, true)))
 		{
 			throw new \Error('Invalid $item argument');
 		}
@@ -85,7 +85,7 @@ class Connection extends \kekse\Quant
 		{
 			$value = (string)$value;
 		}
-		else if(!($value = Security::checkString($value, true, true)))
+		else if(!($value = \kekse\Security::checkString($value, true, true)))
 		{
 			$value = null;
 		}
@@ -97,7 +97,7 @@ class Connection extends \kekse\Quant
 				throw new \Error('Invalid $item argument');
 			}
 		}
-		else if(!($value = Security::checkString($value, true, true)))
+		else if(!($value = \kekse\Security::checkString($value, true, true)))
 		{
 			throw new \Error('Invalid $value argument');
 		}
