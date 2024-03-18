@@ -110,6 +110,12 @@ class Drawing extends \kekse\Quant
 	{
 		$result = imagecreatetruecolor($width, $height);
 		imagesavealpha($result, true);
+
+		if($width > 1 && $height > 1)
+		{
+			imagealphablending($result, true);
+			imageantialias($result, true);
+		}
 		
 		if($color === null)
 		{
@@ -118,12 +124,6 @@ class Drawing extends \kekse\Quant
 		else
 		{
 //zzzzzzzzz		imagefill($result, 0, 0, $color.....);//TODO/!!
-		}
-
-		if($width > 1 && $height > 1)
-		{
-			imagealphablending($result, true);
-			imageantialias($result, true);
 		}
 
 		return $this->image = $result;		
