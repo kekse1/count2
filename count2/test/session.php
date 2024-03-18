@@ -1,9 +1,8 @@
-#!/usr/bin/env php
 <?php
 namespace kekse\count2;
+require_once('ext/quant.inc.php');
 require_once('mod/session.inc.php');
-$sess = new Session('?eins zwei=drei vier&&&five&&six&&six&six&seven');
-var_dump((string)$sess);
-echo "\n\n\n";
-var_dump($sess);
+header('Content-Type: text/plain;charset=UTF-8');
+$env = new Session(new \kekse\Environment());
+var_dump($env);
 ?>

@@ -6,50 +6,37 @@
 namespace kekse\count2;
 
 require_once('mod/configuration.inc.php');
+require_once('ext/environment.inc.php');
 require_once('ext/parameter.inc.php');
 require_once('mod/connection.inc.php');
 
 class Session extends \kekse\Quant
 {
-	public $configuration;
-	public $parameter;
-	public $connection;
+	public $configuration = null;
+	public $parameter = null;
+	public $connection = null;
+	public $environment = null;
 
-	public function __construct($configuration = null, $parameter = null, $connection = null, ... $args)
+	public function __construct(... $args)//$configuration = null, $environment = null, $parameter = null, $connection = null, ... $args)
 	{
-		if(is_string($configuration))
+		for($i = 0; $i < count($args); ++$i)
 		{
-			$this->configuration = new Configuration($configuration);
-		}
-		else if($configuration)
-		{
-			$this->configuration = $configuration;
-		}
-		else
-		{
-			$this->configuration = null;
-		}
-		
-		if(is_string($parameter))
-		{
-			$this->parameter = new \kekse\Parameter($parameter);
-		}
-		else if(!$parameter)
-		{
-			$this->parameter = new \kekse\Parameter($_SERVER['QUERY_STRING']);
-		}
-		else
-		{
-			$this->parameter = $parameter;
-		}
-
-		if($connection)
-		{
-			$this->connection = $connection;
-		}
-		else
-		{
-			$this->connection = new Connection();
+			if($args[$i] instanceof Configuration)
+			{
+				$this->configuration = array_splice($args, $i--, 1)[0];
+			}
+			else if($args[$i] instanceof \kekse\Parameter)
+			{
+				$this->parameter = array_splice($args, $i--, 1)[0];
+			}
+			else if($args[$i] instanceof Connection)
+			{
+				$this->connection = array_splice($args, $i--, 1)[0];
+			}
+			else if($args[$i] instanceof \kekse\Environment)
+			{
+				$this->environment = array_splice($args, $i--, 1)[0];
+			}
 		}
 
 		return parent::__construct('Session', ... $args);

@@ -3,10 +3,6 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-//TODO/old "getParam()"!
-//TODO/old "secure{Host,Path}()"
-//
-
 namespace kekse;
 
 define('KEKSE_LIMIT_PARAM', 32);
@@ -17,9 +13,9 @@ class Parameter extends Quant
 
 	public function __construct($params, ... $args)
 	{
-		if(! (is_string($params) || is_array($params)))
+		if(! (is_string($params) || is_array($params) || $params instanceof Parameter))
 		{
-			if(isset($_SERVER) && isset($_SERVER['QUERY_STRING']))
+			if(isset($_SERVER['QUERY_STRING']))
 			{
 				$params = $_SERVER['QUERY_STRING'];
 			}
@@ -29,7 +25,11 @@ class Parameter extends Quant
 			}
 		}
 
-		if(is_string($params) || is_array($params))
+		if($params instanceof Parameter)
+		{
+			$this->query = $params;
+		}
+		else if(is_string($params) || is_array($params))
 		{
 			$this->query = self::parse($params);
 		}

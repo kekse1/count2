@@ -7,7 +7,7 @@ namespace kekse;
 
 class Color extends Quant
 {
-	public function __construct($name, ... $args)
+	public function __construct(... $args)
 	{
 		return parent::__construct('Color', ... $args);
 	}
