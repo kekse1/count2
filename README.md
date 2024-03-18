@@ -1,8 +1,8 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
 # **`count2`**
-Future Plan(s) for a new [**`count.php`**](https://github.com/kekse1/count.php/),
-as [already discussed](https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60).
+I'm currently planning and working on my newer version of my original [**`count.php`**](https://github.com/kekse1/count.php/),
+as [already discussed with the community](https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60).
 
 ```
 Die wichtigsten Punkte werden damit wohl sein: mehrere Dateien,
@@ -13,8 +13,15 @@ aber immerhin verzichte ich dann auf die IP-Adressen.. und zuletzt
 bessere `git`-Nutzung, sowie uebersichtlichere Dokumentation. ^_^
 ```
 
-## Implementation
-See the [docs/implementation.md](docs/implementation.md) for a bit of my PHP sense (in here)..
+## Documentation
+Someone gave me this tipp: separate the 'user manual' and the technical 'internals'. That'd make
+it much easier for my audience. Additionally I just figured out it 'd also be easier to separate
+into even more `.md` (markdown) documents, so I began(!) with these ones (all still TODO):
+
+* [**Installation**](docs/installation.md)
+* [**Usage**](docs/usage.md)
+* [**Internals**](docs/internals.md)
+* [**JSON vectors**](docs/json.md)
 
 ## Original version(s)
 Here's the [last/previous version](original.php/count.php) (and [here's the repo](https://github.com/kekse1/count.php/)),

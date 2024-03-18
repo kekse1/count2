@@ -1,6 +1,6 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
-# Comments
+# Internals
 Since I'm learning PHP **again**, I'm putting some comments into this file,
 to give a rough outline of how to implement "correctly"[tm]..
 
