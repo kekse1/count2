@@ -25,12 +25,12 @@ class Quant
 			$this->NAME = 'Quant';
 		}
 
-		echo "__construct({$this->NAME})";
+		echo "__construct({$this->NAME})\n";
 	}
 
 	public function __destruct()
 	{
-		echo "__destruct({$this->NAME})";
+		echo "__destruct({$this->NAME})\n";
 	}
 
 	public function __toString()
@@ -54,7 +54,7 @@ class Quant
 	}
 }
 
-require_once('color.inc.php');
+require_once('environment.inc.php');
 require_once('filesystem.inc.php');
 require_once('numeric.inc.php');
 require_once('security.inc.php');

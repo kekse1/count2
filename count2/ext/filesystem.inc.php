@@ -366,8 +366,18 @@ class FileSystem extends Quant
 
 	public static function resolvePath(... $args)
 	{
-		$result = self::joinPath(getcwd(), ... $args);
-		return self::joinPath($_SERVER['DOCUMENT_ROOT'], self::normalizePath($result));
+		$origin;
+
+		if(!!$_SERVER['DOCUMENT_ROOT'])
+		{
+			$origin = $_SERVER['DOCUMENT_ROOT'];
+		}
+		else
+		{
+			$origin = getcwd();
+		}
+
+		return self::joinPath($origin, ... $args);
 	}
 	
 	public static function joinPath(... $args)
