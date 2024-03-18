@@ -5,6 +5,8 @@
 
 namespace kekse;
 
+require_once('ext/terminal.inc.php');
+
 class Color extends Quant
 {
 	public function __construct(... $args)
@@ -301,7 +303,7 @@ class Color extends Quant
 	
 	public static function withGD()
 	{
-		if(CLI::isCLI()) return false;
+		if(Terminal::isTTY()) return false;
 		return extension_loaded('gd');
 	}
 	

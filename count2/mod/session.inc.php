@@ -5,17 +5,19 @@
 
 namespace kekse\count2;
 
-require_once('mod/configuration.inc.php');
+require_once('configuration.inc.php');
 require_once('ext/environment.inc.php');
 require_once('ext/parameter.inc.php');
-require_once('mod/connection.inc.php');
+require_once('connection.inc.php');
+require_once('ext/terminal.inc.php');
 
 class Session extends \kekse\Quant
 {
 	public $configuration = null;
+	public $environment = null;
+
 	public $parameter = null;
 	public $connection = null;
-	public $environment = null;
 
 	public function __construct(... $args)//$configuration = null, $environment = null, $parameter = null, $connection = null, ... $args)
 	{
@@ -25,11 +27,11 @@ class Session extends \kekse\Quant
 			{
 				$this->configuration = array_splice($args, $i--, 1)[0];
 			}
-			else if($args[$i] instanceof \kekse\Parameter)
+			else if(!\kekse\Terminal::isTTY() && $args[$i] instanceof \kekse\Parameter)
 			{
 				$this->parameter = array_splice($args, $i--, 1)[0];
 			}
-			else if($args[$i] instanceof Connection)
+			else if(!\kekse\Terminal::isTTY() && $args[$i] instanceof Connection)
 			{
 				$this->connection = array_splice($args, $i--, 1)[0];
 			}
@@ -37,6 +39,29 @@ class Session extends \kekse\Quant
 			{
 				$this->environment = array_splice($args, $i--, 1)[0];
 			}
+		}
+
+		if(!\kekse\CLI::isCLI())
+		{
+			if(!$this->parameter && isset($_SERVER['QUERY_STRING']))
+			{
+				$this->parameter = new \kekse\Parameter($this, $_SERVER['QUERY_STRING']);
+			}
+
+			if(!$this->connection && !\kekse\CLI::isCLI())
+			{
+				$this->connection = new Connection($this);
+			}
+		}
+
+		if(!$this->environment)
+		{
+			$this->environment = new \kekse\Environment($this);
+		}
+
+		if(!$this->configuration)
+		{
+			$this->configuration = new Configuration($this);
 		}
 
 		return parent::__construct('Session', ... $args);

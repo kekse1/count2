@@ -6,7 +6,6 @@
 namespace kekse\count2;
 
 require_once('ext/color.inc.php');
-require_once('cli.inc.php');
 
 class Drawing extends \kekse\Quant
 {

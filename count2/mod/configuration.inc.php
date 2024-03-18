@@ -6,11 +6,22 @@
 namespace kekse\count2;
 
 require_once('ext/filesystem.inc.php');
+require_once('session.inc.php');
 
 class Configuration extends \kekse\Quant
 {
+	public $session = null;
+
 	public function __construct(... $args)
 	{
+		for($i = 0; $i < count($args); ++$i)
+		{
+			if($args[$i] instanceof Session)
+			{
+				$this->session = array_splice($args, $i--, 1)[0];
+			}
+		}
+
 		return parent::__construct('Configuration', ... $args);
 	}
 

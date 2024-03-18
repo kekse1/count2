@@ -3,17 +3,18 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
+namespace kekse;
 
 require_once('ext/quant.inc.php');//TODO/
+require_once('ext/ansi.inc.php');
 
-class CLI extends \kekse\Quant
+class Terminal extends Quant
 {
 	public function __construct(... $args)
 	{
-		if(!self::isCLI())
+		if(!self::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
+			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
 		return parent::__construct(... $args);
@@ -24,14 +25,9 @@ class CLI extends \kekse\Quant
 		return parent::__destruct();
 	}
 
-	public static function getMode()
+	public static function isTTY()
 	{
-		return php_sapi_name();
-	}
-
-	public static function isCLI()
-	{
-		return (self::getMode() === 'cli');
+		return (php_sapi_name() === 'cli');
 	}
 
 	public static function log(... $args)
