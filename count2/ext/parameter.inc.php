@@ -11,8 +11,7 @@ namespace kekse;
 
 define('KEKSE_LIMIT_PARAM', 32);
 
-require_once('quant.inc.php');
-require_once('string.inc.php');
+require_once('security.inc.php');
 require_once('number.inc.php');
 
 class Parameter extends Quant
@@ -52,7 +51,7 @@ class Parameter extends Quant
 	
 	public function __get($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) return new \Error('Invalid argument');
+		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
 		else if(property_exists($this, $key)) return $this->{$key};
 		else $key = self::decode($key);
 		if(!$this->has($key)) return null;
@@ -61,43 +60,12 @@ class Parameter extends Quant
 	
 	public function __set($key, $value)
 	{
-		if(!is_string($key = self::checkString($key, true))) return new \Error('Invalid argument');
+		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
 		else if(property_exists($this, $key)) return $this->{$key} = $value;
 		else $key = self::decode($key);
 		$result = $this->has($key);
 		$this->set($key, $value);
 		return $result;
-	}
-	
-	public static function checkString($string, $null = true)
-	{
-		if(!is_string($string))
-		{
-			return ($null ? null : '');
-		}
-		
-		$len = strlen($string);
-		
-		if($len === 0)
-		{
-			return ($null ? null : '');
-		}
-		else if($len > KEKSE_LIMIT_STRING)
-		{
-			return ($null ? null : '');
-		}
-		else
-		{
-			$string = trim($string);
-			$string = removeBinary($string, true);
-		}
-		
-		if($null && strlen($string) === 0)
-		{
-			return null;
-		}
-		
-		return $string;
 	}
 	
 	public function __destruct()
@@ -123,13 +91,13 @@ class Parameter extends Quant
 
 	public function has($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key); return (isset($this->query[$key]));
 	}
 	
 	public function delete($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		if(!$this->has($key)) return false;
 		else unset($this->query[$key]);
@@ -138,7 +106,7 @@ class Parameter extends Quant
 	
 	public function get($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		$result = $this->query[$key];
@@ -150,7 +118,7 @@ class Parameter extends Quant
 	
 	public function getString($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!$this->has($key)) return null;
@@ -167,7 +135,7 @@ class Parameter extends Quant
 	
 	public function getBoolean($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 
 		if(!$this->has($key)) return null;
@@ -194,7 +162,7 @@ class Parameter extends Quant
 	
 	public function getInteger($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!$this->has($key)) return null;
@@ -212,7 +180,7 @@ class Parameter extends Quant
 	
 	public function getDouble($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!$this->has($key)) return null;
@@ -230,7 +198,7 @@ class Parameter extends Quant
 	
 	public function getNumber($key)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!$this->has($key)) return null;
@@ -287,9 +255,10 @@ class Parameter extends Quant
 		return $this->set($key, (string)$value);
 	}
 	
+	//TODO/empty string VALUES!???
 	public function setString($key, $value)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!is_string($value))
@@ -298,8 +267,8 @@ class Parameter extends Quant
 			else $value = (string)$value;
 		}
 		
-		$value = self::decode(self::checkString($value, false));
-		
+		$value = self::decode(Security::checkString($value, true, true));
+
 		$result = ($this->has($key));
 		$this->query[$key] = $value;
 		return $result;
@@ -307,7 +276,7 @@ class Parameter extends Quant
 	
 	public function setBoolean($key, $value)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!is_bool($value))
@@ -333,7 +302,7 @@ class Parameter extends Quant
 	
 	public function setInteger($key, $value)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!is_int($value))
@@ -350,7 +319,7 @@ class Parameter extends Quant
 	
 	public function setDouble($key, $value)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!is_double($value))
@@ -367,7 +336,7 @@ class Parameter extends Quant
 
 	public function setNumber($key, $value)
 	{
-		if(!is_string($key = self::checkString($key, true))) throw new \Error('Invalid $key argument');
+		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
 		else $key = self::decode($key);
 		
 		if(!is_number($value))
@@ -375,7 +344,7 @@ class Parameter extends Quant
 			if(is_bool($value)) $value = ($value ? 1 : 0);
 			else
 			{
-				$value = self::checkString(self::decode((string)$value), false);
+				$value = Security::checkString(self::decode((string)$value), true, true);
 				if(str_contains($value, '.')) $value = (double)$value;
 				else $value = (int)$value;
 			}

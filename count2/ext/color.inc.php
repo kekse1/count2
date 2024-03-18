@@ -5,7 +5,7 @@
 
 namespace kekse;
 
-require_once('quant.inc.php');
+require_once('security.inc.php');
 
 class Color extends Quant
 {
@@ -160,9 +160,9 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else
+		else if(!($value = Security::checkString($value, true, true)))
 		{
-			$value = \kekse\removeWhiteSpaces($value, false);
+			return false;
 		}
 		
 		$len = strlen($value);
@@ -204,9 +204,9 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else
+		else if(!($value = Security::checkString($value, true, true)))
 		{
-			$value = \kekse\removeWhiteSpaces($value, false);
+			return false;
 		}
 		
 		if($value[0] === '#')
@@ -333,9 +333,9 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else
+		else if(!($value = Security::checkString($value, true, true)))
 		{
-			$value = \kekse\removeWhiteSpaces($value, false);
+			return null;
 		}
 		
 		if(substr($value, 0, 5) === 'rgba(')
@@ -397,7 +397,7 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(!($string = \kekse\removeWhiteSpaces($string, true)))
+		else if(!($string = Security::checkString($string, true, true)))
 		{
 			return null;
 		}
@@ -485,7 +485,7 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(!($string = \kekse\removeWhiteSpaces($string, true)))
+		else if(!($string = Security::checkString($string, true, true)))
 		{
 			return null;
 		}

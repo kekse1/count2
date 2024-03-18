@@ -6,7 +6,6 @@
 namespace kekse;
 
 require_once('number.inc.php');
-require_once('string.inc.php');
 require_once('timing.inc.php');
 
 class Quant

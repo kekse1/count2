@@ -28,6 +28,17 @@ to our efficience. 8?
 Furthermore.. **every** extension (see **`ext/`** directory) is being loaded by
 the **`ext/quant.inc.php`** (the `Quant` class, as generalization for any object).
 
+## String security
+There are some functions available at `mod/security.inc.php`. The first one,
+marked bold, is the most recommended one:
+
+* **`Security::checkString($string, $removeBinary = true, $trim = true)`**
+* `Security::isValidString($value)`
+* `Security::removeBinary($string, $null = false, $removeSpaces = false)`
+* `Security::removeWhiteSpaces($string, $null = false)`
+
+Therefore there's also the constant `KEKSE_LIMIT_STRING = 255`.
+
 ## Documentation
 //TODO//
 
