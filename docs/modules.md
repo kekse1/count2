@@ -1,6 +1,8 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
 # Modules
+Using the [Extensions](extensions.md), residing in the `mod/` directory.
+
 * Cache
 * CLI
 * Config

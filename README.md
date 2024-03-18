@@ -25,7 +25,7 @@ to separate nearly all into even more (markdown) documents, so I just began(!) h
 * [**Configuration**](docs/configuration.md)
 
 ### More infos for developers and enthusiasts
-* [**Interal technical details**](docs/internals.md)
+* [**Internal technical details**](docs/internals.md)
 * [**Modules**](docs/modules.md)
 * [**Extensions**](docs/extensions.md)
 * [**Coding Guidelines**](docs/guidelines.md)
