@@ -3,23 +3,24 @@
 # Modules
 Using the [Extensions](extensions.md), residing in the `mod/` directory.
 
-* Cache
-* CLI
-* Config
-* Cookies
-* Counter
-* Drawing
-* Event
-* FileSystem
-* Fingerprint
-* GEO
-* IP
-* Logger
-* Notification
-* Raycast
-* Security
-* Session
-* Statistics
-* Summary
-* Text
+* [Cache](mod/cache.md)
+* [CLI](mod/cli.md)
+* [Config](mod/config.md)
+* [Cookies](mod/cookies.md)
+* [Counter](mod/counter.md)
+* [Drawing](mod/drawing.md)
+* [Event](mod/event.md)
+* [FileSystem](mod/filesystem.md)
+* [Fingerprint](mod/fingerprint.md)
+* [GEO](mod/geo.md)
+* [IP](mod/ip.md)
+* [Logger](mod/logger.md)
+* [Notification](mod/notification.md)
+* [Panel](mod/panel.md)
+* [Raycast](mod/raycast.md)
+* [Security](mod/security.md)
+* [Session](mod/session.md)
+* [Statistics](mod/statistics.md)
+* [Summary](mod/summary.md)
+* [Text](mod/text.md)
 

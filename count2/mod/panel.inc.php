@@ -3,27 +3,20 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-//TODO/haengt stark mit 'event.inc.php' zusammen!! vice versa. @ rpc-styles..
-
 namespace kekse\count2;
 
 require_once('ext/quant.inc.php');
 
-class Notification extends \kekse\Quant
+class Panel extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Notification', ... $args);
+		parent::__construct('Panel', ... $args);
 	}
 
 	public function __destruct()
 	{
 		parent::__destruct();
-	}
-
-	public static function sendMail(... $args)
-	{
-		//TODO/
 	}
 }
 

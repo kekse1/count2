@@ -3,10 +3,10 @@
 # Extensions
 They reside in the `ext/` directory, used by the [Modules](modules.md).
 
-* GetOpt
-* Number
-* Parameter
-* Quant
-* String
-* Timing
+* [getopt](ext/getopt.md)
+* [number](ext/number.md)
+* [parameter](ext/parameter.md)
+* [quant](ext/quant.md)
+* [string](ext/string.md)
+* [timing](ext/timing.md)
 

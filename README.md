@@ -22,6 +22,7 @@ to separate nearly all into even more (markdown) documents, so I just began(!) h
 ### Important infos for all users
 * [**Installation**](docs/installation.md)
 * [**Usage**](docs/usage.md)
+* [**Parameters**](docs/parameters.md)
 * [**Configuration**](docs/configuration.md)
 
 ### More infos for developers and enthusiasts
