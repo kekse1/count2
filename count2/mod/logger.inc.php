@@ -11,12 +11,12 @@ class Logger extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Logger', ... $args);
+		return parent::__construct('Logger', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 
 	public static function errorHandler(... $args)

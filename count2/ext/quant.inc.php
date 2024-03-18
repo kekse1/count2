@@ -9,46 +9,50 @@ require_once('timing.inc.php');
 
 class Quant
 {
-	public $__name;
-	public $__args;
-	public $__time;
+	public $NAME;
+	public $ARGS;
+	public $TIME;
 
 	public function __construct($name, ... $args)
 	{
-		$this->__time = timestamp();
-		$this->__args = $args;
+		$this->TIME = timestamp();
+		$this->ARGS = $args;
 
 		if(is_string($name))
 		{
-			$this->__name = $name;
+			$this->NAME = $name;
 		}
 		else
 		{
-			$this->__name = null;
+			$this->NAME = 'Quant';
 		}
 
-		echo "__construct({$this->__name})";
+		echo "__construct({$this->NAME})";
 	}
 
 	public function __destruct()
 	{
-		echo "__destruct({$this->__name})";
+		echo "__destruct({$this->NAME})";
 	}
 
 	public function __toString()
 	{
-		$result;
+		return '(' . $this->NAME . ')';
+	}
 
-		if(is_string($this->__name))
-		{
-			$result = '(' . $this->__name . ')';
-		}
-		else
-		{
-			$result = '(Element)';
-		}
+	public function getName()
+	{
+		return $this->NAME;
+	}
 
-		return $result;
+	public function getArgs()
+	{
+		return $this->ARGS;
+	}
+
+	public function getTime()
+	{
+		return $this->TIME;
 	}
 }
 

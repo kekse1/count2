@@ -11,12 +11,12 @@ class Cookies extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Cookies', ... $args);
+		return parent::__construct('Cookies', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

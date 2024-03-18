@@ -11,12 +11,12 @@ class Cache extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Cache', ... $args);
+		return parent::__construct('Cache', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

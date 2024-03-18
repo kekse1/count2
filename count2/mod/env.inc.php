@@ -7,18 +7,13 @@
 
 namespace kekse\count2;
 
-require_once('env.inc.php');//TODO/
+require_once('ext/quant.inc.php');//TODO/
 
-class CLI extends \kekse\Environment
+class Environment extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		if(!self::isCLI)
-		{
-			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
-		}
-
-		return parent::__construct(... $args);
+		return parent::__construct('Environment', ... $args);
 	}
 
 	public function __destruct()

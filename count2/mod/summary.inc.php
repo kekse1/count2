@@ -11,12 +11,12 @@ class Summary extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Summary', ... $args);
+		return parent::__construct('Summary', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

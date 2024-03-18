@@ -11,12 +11,12 @@ class GEO extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('GEO', ... $args);
+		return parent::__construct('GEO', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

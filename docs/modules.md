@@ -6,6 +6,7 @@ Using the [Extensions](extensions.md), residing in the `mod/` directory.
 * [Cache](mod/cache.md)
 * [CLI](mod/cli.md)
 * [Config](mod/config.md)
+* [Connection](mod/connection.md)
 * [Cookies](mod/cookies.md)
 * [Counter](mod/counter.md)
 * [Drawing](mod/drawing.md)
@@ -13,7 +14,6 @@ Using the [Extensions](extensions.md), residing in the `mod/` directory.
 * [FileSystem](mod/filesystem.md)
 * [Fingerprint](mod/fingerprint.md)
 * [GEO](mod/geo.md)
-* [HTTP](mod/http.md)
 * [IP](mod/ip.md)
 * [Logger](mod/logger.md)
 * [Notification](mod/notification.md)
@@ -23,5 +23,7 @@ Using the [Extensions](extensions.md), residing in the `mod/` directory.
 * [Session](mod/session.md)
 * [Statistics](mod/statistics.md)
 * [Summary](mod/summary.md)
+* [Template](mod/template.md)
 * [Text](mod/text.md)
+* [User](mod/user.md)
 

@@ -11,12 +11,12 @@ class Counter extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Counter', ... $args);
+		return parent::__construct('Counter', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

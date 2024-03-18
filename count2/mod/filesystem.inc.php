@@ -11,12 +11,12 @@ class FileSystem extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('FileSystem', ... $args);
+		return parent::__construct('FileSystem', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

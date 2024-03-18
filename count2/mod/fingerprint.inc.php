@@ -11,12 +11,12 @@ class Fingerprint extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Fingerprint', ... $args);
+		return parent::__construct('Fingerprint', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

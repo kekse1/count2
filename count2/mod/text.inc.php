@@ -11,12 +11,12 @@ class Text extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Text', ... $args);
+		return parent::__construct('Text', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

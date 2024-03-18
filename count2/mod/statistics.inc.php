@@ -11,12 +11,12 @@ class Statistics extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Statistics', ... $args);
+		return parent::__construct('Statistics', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

@@ -11,12 +11,12 @@ class Event extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('Event', ... $args);
+		return parent::__construct('Event', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

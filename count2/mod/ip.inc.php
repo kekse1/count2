@@ -11,12 +11,12 @@ class IP extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('IP', ... $args);
+		return parent::__construct('IP', ... $args);
 	}
 
 	public function __destruct()
 	{
-		parent::__destruct();
+		return parent::__destruct();
 	}
 }
 

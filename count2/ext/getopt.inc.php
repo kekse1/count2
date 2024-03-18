@@ -11,7 +11,7 @@ class GetOpt extends Quant
 {
 	public function __construct(... $args)
 	{
-		parent::__construct('GetOpt', ... $args);
+		return parent::__construct('GetOpt', ... $args);
 	}
 
 	public function __destruct()
