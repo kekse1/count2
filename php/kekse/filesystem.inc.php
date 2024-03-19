@@ -5,9 +5,10 @@
 
 namespace kekse;
 
-define('KEKSE_KEEP_HIDDEN', true);
-define('KEKSE_KEEP_HTACCESS', true);
 define('KEKSE_KEEP', true);
+define('KEKSE_KEEP_HIDDEN', true);
+define('KEKSE_KEEP_GIT', true);
+define('KEKSE_KEEP_HTACCESS', true);
 
 class FileSystem extends Quant
 {
@@ -112,6 +113,19 @@ class FileSystem extends Quant
 				return [ [ $path ], [], [], [ $path ] ];
 			}
 			
+			return null;
+		}
+		else if(KEKSE_KEEP_GIT && $basename === '.git')
+		{
+			if($extended === true)
+			{
+				return [ 1, 0, 0, 1 ];
+			}
+			else if($extended === null)
+			{
+				return [ [ $path ], [], [], [ $path ] ];
+			}
+
 			return null;
 		}
 		else if(KEKSE_KEEP_HTACCESS && $basename === '.htaccess')

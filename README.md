@@ -1,4 +1,4 @@
-<img src="https://kekse.biz/github.php?draw&override=github:count2">
+<img src="https://kekse.biz/github.php?draw&override=github:count2" />
 
 # **`count2`**
 I'm currently planning and working on my newer version of my original [**`count.php`**](https://github.com/kekse1/count.php/),

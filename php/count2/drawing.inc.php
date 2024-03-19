@@ -121,16 +121,6 @@ class Drawing extends \kekse\Quant
 		
 		return false;
 	}
-	
-	public static function px2pt($value)
-	{
-		return ($value * 0.75);
-	}
-	
-	public static function pt2px($value)
-	{
-		return ($value / 0.75);
-	}
 
 	public static function allocateColor($red, $green, $blue, $alpha)
 	{
