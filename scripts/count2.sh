@@ -1,1 +1,1 @@
-../count2/count2.sh
+../php/main.sh

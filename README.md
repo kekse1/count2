@@ -27,8 +27,8 @@ all into even more (markdown) documents, so I just began(!) here.
 
 ### For developers and enthusiasts
 * [**Technical details**](docs/internals.md)
-* [**Modules**](docs/modules.md)
-* [**Extensions**](docs/extensions.md)
+* [**Modules**](docs/count2.md)
+* [**Extensions**](docs/kekse.md)
 * [**Coding Guidelines**](docs/guidelines.md)
 * [**JSON vectors**](docs/json.md)
 

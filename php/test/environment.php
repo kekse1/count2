@@ -1,6 +1,6 @@
 <?php
 namespace kekse;
-require_once('ext/environment.inc.php');
+require_once('kekse/environment.inc.php');
 header('Content-Type: text/plain;charset=UTF-8');
 $env = new \kekse\Environment();
 echo ".file:\n";

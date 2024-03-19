@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: text/plain;charset=UTF-8');
-require_once('ext/quant.inc.php');
-require_once('ext/parameter.inc.php');
+require_once('kekse/parameter.inc.php');
 $q = $_SERVER['QUERY_STRING'];
 $q = \kekse\Parameter::parse($q);
 var_dump($q);echo '\n';
