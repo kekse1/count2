@@ -5,7 +5,7 @@
 # https://kekse.biz/ https://github.com/kekse1/scripts/
 # v0.0.1
 
-_regex='$*'
+_regex="$*"
 
 if [[ -z "$_regex" ]]; then
 	echo " >> Please argue with \`sed\` compatible regular expression!" >&2
@@ -14,17 +14,19 @@ fi
 
 traverse()
 {
-	cd "$*"
+	cd "$1"
 
 	for i in *; do
-		p="$@/$i"
+		p="$1/$i"
 		
 		if [[ -L "$p" ]]; then
 			continue
 		elif [[ -d "$p" ]]; then
 			traverse "$p"
 		elif [[ -f "$i" ]]; then
-			echo "'$p'"
+			sed "$_regex" "$p" >replace.sh.tmp
+			mv replace.sh.tmp "$p"
+			echo "$p"
 		fi
 	done
 }

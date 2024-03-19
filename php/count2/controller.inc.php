@@ -5,7 +5,7 @@
 
 namespace kekse\count2;
 
-require_once('ext/quant.inc.php');
+require_once('kekse/quant.inc.php');
 require_once('configuration.inc.php');//TODO/(here)
 require_once('session.inc.php');
 

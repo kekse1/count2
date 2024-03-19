@@ -5,8 +5,8 @@
 
 namespace kekse;
 
-require_once('ext/quant.inc.php');//TODO/
-require_once('ext/terminal.inc.php');
+require_once('kekse/quant.inc.php');//TODO/
+require_once('kekse/terminal.inc.php');
 
 class ANSI extends Quant
 {

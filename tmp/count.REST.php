@@ -31,7 +31,7 @@ $DEFAULTS = array(
 	'server' => true,//false,
 	'drawing' => true,
 	'override' => false,//true,
-	'content' => 'text/plain;charset=UTF-8',
+	'content' => 'tkekse/plain;charset=UTF-8',
 	'radix' => 10,
 	'clean' => true,
 	'limit' => 32768,
@@ -139,7 +139,7 @@ if(hasBaseConfigFile())
 	
 	if($count > 0)
 	{
-		header('Content-Type: text/plain;charset=UTF-8');
+		header('Content-Type: tkekse/plain;charset=UTF-8');
 
 		$text = $count . ' invalid configuration items in `' . KEKSE_COUNTER_JSON . '`:' . PHP_EOL;
 		if(KEKSE_CLI) fprintf(STDERR, ' >> ' . $text . PHP_EOL); else echo $text;

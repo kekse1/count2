@@ -5,8 +5,8 @@
 
 namespace kekse\count2;
 
-require_once('ext/quant.inc.php');
-require_once('ext/terminal.inc.php');
+require_once('kekse/quant.inc.php');
+require_once('kekse/terminal.inc.php');
 
 class Logger extends \kekse\Quant
 {

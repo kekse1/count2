@@ -5,7 +5,7 @@
 
 namespace kekse;
 
-require_once('ext/security.inc.php');
+require_once('kekse/security.inc.php');
 
 class Connection extends Quant
 {

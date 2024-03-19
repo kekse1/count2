@@ -5,7 +5,7 @@
 
 namespace kekse;
 
-require_once('ext/terminal.inc.php');
+require_once('kekse/terminal.inc.php');
 
 class Color extends Quant
 {

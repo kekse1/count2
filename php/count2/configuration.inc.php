@@ -5,7 +5,7 @@
 
 namespace kekse\count2;
 
-require_once('ext/filesystem.inc.php');
+require_once('kekse/filesystem.inc.php');
 
 class Configuration extends \kekse\Quant
 {

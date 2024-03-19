@@ -5,8 +5,8 @@
 
 namespace kekse\count2;
 
-require_once('ext/terminal.inc.php');//TODO/
-require_once('ext/getopt.inc.php');
+require_once('kekse/terminal.inc.php');//TODO/
+require_once('kekse/getopt.inc.php');
 
 class Console extends \kekse\Terminal
 {

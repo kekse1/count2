@@ -5,8 +5,8 @@
 
 namespace kekse\count2;
 
-require_once('ext/environment.inc.php');
-require_once('ext/terminal.inc.php');
+require_once('kekse/environment.inc.php');
+require_once('kekse/terminal.inc.php');
 
 class Session extends \kekse\Quant
 {
@@ -34,8 +34,8 @@ class Session extends \kekse\Quant
 		}
 		else
 		{
-			require_once('ext/connection.inc.php');
-			require_once('ext/parameter.inc.php');
+			require_once('kekse/connection.inc.php');
+			require_once('kekse/parameter.inc.php');
 
 			$this->connection = new \kekse\Connection($this);
 			$this->parameter = new \kekse\Parameter($this);

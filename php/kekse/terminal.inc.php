@@ -5,8 +5,8 @@
 
 namespace kekse;
 
-require_once('ext/quant.inc.php');//TODO/
-require_once('ext/ansi.inc.php');
+require_once('kekse/quant.inc.php');//TODO/
+require_once('kekse/ansi.inc.php');
 
 class Terminal extends Quant
 {
