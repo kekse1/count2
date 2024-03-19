@@ -5,13 +5,13 @@
 
 namespace kekse\count2;
 
-require_once('kekse/quant.inc.php');
+require_once(__DIR__ . '/../kekse/main.inc.php');
 
 class Cache extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		return parent::__construct('Cache', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

@@ -14,7 +14,7 @@ class FileSystem extends Quant
 {
 	public function __construct(... $args)
 	{
-		return parent::__construct('FileSystem', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

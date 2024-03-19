@@ -7,12 +7,10 @@ namespace kekse;
 
 define('KEKSE_LIMIT_PARAM', 32);
 
-require_once('quant.inc.php');
+require_once(__DIR__ . '/main.inc.php');
 
 class Parameter extends Quant
 {
-	public $session;
-
 	private $query;
 
 	public function __construct($session, $params = null, ... $args)
@@ -38,7 +36,7 @@ class Parameter extends Quant
 			$this->query['time'] = timestamp();
 		}
 		
-		return parent::__construct('Parameter', ... $args);
+		return parent::__construct(... $args);
 	}
 	
 	public function __get($key)

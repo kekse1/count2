@@ -7,7 +7,7 @@
 namespace kekse\count2;
 
 //
-require_once('count2/controller.inc.php');
+require_once(__DIR__ . '/count2/controller.inc.php');
 $controller = $GLOBALS['count2'] = new Controller();
 
 //

@@ -5,13 +5,11 @@
 
 namespace kekse\count2;
 
-require_once('kekse/terminal.inc.php');//TODO/
-require_once('kekse/getopt.inc.php');
+require_once(__DIR__ . '/../kekse/terminal.inc.php');//TODO/
+require_once(__DIR__ . '/../kekse/getopt.inc.php');
 
 class Console extends \kekse\Terminal
 {
-	public $session;
-
 	public $ARGV;
 	public $ARGC;
 

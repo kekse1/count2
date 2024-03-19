@@ -5,13 +5,11 @@
 
 namespace kekse\count2;
 
-require_once('kekse/color.inc.php');
+require_once(__DIR__ . '/../kekse/color.inc.php');
 
 class Drawing extends \kekse\Quant
 {
 	private $image = null;
-
-	private $session;
 
 	private $mode;
 	private $type;
@@ -23,14 +21,7 @@ class Drawing extends \kekse\Quant
 			throw new \Exception('Unable to find the GD library module');
 		}
 		
-		if($session)
-		{
-			$this->session = $session;
-		}
-		else
-		{
-			$this->session = null;
-		}
+		$this->session = $session;
 		
 		if(is_string($mode) && strlen($mode) > 0)
 		{
@@ -50,7 +41,7 @@ class Drawing extends \kekse\Quant
 			$this->type = null;
 		}
 		
-		return parent::__construct('Drawing', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

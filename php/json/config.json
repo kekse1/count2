@@ -9,6 +9,6 @@
 	},
 	"header": {
 		"type": [ "string" ],
-		"default": "tkekse/plain;charset=UTF-8"
+		"default": "text/plain;charset=UTF-8"
 	}
 }

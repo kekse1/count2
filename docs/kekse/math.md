@@ -6,6 +6,7 @@
 ## Implementation
 * [`renderSize($bytes, $precision = 2, $base = 1024)`](#renderSize)
 * [`unit($string, $float = false, $unit = null, $fix = true)`](#unit)
+* [`getIndex($index, $length)`](#getIndex)
 * `px2pt($value)`
 * `pt2px($value)`
 
@@ -25,6 +26,9 @@ input value, if necessary (and changes the resulting array a bit). Only if `$dou
 
 If the `$fix` parameter is enabled, the `$result['unit']` will be cleared if the `['value']`
 is zero.
+
+### `getIndex($index, $length)`
+For arrays, strings, etc.. calculates your correct index!
 
 ##
 //TODO//

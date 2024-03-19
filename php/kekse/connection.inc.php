@@ -5,18 +5,16 @@
 
 namespace kekse;
 
-require_once('kekse/security.inc.php');
+require_once(__DIR__ . '/security.inc.php');
 
 class Connection extends Quant
 {
-	public $session;
-
 	private $headers = [];
 
 	public function __construct($session, ... $args)
 	{
 		$this->session = $session;
-		return parent::__construct('Connection', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

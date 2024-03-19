@@ -5,16 +5,14 @@
 
 namespace kekse\count2;
 
-require_once('kekse/filesystem.inc.php');
+require_once(__DIR__ . '/../kekse/filesystem.inc.php');
 
 class Configuration extends \kekse\Quant
 {
-	public $session;
-
 	public function __construct($session, ... $args)
 	{
 		$this->session = $session;
-		return parent::__construct('Configuration', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

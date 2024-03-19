@@ -5,8 +5,8 @@
 
 namespace kekse;
 
-require_once('kekse/quant.inc.php');//TODO/
-require_once('kekse/terminal.inc.php');
+require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/
+require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
 class ANSI extends Quant
 {
@@ -17,7 +17,7 @@ class ANSI extends Quant
 			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
-		return parent::__construct('ANSI', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

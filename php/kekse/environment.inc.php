@@ -5,12 +5,10 @@
 
 namespace kekse;
 
-require_once('quant.inc.php');
+require_once(__DIR__ . '/main.inc.php');
 
 class Environment extends Quant
 {
-	public $session;
-
 	public $file;
 	public $real;
 	
@@ -22,7 +20,7 @@ class Environment extends Quant
 		$this->file = $details[0];
 		$this->real = $details[1];
 		
-		return parent::__construct('Environment', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()

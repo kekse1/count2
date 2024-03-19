@@ -5,8 +5,8 @@
 
 namespace kekse\count2;
 
-require_once('kekse/environment.inc.php');
-require_once('kekse/terminal.inc.php');
+require_once(__DIR__ . '/../kekse/environment.inc.php');
+require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
 class Session extends \kekse\Quant
 {
@@ -29,19 +29,19 @@ class Session extends \kekse\Quant
 
 		if(\kekse\Terminal::isTTY())
 		{
-			require_once('console.inc.php');
+			require_once(__DIR__ . '/console.inc.php');
 			$this->console = new Console($this);
 		}
 		else
 		{
-			require_once('kekse/connection.inc.php');
-			require_once('kekse/parameter.inc.php');
+			require_once(__DIR__ . '/../kekse/connection.inc.php');
+			require_once(__DIR__ . '/../kekse/parameter.inc.php');
 
 			$this->connection = new \kekse\Connection($this);
 			$this->parameter = new \kekse\Parameter($this);
 		}
 
-		return parent::__construct('Session', ... $args);
+		return parent::__construct(... $args);
 	}
 
 	public function __destruct()
