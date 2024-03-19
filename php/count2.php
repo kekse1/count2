@@ -7,7 +7,7 @@
 namespace kekse\count2;
 
 //
-require_once('mod/controller.inc.php');
+require_once('count2/controller.inc.php');
 $controller = $GLOBALS['count2'] = new Controller();
 
 //
