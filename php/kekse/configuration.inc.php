@@ -5,21 +5,20 @@
 
 namespace kekse;
 
-define('KEKSE_JSON_DEPTH', 4);
-
 require_once(__DIR__ . '/filesystem.inc.php');
 
 class Configuration extends Quant
 {
 	public $scheme = null;
 
-	public function __construct($scheme = null, ... $args)
+	public function __construct($session = null, $scheme = null, ... $args)
 	{
+		$this->session = $session;
 		$this->scheme = $scheme;
 		return parent::__construct(... $args);
 	}
 
-	public static function fromJSON($path, ... $args)
+	public static function fromJSON($path, $session = null, ... $args)
 	{
 		$scheme = FileSystem::readFile($path);
 
@@ -27,9 +26,15 @@ class Configuration extends Quant
 		{
 			return null;
 		}
-
+		
 		$scheme = json_decode($scheme, true, KEKSE_JSON_DEPTH);
-		return new Configuration($scheme, ... $args);
+		
+		if(!is_array($scheme))
+		{
+			return null;
+		}
+		
+		return new Configuration($session, $scheme, ... $args);
 	}
 
 	public function __destruct()

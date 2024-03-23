@@ -5,8 +5,6 @@
 
 namespace kekse\count2;
 
-require_once(__DIR__ . '/../kekse/main.inc.php');
-
 class Fingerprint extends \kekse\Quant
 {
 	public $fingerprint;

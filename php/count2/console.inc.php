@@ -5,7 +5,7 @@
 
 namespace kekse\count2;
 
-require_once(__DIR__ . '/../kekse/terminal.inc.php');//TODO/
+//require_once(__DIR__ . '/../kekse/terminal.inc.php');
 require_once(__DIR__ . '/../kekse/getopt.inc.php');
 
 class Console extends \kekse\Terminal

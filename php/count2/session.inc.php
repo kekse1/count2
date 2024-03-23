@@ -6,9 +6,10 @@
 namespace kekse\count2;
 
 define('KEKSE_COUNT2_JSON_CONFIG', __DIR__ . '/json/config.json');
+define('KEKSE_COUNT2_JSON_PARAM', __DIR__ . '/json/param.json');
 
 require_once(__DIR__ . '/../kekse/configuration.inc.php');
-require_once(__DIR__ . '/../kekse/environment.inc.php');
+//require_once(__DIR__ . '/../kekse/environment.inc.php');
 require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
 class Session extends \kekse\Quant
@@ -30,7 +31,7 @@ class Session extends \kekse\Quant
 		$this->controller = $controller;
 
 		$this->environment = new \kekse\Environment($this);
-		$this->configuration = \kekse\Configuration::fromJSON(KEKSE_COUNT2_JSON_CONFIG);
+		$this->configuration = \kekse\Configuration::fromJSON(KEKSE_COUNT2_JSON_CONFIG, $this);
 
 		$this->checkSession();
 
@@ -75,7 +76,7 @@ class Session extends \kekse\Quant
 			//abstrakt nach .json-load oder so.. da ja \kekse\ nicht
 			//fuer hiesige count2-param-fragen..!! ^_^
 			//
-			$this->parameter = new \kekse\Parameter($this);
+			$this->parameter = \kekse\Parameter::fromJSON(KEKSE_COUNT2_JSON_PARAM, $this);
 			$this->connection = new \kekse\Connection($this);
 
 			$fingerprint = $this->parameter->fingerprint;

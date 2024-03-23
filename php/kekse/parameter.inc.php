@@ -8,14 +8,17 @@ namespace kekse;
 define('KEKSE_LIMIT_PARAM', 32);
 
 require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/filesystem.inc.php');
 
 class Parameter extends Quant
 {
-	private $query;
+	private $scheme = null;
+	private $query = null;
 
-	public function __construct($session, $params = null, ... $args)
+	public function __construct($session = null, $scheme = null, $params = null, ... $args)
 	{
 		$this->session = $session;
+		$this->scheme = $scheme;
 
 		if(! (is_string($params) || is_array($params)))
 		{
@@ -35,8 +38,28 @@ class Parameter extends Quant
 		{
 			$this->query['time'] = timestamp();
 		}
-		
+
 		return parent::__construct(... $args);
+	}
+	
+	//
+	public static function fromJSON($path, $session = null, $params = null, ... $args)
+	{
+		$scheme = FileSystem::readFile($path);
+
+		if(!$scheme)
+		{
+			return null;
+		}
+		
+		$scheme = json_decode($scheme, true, KEKSE_JSON_DEPTH);
+
+		if(!is_array($scheme))
+		{
+			return null;
+		}
+		
+		return new Parameter($session, $scheme, $params, ... $args);
 	}
 	
 	//

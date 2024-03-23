@@ -14,6 +14,7 @@ define('KEKSE_MODE_FILE', 0600);
 define('KEKSE_MODE_DIR', 0700);
 
 define('KEKSE_FILE_CHUNK', 4096);
+define('KEKSE_JSON_DEPTH', 8);
 
 class FileSystem extends Quant
 {
