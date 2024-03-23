@@ -1,22 +1,34 @@
 {
-	"draw": {
-		"type": [ "boolean" ],
-		"default": true
-	},
-	"zero": {
-		"type": [ "boolean" ],
-		"default": false
-	},
-	"header": {
-		"type": [ "string" ],
-		"default": "text/plain;charset=UTF-8"
-	},
 	"file": {
-		"type": [ "int" ],
+		"type": [ "integer" ],
 		"default": 448
 	},
 	"dir": {
-		"type": [ "int" ],
+		"type": [ "integer" ],
 		"default": 384
+	},
+	"path": {
+		"type": [ "string" ],
+		"default": "count"
+	},
+	"text": {
+		"type": [ "integer" ],
+		"default": 64
+	},
+	"threshold": {
+		"type": [ "integer" ],
+		"default": 7200
+	},
+	"drawing": {
+		"type": [ "boolean" ],
+		"default": true
+	},
+	"fonts": {
+		"type": [ "string" ],
+		"default": "fonts"
+	},
+	"hash": {
+		"type": [ "string" ],
+		"default": "sha3-256"
 	}
 }

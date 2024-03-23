@@ -1,18 +1,84 @@
 {
 	"fingerprint": {
 		"type": [ "string" ],
-		"default": null
+		"default": "",
+		"max": 256
 	},
 	"click": {
 		"type": [ "string" ],
-		"default": null
+		"default": "",
+		"max": 96
 	},
 	"draw": {
 		"type": [ "boolean", "string" ],
-		"default": true
+		"default": false
 	},
 	"zero": {
 		"type": [ "boolean" ],
 		"default": false
+	},
+	"type": {
+		"type": [ "string" ],
+		"default": "text/plain;charset=UTF-8",
+		"max": 32
+	},
+	"radix": {
+		"type": [ "integer" ],
+		"default": 10,
+		"min": 2,
+		"max": 36
+	},
+	"font": {
+		"type": [ "string" ],
+		"default": "candara",
+		"max": 64
+	},
+	"size": {
+		"type": [ "integer" ],
+		"default": 64
+	},
+	"fg": {
+		"type": [ "string" ],
+		"default": "120, 130, 40",
+		"max": 32
+	},
+	"bg": {
+		"type": [ "string" ],
+		"default": "#fff0",
+		"max": 32
+	},
+	"angle": {
+		"type": [ "double" ],
+		"default": 0.0
+	},
+	"image": {
+		"type": [ "string" ],
+		"default": "png",
+		"min": 3,
+		"max": 4
+	},
+	"x": {
+		"type": [ "integer" ],
+		"default": 0,
+		"min": -512,
+		"max": 512
+	},
+	"y": {
+		"type": [ "integer" ],
+		"default": 0,
+		"min": -512,
+		"max": 512
+	},
+	"h": {
+		"type": [ "integer" ],
+		"default": 0,
+		"min": -512,
+		"max": 512
+	},
+	"v": {
+		"type": [ "integer" ],
+		"default": 0,
+		"min": -512,
+		"max": 512
 	}
 }
