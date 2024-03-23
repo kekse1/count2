@@ -10,5 +10,13 @@
 	"header": {
 		"type": [ "string" ],
 		"default": "text/plain;charset=UTF-8"
+	},
+	"file": {
+		"type": [ "int" ],
+		"default": 448
+	},
+	"dir": {
+		"type": [ "int" ],
+		"default": 384
 	}
 }

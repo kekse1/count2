@@ -10,6 +10,11 @@ define('KEKSE_KEEP_HIDDEN', true);
 define('KEKSE_KEEP_GIT', true);
 define('KEKSE_KEEP_HTACCESS', true);
 
+define('KEKSE_MODE_FILE', 0600);
+define('KEKSE_MODE_DIR', 0700);
+
+define('KEKSE_FILE_CHUNK', 4096);
+
 class FileSystem extends Quant
 {
 	public function __construct(... $args)
@@ -21,8 +26,96 @@ class FileSystem extends Quant
 	{
 		return parent::__destruct();
 	}
+
+	public static function readFile($path, $callback = null, $chunk = KEKSE_FILE_CHUNK)
+	{
+		if(!FileSystem::isFile($path))
+		{
+			return false;
+		}
+		else if(!is_callable($callback))
+		{
+			$callback = null;
+		}
+
+		$size = filesize($path);
+
+		if($size === false)
+		{
+			return null;
+		}
+		else if($size === 0)
+		{
+			if($callback !== null)
+			{
+				$callback('', true, 0);
+				return 0;
+			}
+
+			return '';
+		}
+		
+		if(!is_int($chunk) || $chunk < 1)
+		{
+			if($chunk === true)
+			{
+				$chunk = KEKSE_FILE_CHUNK;
+			}
+			else
+			{
+				$chunk = $size;
+			}
+		}
+
+		$fh = fopen($path, 'r');
+
+		if($fh === false)
+		{
+			return null;
+		}
+
+		$data = ($callback === null ? '' : null);
+		$read = 0;
+		$chunks = 0;
+		$fin = false;
+
+		while($read < $size)
+		{
+			$d = fread($fh, $chunk);
+
+			if($d === false)
+			{
+				return null;
+			}
+
+			++$chunks;
+			$len = strlen($d);
+			$read += $len;
+
+			if($read >= $size)
+			{
+				$fin = true;
+			}
+
+			if($data === null)
+			{
+				$callback($d, $fin, $size);
+			}
+			else
+			{
+				$data .= $d;
+			}
+		}
+
+		if($callback)
+		{
+			return $chunks;
+		}
+
+		return $data;
+	}
 	
-	public static function is_file($path, $read = true, $write = false)
+	public static function isFile($path, $read = true, $write = false)
 	{
 		if(!is_file($path)) return false;
 		else if($read && !is_readable($path)) return false;
@@ -30,7 +123,7 @@ class FileSystem extends Quant
 		return true;
 	}
 	
-	public static function is_dir($path, $read = true, $write = false)
+	public static function isDirectory($path, $read = true, $write = false)
 	{
 		if(!is_dir($path)) return false;
 		else if($read && !is_readable($path)) return false;

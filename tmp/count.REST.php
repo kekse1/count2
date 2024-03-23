@@ -56,12 +56,6 @@ $DEFAULTS = array(
 );
 
 //
-define('KEKSE_COPYRIGHT', 'Sebastian Kucharczyk <kuchen@kekse.biz>');
-define('KEKSE_WEBSITE', 'https://kekse.biz/');
-define('KEKSE_COUNTER_VERSION', '5.0.2');
-define('KEKSE_COUNTER_WEBSITE', 'https://github.com/kekse1/count.php/');
-
-//
 define('KEKSE_ANSI', true); //colors, styles, etc.. @ CLI. _only_ if stdout/stderr is a tty! ^_^
 define('KEKSE_LIMIT_TTY', 40); //in cli mode, when showing a list of files, limit output to this amount of lines..
 define('KEKSE_LIMIT_TTY_PROMPT', true); //show a prompt to ask user whether to continue or not?

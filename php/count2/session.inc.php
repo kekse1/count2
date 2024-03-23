@@ -5,7 +5,9 @@
 
 namespace kekse\count2;
 
-require_once(__DIR__ . '/configuration.inc.php');
+define('KEKSE_COUNT2_JSON_CONFIG', __DIR__ . '/json/config.json');
+
+require_once(__DIR__ . '/../kekse/configuration.inc.php');
 require_once(__DIR__ . '/../kekse/environment.inc.php');
 require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
@@ -28,7 +30,7 @@ class Session extends \kekse\Quant
 		$this->controller = $controller;
 
 		$this->environment = new \kekse\Environment($this);
-		$this->configuration = new Configuration($this);
+		$this->configuration = \kekse\Configuration::fromJSON(KEKSE_COUNT2_JSON_CONFIG);
 
 		$this->checkSession();
 
