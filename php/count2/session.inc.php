@@ -5,6 +5,7 @@
 
 namespace kekse\count2;
 
+require_once(__DIR__ . '/configuration.inc.php');
 require_once(__DIR__ . '/../kekse/environment.inc.php');
 require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
@@ -29,18 +30,7 @@ class Session extends \kekse\Quant
 		$this->environment = new \kekse\Environment($this);
 		$this->configuration = new Configuration($this);
 
-		if(\kekse\Terminal::isTTY())
-		{
-			require_once(__DIR__ . '/console.inc.php');
-			$this->console = new Console($this);
-		}
-		else
-		{
-			require_once(__DIR__ . '/../kekse/connection.inc.php');
-			require_once(__DIR__ . '/../kekse/parameter.inc.php');
-			$this->connection = new \kekse\Connection($this);
-			$this->parameter = new \kekse\Parameter($this);
-		}
+		$this->checkSession();
 
 		return parent::__construct(... $args);
 	}
@@ -49,40 +39,51 @@ class Session extends \kekse\Quant
 	{
 		return parent::__destruct();
 	}
-	
-	private function checkSession($throw = true)
+
+	private function loadConsoleModules()
 	{
-		if($this->console === null)
+		require_once(__DIR__ . '/console.inc.php');
+	}
+
+	private function loadBrowserModules()
+	{
+		require_once(__DIR__ . '/../kekse/parameter.inc.php');
+		require_once(__DIR__ . '/../kekse/connection.inc.php');
+	}
+
+	private function loadFingerprintModules()
+	{
+		require_once(__DIR__ . '/fingerprint.inc.php');
+	}
+
+	private function checkSession()
+	{
+		if(\kekse\Terminal::isTTY())
 		{
-			$this->console->debug('Starting console session with new controller');
+			$this->loadConsoleModules();
+			$this->console = new Console($this);
 		}
-		else if($this->parameter !== null)
+		else
 		{
-			$this->console->debug('Starting browser session with new controller');
+			$this->loadBrowserModules();
+
+			//
+			//TODO/irgendwo(?!) verify against 'json/param.json' ..
+			//ABER NICHT direkt in parameter-klasse konkret, hoechstens
+			//abstrakt nach .json-load oder so.. da ja \kekse\ nicht
+			//fuer hiesige count2-param-fragen..!! ^_^
+			//
+			$this->parameter = new \kekse\Parameter($this);
+			$this->connection = new \kekse\Connection($this);
 
 			$fingerprint = $this->parameter->fingerprint;
 
 			if($fingerprint)
 			{
-				$this->fingerprint = $fingerprint;
-				$this->console->info('Session received fingerprint parameter (' . $fingerprint . ')');
-			}
-			else
-			{
-				$this->console->log('Session received NO fingerprint parameter');
+				$this->loadFingerprintModules();
+				$this->fingerprint = new Fingerprint($this, $fingerprint);
 			}
 		}
-		else if($throw)
-		{
-			throw new \Exception('Unable to determine session type');
-		}
-		else
-		{
-			$this->console->debug('Invalid session with new controller');
-			return false;
-		}
-
-		return true;
 	}
 }
 

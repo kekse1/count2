@@ -1,6 +1,11 @@
 {
 	"fingerprint": {
-		"type": [ "string" ]
+		"type": [ "string" ],
+		"default": null
+	},
+	"click": {
+		"type": [ "string" ],
+		"default": null
 	},
 	"draw": {
 		"type": [ "boolean", "string" ],

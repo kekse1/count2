@@ -5,13 +5,12 @@
 
 namespace kekse\count2;
 
-require_once(__DIR__ . '/../kekse/filesystem.inc.php');
-
 class Configuration extends \kekse\Quant
 {
 	public function __construct($session, ... $args)
 	{
 		$this->session = $session;
+		$this->checkSession();
 		return parent::__construct(... $args);
 	}
 
@@ -19,6 +18,18 @@ class Configuration extends \kekse\Quant
 	{
 		unset($this->session);
 		return parent::__destruct();
+	}
+
+	private function checkSession()
+	{
+		//if(...)
+		//{
+		//	require_once(__DIR__ . '/filesystem.inc.php');//ODER TODO @ session.inc.php..!???
+		//}
+		//else
+		//{
+		//
+		//}
 	}
 	
 	public static function readJSON($path)

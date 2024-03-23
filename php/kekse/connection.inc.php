@@ -22,11 +22,6 @@ class Connection extends Quant
 		return parent::__destruct();
 	}
 	
-	function getHeaders()
-	{
-		return [ ... $this->headers ];
-	}
-
 	public function sendTypeHeader($type)
 	{
 		if(!is_string($type)) throw new \Error('Invalid $type argument');

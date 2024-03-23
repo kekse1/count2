@@ -7,14 +7,10 @@ namespace kekse\count2;
 
 require_once(__DIR__ . '/../kekse/main.inc.php');
 
-class Fingerprint extends \kekse\Quant
+class Click extends \kekse\Quant
 {
-	public $fingerprint;
-
-	public function __construct($session, $fingerprint, ... $args)
+	public function __construct(... $args)
 	{
-		$this->session = $session;
-		$this->fingerprint = $fingerprint;
 		return parent::__construct(... $args);
 	}
 

@@ -39,6 +39,9 @@ class Parameter extends Quant
 		return parent::__construct(... $args);
 	}
 	
+	//
+	//TODO/DETERMINE TYPE AUTOMATICALLY!!!
+	//
 	public function __get($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
