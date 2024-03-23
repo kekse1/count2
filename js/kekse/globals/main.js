@@ -9,12 +9,14 @@ const globals = {};
 import date from './date.js';
 import number from './number.js';
 import reflect from './reflect.js';
+import string from './string.js';
 
 //
 Object.assign(globals, {
 	date,
 	number,
-	reflect
+	reflect,
+	string
 });
 
 //
