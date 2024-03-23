@@ -3,10 +3,10 @@
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
 //
-import Quant from '../../kekse/main.js';
+//import Quant from '../../kekse/main.js';
 
 //
-const Fingerprint = window.Fingerprint = class Fingerprint extends Quant
+const Fingerprint = window.Fingerprint = class Fingerprint //extends Quant
 {
 	constructor(type, ... args)
 	{
