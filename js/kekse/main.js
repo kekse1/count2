@@ -4,10 +4,7 @@
 
 //
 //TODO/@toString @ reflect
-//TODO/timestamp(diff) like php.. w/ here .getRuntime();
-//TODO/Reflect.is/was() @ here '.class{Name,Path}()'!
-//TODO/'.classPath()' w/ FIRST '\'???
-//TODO/import ... @ lib-styles [NEW, AGAIN];
+//TODO/in php's Quant, does .classPath starts with '\'??
 //
 
 const Quant = window.Quant = class Quant
@@ -16,7 +13,7 @@ const Quant = window.Quant = class Quant
 	{
 		this.session = null;
 
-		this.TIME = Date.now();
+		this.TIME = timestamp();
 		this.ARGS = args;
 	}
 	
@@ -27,7 +24,7 @@ const Quant = window.Quant = class Quant
 
 	classPath()
 	{
-		return '\\' + Reflect.was(this).join('\\');
+		return '\\' + Reflect.was(this).reverse().join('\\');
 	}
 
 	runtime()
@@ -39,7 +36,7 @@ const Quant = window.Quant = class Quant
 export default Quant;
 
 //
-import * as library from './library.js';
+import library from './library.js';
 window.library = library;
 
 //
