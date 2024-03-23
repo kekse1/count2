@@ -5,20 +5,20 @@
 //
 import Fingerprint from './main.js';
 
-const CanvasFingerprint = window.Fingerprint.Canvas = class CanvasFingerprint extends Fingerprint
+const CookieFingerprint = window.Fingerprint.Cookie = class CookieFingerprint extends Fingerprint
 {
 	constructor(... args)
 	{
-		return super(CanvasFingerprint.type, ... args);
+		return super(CookieFingerprint.type, ... args);
 	}
 
 	static get type()
 	{
-		return 'canvas';
+		return 'cookie';
 	}
 }
 
-export default CanvasFingerprint;
+export default CookieFingerprint;
 
 //
 

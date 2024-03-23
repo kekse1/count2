@@ -5,20 +5,20 @@
 //
 import Fingerprint from './main.js';
 
-const CanvasFingerprint = window.Fingerprint.Canvas = class CanvasFingerprint extends Fingerprint
+const WebGLFingerprint = window.Fingerprint.WebGL = class WebGLFingerprint extends Fingerprint
 {
 	constructor(... args)
 	{
-		return super(CanvasFingerprint.type, ... args);
+		super(WebGLFingerprint.type, ... args);
 	}
 
 	static get type()
 	{
-		return 'canvas';
+		return 'webgl';
 	}
 }
 
-export default CanvasFingerprint;
+export default WebGLFingerprint;
 
 //
 

@@ -8,20 +8,35 @@ import Quant from '../../kekse/main.js';
 //
 const Fingerprint = window.Fingerprint = class Fingerprint extends Quant
 {
-	constructor(... args)
+	constructor(type, ... args)
 	{
-		super(... args);
+		if(type = Fingerprint.checkType(type))
+		{
+			this.type = type;
+		}
+		else
+		{
+			throw new Error('Invalid fingerprint type [ ' + Fingerprint.type.join(', ') + ' ]');
+		}
+
+		return super(... args);
 	}
 
 	static get type()
 	{
 		return [
-			'canvas'
+			'canvas',
+			'cookie',
+			'webgl'
 		];
 	}
 
-	static create(type = null, ... args)
+	static checkType(type)
 	{
+		if(!String.isString(type, false)) return null;
+		if(Fingerprint.type.includes(type = type.toLowerCase()))
+			return type;
+		return null;
 	}
 }
 

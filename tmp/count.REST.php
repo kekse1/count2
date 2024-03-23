@@ -56,14 +56,6 @@ $DEFAULTS = array(
 );
 
 //
-define('KEKSE_SCRIPT', $_SERVER['SCRIPT_NAME']);
-define('KEKSE_SCRIPT_ROOT', $_SERVER['DOCUMENT_ROOT']);
-define('KEKSE_SCRIPT_DIR', dirname(KEKSE_SCRIPT));
-define('KEKSE_SCRIPT_DIR_REAL', realpath(KEKSE_SCRIPT_DIR));
-define('KEKSE_SCRIPT_BASE', basename(KEKSE_SCRIPT));
-define('KEKSE_SCRIPT_NAME', basename(KEKSE_SCRIPT, '.php'));
-
-//
 define('KEKSE_COPYRIGHT', 'Sebastian Kucharczyk <kuchen@kekse.biz>');
 define('KEKSE_WEBSITE', 'https://kekse.biz/');
 define('KEKSE_COUNTER_VERSION', '5.0.2');
