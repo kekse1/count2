@@ -1,4 +1,7 @@
 {
+	"fingerprint": {
+		"type": [ "string" ]
+	},
 	"draw": {
 		"type": [ "boolean", "string" ],
 		"default": true

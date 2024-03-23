@@ -20,6 +20,8 @@ class Session extends \kekse\Quant
 	public $parameter = null;
 	public $connection = null;
 
+	public $fingerprint = null;
+
 	public function __construct($controller, ... $args)
 	{
 		$this->controller = $controller;
@@ -36,7 +38,6 @@ class Session extends \kekse\Quant
 		{
 			require_once(__DIR__ . '/../kekse/connection.inc.php');
 			require_once(__DIR__ . '/../kekse/parameter.inc.php');
-
 			$this->connection = new \kekse\Connection($this);
 			$this->parameter = new \kekse\Parameter($this);
 		}
@@ -47,6 +48,41 @@ class Session extends \kekse\Quant
 	public function __destruct()
 	{
 		return parent::__destruct();
+	}
+	
+	private function checkSession($throw = true)
+	{
+		if($this->console === null)
+		{
+			$this->console->debug('Starting console session with new controller');
+		}
+		else if($this->parameter !== null)
+		{
+			$this->console->debug('Starting browser session with new controller');
+
+			$fingerprint = $this->parameter.get('fingerprint');
+
+			if($fingerprint)
+			{
+				$this->fingerprint = $fingerprint;
+				$this->console->info('Session received fingerprint parameter (' . $fingerprint . ')');
+			}
+			else
+			{
+				$this->console->log('Session received NO fingerprint parameter');
+			}
+		}
+		else if($throw)
+		{
+			throw new \Exception('Unable to determine session type');
+		}
+		else
+		{
+			$this->console->debug('Invalid session with new controller');
+			return false;
+		}
+
+		return true;
 	}
 }
 

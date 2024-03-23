@@ -3,10 +3,6 @@
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
 //
-//TODO/@toString @ reflect
-//TODO/in php's Quant, does .classPath starts with '\'??
-//
-
 const Quant = window.Quant = class Quant
 {
 	constructor(... args)
@@ -16,6 +12,11 @@ const Quant = window.Quant = class Quant
 		this.TIME = timestamp();
 		this.ARGS = args;
 	}
+
+	toString()
+	{
+		return '(' + this.classPath + ';' + this->runtime() + ')';
+	}
 	
 	className()
 	{
@@ -24,7 +25,7 @@ const Quant = window.Quant = class Quant
 
 	classPath()
 	{
-		return '\\' + Reflect.was(this).reverse().join('\\');
+		return Reflect.was(this).reverse().join('\\');
 	}
 
 	runtime()

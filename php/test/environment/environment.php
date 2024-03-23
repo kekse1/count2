@@ -1,6 +1,6 @@
 <?php
 namespace kekse;
-require_once(__DIR__ . '/kekse/environment.inc.php');
+require_once(__DIR__ . '/../kekse/environment.inc.php');
 header('Content-Type: text/plain;charset=UTF-8');
 $env = new \kekse\Environment(null);
 echo ".file:\n";
