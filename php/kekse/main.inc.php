@@ -27,7 +27,7 @@ class Quant
 
 	public function __toString()
 	{
-		return '(' . $this->classPath() . ';' . $this->getRuntime() . ')';
+		return '(' . $this->classPath() . ';' . $this->runtime() . ')';
 	}
 
 	public function className()
@@ -41,17 +41,7 @@ class Quant
 		return get_class($this);
 	}
 
-	public function getArgs()
-	{
-		return $this->ARGS;
-	}
-
-	public function getTime()
-	{
-		return $this->TIME;
-	}
-
-	public function getRuntime()
+	public function runtime()
 	{
 		return timestamp($this->TIME);
 	}
