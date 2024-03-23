@@ -60,7 +60,7 @@ class Session extends \kekse\Quant
 		{
 			$this->console->debug('Starting browser session with new controller');
 
-			$fingerprint = $this->parameter.get('fingerprint');
+			$fingerprint = $this->parameter->fingerprint;
 
 			if($fingerprint)
 			{
