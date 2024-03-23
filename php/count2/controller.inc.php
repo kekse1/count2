@@ -18,7 +18,7 @@ class Controller extends \kekse\Quant
 		}
 		catch(_error)
 		{
-			throw new \Exception('Unable to initialize new controller');
+			throw new \Exception('Unable to initialize new controller (session\'s mistake..)');
 		}
 		
 		return parent::__construct(... $args);
