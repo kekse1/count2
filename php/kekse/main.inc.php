@@ -29,7 +29,7 @@ class Quant
 
 	public function __toString()
 	{
-		return '(' . $this->classPath() . ';' . $this->runtime() . ')';
+		return $this->classPath();// . ';' . $this->runtime();
 	}
 
 	public function className()
