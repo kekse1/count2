@@ -29,7 +29,7 @@ class Session extends \kekse\Session
 
 		$this->environment = new \kekse\Environment($this);
 		$this->configuration = new \kekse\Configuration($this);
-		$this->configuration->importValuesFromJSON(KEKSE_COUNT2_JSON_CONFIG);
+		$this->configuration->importSchemeFromJSON(KEKSE_COUNT2_JSON_CONFIG);
 
 		$this->makeSession();
 

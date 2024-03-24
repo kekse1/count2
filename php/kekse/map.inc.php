@@ -462,7 +462,27 @@ class Map extends Quant
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
 		$type = self::getType($value);
-		if(!$type) return null;
+		switch($type)
+		{
+			case 'string':
+				$value = self::castToString($value);
+				break;
+			case 'boolean':
+				$value = self::castToBoolean($value);
+				break;
+			case 'integer':
+				$value = self::castToInteger($value);
+				break;
+			case 'double':
+				$value = self::castToDouble($value);
+				break;
+			/*case 'number':
+				$value = self::castToNumber($value);
+				break;*/
+			case '':
+			default:
+				return null;
+		}
 		$result = $this->get($key = self::decode($key));
 		$this->values[$key] = $value;
 		return $result;
