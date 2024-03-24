@@ -3,7 +3,10 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
+
+define('KEKSE_JSON_DEPTH', 8);
 
 class Quant
 {
@@ -47,6 +50,16 @@ class Quant
 	{
 		return timestamp($this->time);
 	}
+}
+
+function parseJSON($value)
+{
+	return json_decode($value, true, KEKSE_JSON_DEPTH);
+}
+
+function renderJSON($string)
+{
+	return json_encode($string, 0, KEKSE_JSON_DEPTH);
 }
 
 require_once(__DIR__ . '/logger.inc.php');

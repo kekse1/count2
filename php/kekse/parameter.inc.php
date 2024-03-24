@@ -13,8 +13,6 @@ require_once(__DIR__ . '/map.inc.php');
 
 class Parameter extends Map
 {
-	public $scheme = null;
-
 	public function __construct($session = null, $scheme = null, $values = null, ... $args)
 	{
 		if(! (is_string($values) || is_array($values)))
@@ -82,7 +80,7 @@ class Parameter extends Map
 			return null;
 		}
 
-		$scheme = json_decode($scheme, true, KEKSE_JSON_DEPTH);
+		$scheme = parseJSON($scheme);
 
 		if(!is_array($scheme))
 		{

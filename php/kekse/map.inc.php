@@ -9,20 +9,20 @@ namespace kekse;
 class Map extends Quant
 {
 	protected $values = null;
+	protected $scheme = null;
 	
 	public function __construct($session = null, $values = null, ... $args)
 	{
-		$this->values = $values;
-		$this->castValues();
+		$this->values = self::castValues($values);
 		return parent::__construct($session, ... $args);
 	}
 
-	private function castValues()
+	public static function castValues($values)
 	{
+		if(!is_array($values)) return null;
 		$result = [];
-		if(!$this->values) return $this->values = $result;
 		
-		foreach($this->values as $key => $value)
+		foreach($values as $key => $value)
 		{
 			$key = Security::checkString($key = self::decode($key), true, true);
 
@@ -57,7 +57,7 @@ class Map extends Quant
 			}
 		}
 
-		return $this->values = $result;
+		return $result;
 	}
 	
 	public function __destruct()
@@ -163,10 +163,63 @@ class Map extends Quant
 		return true;
 	}
 	
+	public function getDefaultValue($key, $type = '')
+	{
+		if(!is_string($key = Security::checkString($key, true, true))) return null;
+
+		$result;
+
+		if(isset($this->values) && isset($this->values[$key = self::decode($key)]) && is_array($this->values[$key]))
+		{
+			$result = $this->values[$key];
+		}
+		else if(isset($this->scheme) && isset($this->scheme[$key]) && is_array($this->scheme[$key]))
+		{
+			$result = $this->scheme[$key];
+		}
+		else
+		{
+			return null;
+		}
+		
+		if(!isset($result['default']))
+		{
+			return null;
+		}
+		
+		$result = $result['default'];
+		
+		switch($type)
+		{
+			case 'string':
+				$result = self::castToString($result);
+				break;
+			case 'boolean':
+				$result = self::castToBoolean($result);
+				break;
+			case 'integer':
+				$result = self::castToInteger($result);
+				break;
+			case 'double':
+				$result = self::castToDouble($result);
+				break;
+			case 'number':
+				$result = self::castToNumber($result);
+				break;
+			case '':
+				break;
+			default:
+				$result = null;
+				break;
+		}
+		
+		return $result;
+	}
+	
 	public function get($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		if(!isset($this->values[$key])) return null;
+		if(!isset($this->values[$key])) return $this->getDefaultValue($key, '');
 		$result = $this->values[$key = self::decode($key)];
 		$type = self::getType($result);
 		switch($type)
@@ -176,6 +229,7 @@ class Map extends Quant
 				break;
 			case 'string':
 				$result = Security::checkString($result, true, true);
+
 				if(is_numeric($result))
 				{
 					$result = (double)$result;
@@ -197,6 +251,177 @@ class Map extends Quant
 		return $result;
 	}
 	
+	public static function castToString($value)
+	{
+		$type = self::getType($value);
+		
+		switch($type)
+		{
+			case 'string':
+				$value = Security::checkString($value, true, true);
+				break;
+			case 'boolean':
+				$value = ($value ? 'yes' : 'no');
+				break;
+			case 'integer':
+			case 'double':
+			case 'number':
+				$value = (string)$value;
+				break;
+			case '':
+			default:
+				$value = null;
+				break;
+		}
+		
+		return $value;
+	}
+
+	public static function castToBoolean($value)
+	{
+		$type = self::getType($value);
+		
+		switch($type)
+		{
+			case 'string':
+				switch(strtolower($value))
+				{
+					case '0': case '0.0':
+					case 'no': case 'false':
+						$value = false;
+						break;
+					case '1': case '1.0':
+					case 'yes': case 'true':
+						$value = false;
+						break;
+					default:
+						$value = (strlen($value) > 0);
+						break;
+				}
+				break;
+			case 'boolean':
+				break;
+			case 'integer':
+				$value = ($value !== 0);
+				break;
+			case 'double':
+				$value = ($value !== 0.0);
+				break;
+			case 'number':
+				$value = ($value != 0);
+				break;
+			case '':
+			default:
+				$value = null;
+				break;
+		}
+		
+		return $value;
+	}
+
+	public static function castToInteger($value)
+	{
+		$type = self::getType($value);
+		
+		switch($type)
+		{
+		case 'string':
+				if(is_numeric($value))
+				{
+					$value = (int)$value;
+				}
+				else
+				{
+					$value = strlen($value);
+				}
+				break;
+			case 'boolean':
+				$value = ($value ? 1 : 0);
+				break;
+			case 'integer':
+				break;
+			case 'double':
+			case 'number':
+				$value = (int)$value;
+				break;
+			case '':
+			default:
+				$value = null;
+				break;
+		}
+		
+		return $value;
+	}
+
+	public static function castToDouble($value)
+	{
+		$type = self::getType($value);
+		
+		switch($type)
+		{
+			case 'string':
+				if(is_numeric($value))
+				{
+					$value = (double)$value;
+				}
+				else
+				{
+					$value = (double)strlen($value);
+				}
+				break;
+			case 'boolean':
+				$value = ($value ? 1.0 : 0.0);
+				break;
+			case 'double':
+				break;
+			case 'integer':
+			case 'number':
+				$value = (double)$value;
+				break;
+			case '':
+			default:
+				$value = null;
+				break;
+		}
+		
+		return $value;
+	}
+
+	public static function castToNumber($value)
+	{
+		$type = self::getType($value);
+		
+		switch($type)
+		{
+			case 'string':
+				if(is_numeric($value))
+				{
+					$value = (double)$value;
+					if(fmod($value, 1) == 0) $value = (int)$value;
+				}
+				else
+				{
+					$value = strlen($value);
+				}
+				break;
+			case 'boolean':
+				$value = ($value ? 1 : 0);
+				break;
+			case 'integer':
+				break;
+			case 'double':
+			case 'number':
+				if(fmod($value, 1) == 0) $value = (int)$value;
+				break;
+			case '':
+			default:
+				$value = null;
+				break;
+		}
+		
+		return $value;
+	}
+
 	//
 	//maybe w/ .scheme!?? aber der in parameter, eh? :-/
 	//
@@ -213,49 +438,15 @@ class Map extends Quant
 	public function getString($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		if(!isset($this->values[$key])) return null;
-		$result = $this->values[$key];
-		$type = self::getType($result);
-		switch($type)
-		{
-			case '':
-				$result = null;
-				break;
-			case 'string':
-				$result = Security::checkString($result, true, true);
-				break;
-			case 'boolean':
-				$result = ($result ? '1' : '0');
-				break;
-			case 'double':
-			case 'integer':
-				$result = (string)$result;
-				break;
-		}
-		return $result;
+		if(!isset($this->values[$key])) return $this->getDefaultValue($key, 'string');
+		return self::castToString($this->values[$key]);
 	}
 
 	public function setString($key, $value)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		$type = self::getType($value);
-		switch($type)
-		{
-			case '':
-				return null;
-			case 'string':
-				$value = Security::checkString($value, true, true);
-				break;
-			case 'boolean':
-				$value = ($value ? '1' : '0');
-				break;
-			case 'double':
-				$value = (($value === 0.0) ? '0' : '1');
-				break;
-			case 'integer':
-				$value = (($value === 0) ? '0' : '1');
-				break;
-		}
+		$value = self::castToString($value);
+		if($value === null) return null;
 		$result = (isset($this->values[$key]) ? $this->values[$key] : null);
 		$this->values[$key] = $value;
 		return $result;
@@ -264,61 +455,15 @@ class Map extends Quant
 	public function getBoolean($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		if(!isset($this->values[$key])) return null;
-		$result = $this->values[$key];
-		$type = self::getType($result);
-		switch($type)
-		{
-			case '':
-				$result = null;
-				break;
-			case 'string':
-				switch(strtolower($result))
-				{
-					case '0': case '0.0': $result = false; break;
-					case '1': case '1.0': $result = true; break;
-					default:
-						$result = (strlen($result) > 0);
-						break;
-				}
-				break;
-			case 'boolean':
-				break;
-			case 'double':
-				$result = ($result !== 0.0);
-				break;
-			case 'integer':
-				$result = ($result !== 0);
-				break;
-		}
-		return $result;
+		if(!isset($this->values[$key])) return $this->getDefaultValue($key, 'boolean');
+		return self::castToBoolean($this->values[$key]);
 	}
 
 	public function setBoolean($key, $value)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		$type = self::getType($value);
-		switch($type)
-		{
-			case '':
-				return null;
-			case 'string':
-				switch($value)
-				{
-					case '0': case '0.0': $value = false; break;
-					case '1': case '1.0': $value = true; break;
-					default: $value = (strlen($value) !== 0 ? true : false); break;
-				}
-				break;
-			case 'boolean':
-				break;
-			case 'double':
-				$value = ($value !== 0.0);
-				break;
-			case 'integer':
-				$value = ($value !== 0);
-				break;
-		}
+		$value = self::castToBoolean($value);
+		if($value === null) return null;
 		$result = (isset($this->values[$key]) ? $this->values[$key] : null);
 		$this->values[$key] = $value;
 		return $result;
@@ -327,49 +472,15 @@ class Map extends Quant
 	public function getInteger($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		if(!isset($this->values[$key])) return null;
-		$result = $this->values[$key];
-		$type = self::getType($result);
-		switch($type)
-		{
-			case '':
-				$result = null;
-				break;
-			case 'string':
-				$result = (int)$result;
-				break;
-			case 'boolean':
-				$result = ($result ? 1 : 0);
-				break;
-			case 'double':
-				$result = (int)$result;
-				break;
-			case 'integer':
-				break;
-		}
-		return $result;
+		if(!isset($this->values[$key])) return $this->getDefaultValue($key, 'integer');
+		return self::castToInteger($this->values[$key]);
 	}
 
 	public function setInteger($key, $value)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		$type = self::getType($value);
-		switch($type)
-		{
-			case '':
-				return null;
-			case 'string':
-				$value = (int)$value;
-				break;
-			case 'boolean':
-				$value = ($value ? 1 : 0);
-				break;
-			case 'double':
-				$value = (int)$value;
-				break;
-			case 'integer':
-				break;
-		}
+		$value = self::castToInteger($value);
+		if($value === null) return null;
 		$result = (isset($this->values[$key]) ? $this->values[$key] : null);
 		$this->values[$key] = $value;
 		return $result;
@@ -378,49 +489,15 @@ class Map extends Quant
 	public function getDouble($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		if(!isset($this->values[$key])) return null;
-		$result = $this->values[$key];
-		$type = self::getType($result);
-		switch($type)
-		{
-			case '':
-				$result = null;
-				break;
-			case 'string':
-				$result = (double)$result;
-				break;
-			case 'boolean':
-				$result = ($result ? 1.0 : 0.0);
-				break;
-			case 'double':
-				break;
-			case 'integer':
-				$result = (double)$result;
-				break;
-		}
-		return $result;
+		if(!isset($this->values[$key])) return $this->getDefaultValue($key, 'double');
+		return self::castToDouble($this->values[$key]);
 	}
 
 	public function setDouble($key, $value)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		$type = self::getType($value);
-		switch($type)
-		{
-			case '':
-				return null;
-			case 'string':
-				$value = (double)$value;
-				break;
-			case 'boolean':
-				$value = ($value ? 1.0 : 0.0);
-				break;
-			case 'double':
-				break;
-			case 'integer':
-				$value = (double)$value;
-				break;
-		}
+		$value = self::castToDouble($value);
+		if($value === null) return null;
 		$result = (isset($this->values[$key]) ? $this->values[$key] : null);
 		$this->values[$key] = $value;
 		return $result;
@@ -429,76 +506,19 @@ class Map extends Quant
 	public function getNumber($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		if(!isset($this->values[$key])) return null;
-		$result = $this->values[$key];
-		$type = self::getType($result);
-		switch($type)
-		{
-			case '':
-				$result = null;
-				break;
-			case 'string':
-				$result = (double)$result;
-				if(fmod($result, 1) == 0) $result = (int)$result;
-				break;
-			case 'boolean':
-				$result = ($result ? 1 : 0);
-				break;
-			case 'double':
-				if(fmod($result, 1) == 0) $result = (int)$result;
-				break;
-			case 'integer':
-				break;
-		}
-		return $result;
+		if(!isset($this->values[$key])) return $this->getDefaultValue($key, 'number');
+		return self::castToNumber($this->values[$key]);
 	}
 	
 	public function setNumber($key, $value)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		$type = self::getType($value);
-		switch($type)
-		{
-			case '':
-				return null;
-			case 'string':
-				$value = (double)$value;
-				if(fmod($value, 1) == 0) $value = (int)$value;
-				break;
-			case 'boolean':
-				$value = ($value ? 1 : 0);
-				break;
-			case 'double':
-				if(fmod($value, 1) == 0) $value = (int)$value;
-				break;
-			case 'integer':
-				break;
-		}
+		$value = self::castToNumber($value);
+		if($value === null) return null;
 		$result = (isset($this->values[$key]) ? $this->values[$key] : null);
 		$this->values[$key] = $value;
 		return $result;
 	}
-	
-
-	//
-	/*public function __get($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
-		else if(property_exists($this, $key)) return $this->{$key};
-		else $key = self::decode($key);
-		if(!$this->has($key)) return null;
-		return $this->values[$key];
-	}
-	
-	public function __set($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
-		else if(property_exists($this, $key)) return $this->{$key} = $value;
-		else $key = self::decode($key);
-		$result = $this->has($key);
-		$this->set($key, $value);
-		return $result;
-	}*/
 }
 
 ?>

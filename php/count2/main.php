@@ -7,6 +7,10 @@
 namespace kekse\count2;
 
 //
+define('KEKSE_COUNT2_JSON_CONFIG', __DIR__ . '/json/config.json');
+define('KEKSE_COUNT2_JSON_PARAM', __DIR__ . '/json/param.json');
+
+//
 require_once(__DIR__ . '/../kekse/main.inc.php');
 require_once(__DIR__ . '/controller.inc.php');
 

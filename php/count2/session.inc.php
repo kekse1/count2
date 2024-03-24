@@ -5,9 +5,6 @@
 
 namespace kekse\count2;
 
-define('KEKSE_COUNT2_JSON_CONFIG', __DIR__ . '/json/config.json');
-define('KEKSE_COUNT2_JSON_PARAM', __DIR__ . '/json/param.json');
-
 require_once(__DIR__ . '/../kekse/configuration.inc.php');
 require_once(__DIR__ . '/../kekse/environment.inc.php');
 require_once(__DIR__ . '/../kekse/terminal.inc.php');

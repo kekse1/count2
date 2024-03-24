@@ -24,7 +24,7 @@ class Configuration extends Map
 			return null;
 		}
 		
-		$values = json_decode($values, true, KEKSE_JSON_DEPTH);
+		$values = parseJSON($values);
 		
 		if(!is_array($values))
 		{
@@ -38,6 +38,47 @@ class Configuration extends Map
 	{
 		unset($this->session);
 		return parent::__destruct();
+	}
+	
+	public function addDifferences($diff, $check = true)
+	{
+		$result = 0;
+		$diff = Map::castValues($diff);
+		$hasValues = is_array($this->values);
+
+		foreach($diff as $key => $value)
+		{
+			if($hasValues && $check)
+			{
+				if(!array_key_exists($key, $this->values))
+				{
+					continue;
+				}
+			}
+
+			$this->values[$key] = $value;
+		}
+
+		return $result;
+	}
+	
+	public function addDifferencesFromJSON($path)
+	{
+		$diff = FileSystem::readFile($path);
+		
+		if(!$diff)
+		{
+			return null;
+		}
+		
+		$diff = parseJSON($diff);
+
+		if(!is_array($diff))
+		{
+			return null;
+		}
+
+		return $this->addDifferences($diff);
 	}
 }
 
