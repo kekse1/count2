@@ -12,3 +12,8 @@ define('KEKSE_COUNT2_PREFIX_VALUE', '~');
 define('KEKSE_COUNT2_PREFIX_CACHE', '+');
 define('KEKSE_COUNT2_PREFIX_CONFIG', '@');
 
+//
+define('KEKSE_COUNT2_LIMIT_FILE_SIZE', 64);
+
+//
+

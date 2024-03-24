@@ -47,9 +47,42 @@ class Counter extends \kekse\FileSystem
 		return parent::__destruct();
 	}
 
+	public function getValue()
+	{
+		$path = $this->getValuePath();
+
+		if(!\kekse\FileSystem::isFile($path, true))
+		{
+			return 0;
+		}
+
+		return (int)file_get_contents($path);
+	}
+
 	public function increment()
 	{
-throw new \Error('TODO');
+		$path = $this->getValuePath();
+
+		if(!\kekse\FileSystem::isFile($path, true, true))
+		{
+			return $this->getValue();
+		}
+
+		$fh = fopen($path, 'w+');
+
+		if(!$fh)
+		{
+			return $this->getValue();
+		}
+
+		flock($fh, LOCK_EX);
+		$result = (int)fread($fh, KEKSE_COUNT2_LIMIT_FILE_SIZE);
+		$result = ++$result;
+		$string = (string)$result;
+		ftruncate($fh, strlen($string));
+		fwrite($fh, $string);
+		fclose($fh);
+		return $result;
 	}
 	
 	public function getPath($prefix = '')

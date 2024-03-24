@@ -28,13 +28,28 @@ class FileSystem extends Quant
 			$callback = null;
 		}
 
-		$size = filesize($path);
+		if(!is_int($chunk) || $chunk < 1)
+		{
+			if($chunk === true)
+			{
+				$chunk = KEKSE_FILE_CHUNK;
+			}
+			else
+			{
+				$chunk = 0;
+			}
+		}
 
-		if($size === false)
+		$fh = fopen($path, 'r');
+
+		if($fh === false)
 		{
 			return null;
 		}
-		else if($size === 0)
+
+		$size = fstat($fh)['size'];
+
+		if($size === 0)
 		{
 			if($callback !== null)
 			{
@@ -44,24 +59,9 @@ class FileSystem extends Quant
 
 			return '';
 		}
-		
-		if(!is_int($chunk) || $chunk < 1)
+		else if($chunk === 0)
 		{
-			if($chunk === true)
-			{
-				$chunk = KEKSE_FILE_CHUNK;
-			}
-			else
-			{
-				$chunk = $size;
-			}
-		}
-
-		$fh = fopen($path, 'r');
-
-		if($fh === false)
-		{
-			return null;
+			$chunk = $size;
 		}
 
 		$data = ($callback === null ? '' : null);
@@ -107,6 +107,12 @@ class FileSystem extends Quant
 		return $data;
 	}
 	
+	public static function exists($path)
+	{
+		if(!is_string($path) || !file_exists($path)) return false;
+		return true;
+	}
+
 	public static function isFile($path, $read = true, $write = false)
 	{
 		if(!is_string($path) || !is_file($path)) return false;
