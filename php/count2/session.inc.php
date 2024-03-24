@@ -9,10 +9,10 @@ define('KEKSE_COUNT2_JSON_CONFIG', __DIR__ . '/json/config.json');
 define('KEKSE_COUNT2_JSON_PARAM', __DIR__ . '/json/param.json');
 
 require_once(__DIR__ . '/../kekse/configuration.inc.php');
-//require_once(__DIR__ . '/../kekse/environment.inc.php');
+require_once(__DIR__ . '/../kekse/environment.inc.php');
 require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
-class Session extends \kekse\Quant
+class Session extends \kekse\Session
 {
 	public $controller;
 
@@ -33,7 +33,7 @@ class Session extends \kekse\Quant
 		$this->environment = new \kekse\Environment($this);
 		$this->configuration = \kekse\Configuration::fromJSON(KEKSE_COUNT2_JSON_CONFIG, $this);
 
-		$this->checkSession();
+		$this->makeSession();
 
 		return parent::__construct(... $args);
 	}
@@ -59,7 +59,7 @@ class Session extends \kekse\Quant
 		require_once(__DIR__ . '/fingerprint.inc.php');
 	}
 
-	private function checkSession()
+	private function makeSession()
 	{
 		if(\kekse\Terminal::isTTY())
 		{
@@ -70,16 +70,10 @@ class Session extends \kekse\Quant
 		{
 			$this->loadBrowserModules();
 
-			//
-			//TODO/irgendwo(?!) verify against 'json/param.json' ..
-			//ABER NICHT direkt in parameter-klasse konkret, hoechstens
-			//abstrakt nach .json-load oder so.. da ja \kekse\ nicht
-			//fuer hiesige count2-param-fragen..!! ^_^
-			//
-			$this->parameter = \kekse\Parameter::fromJSON(KEKSE_COUNT2_JSON_PARAM, $this);
+			$this->parameter = \kekse\Parameter::withJSON(KEKSE_COUNT2_JSON_PARAM, $this);
 			$this->connection = new \kekse\Connection($this);
 
-			$fingerprint = $this->parameter->fingerprint;
+			$fingerprint = $this->parameter->getString('fingerprint');
 
 			if($fingerprint)
 			{

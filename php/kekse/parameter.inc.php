@@ -7,43 +7,73 @@ namespace kekse;
 
 define('KEKSE_LIMIT_PARAM', 32);
 
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
 require_once(__DIR__ . '/filesystem.inc.php');
+require_once(__DIR__ . '/map.inc.php');
 
-class Parameter extends Quant
+class Parameter extends Map
 {
-	private $scheme = null;
-	private $query = null;
+	public $scheme = null;
 
-	public function __construct($session = null, $scheme = null, $params = null, ... $args)
+	public function __construct($session = null, $scheme = null, $values = null, ... $args)
 	{
-		$this->session = $session;
-		$this->scheme = $scheme;
-
-		if(! (is_string($params) || is_array($params)))
+		if(! (is_string($values) || is_array($values)))
 		{
 			if(isset($_SERVER['QUERY_STRING']))
 			{
-				$params = $_SERVER['QUERY_STRING'];
+				$values = $_SERVER['QUERY_STRING'];
 			}
 			else
 			{
-				throw new \Exception('Invalid $params argument, and no `$_SERVER[\'QUERY_STRING\']` available.');
+				$values = null;
+				//throw new \Exception('Invalid $params argument, and no `$_SERVER[\'QUERY_STRING\']` available.');
 			}
 		}
 
-		$this->query = self::parse($params);
+		$values = self::parse($values);
+		$this->scheme = $scheme;
 
-		if(!isset($this->query['time']))
-		{
-			$this->query['time'] = timestamp();
-		}
+		parent::__construct($session, $values, ... $args);
 
-		return parent::__construct(... $args);
+		$this->filterValues();
 	}
 	
 	//
-	public static function fromJSON($path, $session = null, $params = null, ... $args)
+	public function filterValues()
+	{
+		$result = [];
+		if(!$this->scheme) return $result;
+		foreach($this->values as $key => $value)
+		{
+			if(!isset($this->scheme[$key]))
+			{
+				array_push($result, $key);
+				unset($this->values[$key]);
+			}
+			else
+			{
+				$type = parent::getType($value);
+			
+				if($type)
+				{
+					if(!in_array($type, $this->scheme[$key]['type']))
+					{
+						array_push($result, $key);
+						unset($this->values[$key]);
+					}
+				}
+				else
+				{
+					array_push($result, $key);
+					unset($this->values[$key]);
+				}
+			}
+		}
+		return $result;
+	}
+	
+	//
+	public static function withJSON($path, $session = null, $values = null, ... $args)
 	{
 		$scheme = FileSystem::readFile($path);
 
@@ -51,381 +81,27 @@ class Parameter extends Quant
 		{
 			return null;
 		}
-		
+
 		$scheme = json_decode($scheme, true, KEKSE_JSON_DEPTH);
 
 		if(!is_array($scheme))
 		{
 			return null;
 		}
-		
-		return new Parameter($session, $scheme, $params, ... $args);
-	}
-	
-	//
-	//TODO/DETERMINE TYPE AUTOMATICALLY!!!
-	//
-	public function __get($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
-		else if(property_exists($this, $key)) return $this->{$key};
-		else $key = self::decode($key);
-		if(!$this->has($key)) return null;
-		return $this->query[$key];
-	}
-	
-	public function __set($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) return new \Error('Invalid argument');
-		else if(property_exists($this, $key)) return $this->{$key} = $value;
-		else $key = self::decode($key);
-		$result = $this->has($key);
-		$this->set($key, $value);
-		return $result;
+
+		return new Parameter($session, $scheme, $values, ... $args);
 	}
 	
 	public function __destruct()
 	{
-		unset($this->query);
 		return parent::__destruct();
 	}
 
 	public function __toString()
 	{
-		return $this->render($this->query);
+		return $this->render($this->values);
 	}
 	
-	public function getSize()
-	{
-		return count($this->query);
-	}
-	
-	public function getLength()
-	{
-		return $this->getSize();
-	}
-
-	public function has($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key); return (isset($this->query[$key]));
-	}
-	
-	public function delete($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		if(!$this->has($key)) return false;
-		else unset($this->query[$key]);
-		return true;
-	}
-	
-	public function get($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		$result = $this->query[$key];
-		$type = self::getType($result);
-		
-		if($type === '') return null;
-		return $result;
-	}
-	
-	public function getString($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!$this->has($key)) return null;
-		$result = $this->query[$key];
-		
-		if(!is_string($result))
-		{
-			if(is_bool($result)) $result = ($result ? 'yes' : 'no');
-			if(is_number($result)) $result = (string)$result;
-		}
-		
-		return $result;
-	}
-	
-	public function getBoolean($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-
-		if(!$this->has($key)) return null;
-		$result = $this->query[$key];
-
-		if(!is_bool($result))
-		{
-			if(is_int($result)) $result = ($result !== 0);
-			else if(is_double($result)) $result = ($result !== 0.0);
-			else if(is_string($result))
-			{
-				switch(strtolower($result))
-				{
-					case '1': case '1.0': case 'yes': $result = true; break;
-					case '0': case '0.0': case 'no': $result = false; break;
-					default: $result = (strlen($result) > 0); break;
-				}
-			}
-			else $result = (strlen((string)$result) > 0);
-		}
-
-		return $result;
-	}
-	
-	public function getInteger($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!$this->has($key)) return null;
-		$result = $this->query[$key];
-		
-		if(!is_int($result))
-		{
-			if(is_bool($result)) $result = ($result ? 1 : 0);
-			else if(is_double($result)) $result = (int)$result;
-			else $result = (int)(string)$result;
-		}
-		
-		return $result;
-	}
-	
-	public function getDouble($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!$this->has($key)) return null;
-		$result = $this->query[$key];
-		
-		if(!is_double($result))
-		{
-			if(is_bool($result)) $result = ($result ? 1.0 : 0.0);
-			else if(is_int($result)) $result = (double)$result;
-			else $result = (double)(string)$result;
-		}
-		
-		return $result;
-	}
-	
-	public function getNumber($key)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!$this->has($key)) return null;
-		$result = $this->query[$key];
-		
-		if(!is_number($result))
-		{
-			if(is_bool($result)) $result = ($result ? 1 : 0);
-			else
-			{
-				$result = (string)$result;
-				
-				if(str_contains($result, '.'))
-				{
-					$result = (double)$result;
-				}
-				else
-				{
-					$result = (int)$result;
-				}
-			}
-		}
-		
-		return $result;
-	}
-	
-	public static function getType($value)
-	{
-		$type = gettype($value);
-		
-		switch($type)
-		{
-			case 'string': return 'string';
-			case 'boolean': return 'boolean';
-			case 'double': return 'double';
-			case 'integer': return 'integer';
-		}
-		
-		return '';
-	}
-	
-	public function set($key, $value)
-	{
-		$type = self::getType($value);
-		
-		switch($type)
-		{
-			case 'string': return $this->setString($key, $value);
-			case 'boolean': return $this->setBoolean($key, $value);
-			case 'double': return $this->setDouble($key, $value);
-			case 'integer': return $this->setInteger($key, $value);
-		}
-		
-		return $this->set($key, (string)$value);
-	}
-	
-	//TODO/empty string VALUES!???
-	public function setString($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!is_string($value))
-		{
-			if(is_bool($value)) $value = ($value ? 'yes' : 'no');
-			else $value = (string)$value;
-		}
-		
-		$value = self::decode(Security::checkString($value, true, true));
-
-		$result = ($this->has($key));
-		$this->query[$key] = $value;
-		return $result;
-	}
-	
-	public function setBoolean($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!is_bool($value))
-		{
-			if(is_int($value)) $value = ($value !== 0);
-			else if(is_double($value)) $value = ($value !== 0.0);
-			else if(is_string($value))
-			{
-				switch(strtolower($value))
-				{
-					case '1': case '1.0': case 'yes': $result = true; break;
-					case '0': case '0.0': case 'no': $result = false; break;
-					default: $result = (strlen($result) > 0); break;
-				}
-			}
-			else $value = (bool)(string)$value;
-		}
-		
-		$result = ($this->has($key));
-		$this->query[$key] = $value;
-		return $result;
-	}
-	
-	public function setInteger($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!is_int($value))
-		{
-			if(is_double($value)) $value = (int)$value;
-			else if(is_bool($value)) $value = ($value ? 1 : 0);
-			else $value = (int)(string)$value;
-		}
-
-		$result = ($this->has($key));
-		$this->query[$key] = $value;
-		return $result;
-	}
-	
-	public function setDouble($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!is_double($value))
-		{
-			if(is_int($value)) $value = (double)$value;
-			else if(is_bool($value)) $value = ($value ? 1.0 : 0.0);
-			else $value = (double)(string)$value;
-		}
-		
-		$result = ($this->has($key));
-		$this->query[$key] = $value;
-		return $result;
-	}
-
-	public function setNumber($key, $value)
-	{
-		if(!is_string($key = Security::checkString($key, true, true))) throw new \Error('Invalid $key argument');
-		else $key = self::decode($key);
-		
-		if(!is_number($value))
-		{
-			if(is_bool($value)) $value = ($value ? 1 : 0);
-			else
-			{
-				$value = Security::checkString(self::decode((string)$value), true, true);
-				if(str_contains($value, '.')) $value = (double)$value;
-				else $value = (int)$value;
-			}
-		}
-		
-		if(is_double($value)) return $this->setDouble($key, $value);
-		else if(is_int($value)) return $this->setInteger($key, $value);
-	}
-	
-	public static function encode($value)
-	{
-		if(is_string($value))
-		{
-			return rawurlencode($value);
-		}
-		else if(!is_array($value))
-		{
-			throw new \Error('Invalid $value argument (neither String nor Array)');
-		}
-
-		$result = [];
-
-		foreach($value as $key => $value)
-		{
-			$key = self::encode($key);
-
-			if(!is_string($value))
-			{
-				$value = (string)$value;
-			}
-
-			$result[$key] = self::encode($value);
-		}
-
-		return $result;
-	}
-
-	public static function decode($value)
-	{
-		if(is_string($value))
-		{
-			return rawurldecode($value);
-		}
-		else if(!is_array($value))
-		{
-			throw new \Error('Invalid $value argument (neither String nor Array)');
-		}
-
-		$result = [];
-
-		foreach($value as $key => $value)
-		{
-			$key = self::decode($key);
-
-			if(!is_string($value))
-			{
-				$value = (string)$value;
-			}
-
-			$result[$key] = self::decode($value);
-		}
-
-		return $result;
-	}
-
 	public static function render($array)
 	{
 		if(is_string($array))
@@ -465,7 +141,7 @@ class Parameter extends Quant
 		{
 			$string = self::render($string);
 		}
-		else if(!is_string($string))
+		else if(!is_string($string) || $string === '')
 		{
 			return [];
 		}

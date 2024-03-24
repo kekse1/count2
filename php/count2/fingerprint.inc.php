@@ -11,9 +11,8 @@ class Fingerprint extends \kekse\Quant
 
 	public function __construct($session, $fingerprint, ... $args)
 	{
-		$this->session = $session;
 		$this->fingerprint = $fingerprint;
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

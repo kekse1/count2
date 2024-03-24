@@ -9,7 +9,7 @@ define('KEKSE_LIMIT_STRING', 255);
 
 class Security extends Quant
 {
-	public function __construct(... $args)
+	/*public function __construct(... $args)
 	{
 		return parent::__construct(... $args);
 	}
@@ -17,7 +17,7 @@ class Security extends Quant
 	public function __destruct()
 	{
 		return parent::__destruct();
-	}
+	}*/
 	
 	public static function secure($string, $type)
 	{

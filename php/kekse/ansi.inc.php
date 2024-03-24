@@ -10,14 +10,14 @@ require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
 class ANSI extends Quant
 {
-	public function __construct(... $args)
+	public function __construct($session = null, ... $args)
 	{
 		if(!self::isTTY())
 		{
 			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

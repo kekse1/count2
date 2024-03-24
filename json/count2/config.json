@@ -13,7 +13,9 @@
 	},
 	"text": {
 		"type": [ "integer" ],
-		"default": 64
+		"default": 64,
+		"max": 255,
+		"min": 0
 	},
 	"threshold": {
 		"type": [ "integer" ],

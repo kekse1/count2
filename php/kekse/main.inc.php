@@ -9,13 +9,15 @@ class Quant
 {
 	public $session = null;
 
-	public $TIME;
-	public $ARGS;
+	public $time;
+	public $args;
 
-	public function __construct(... $args)
+	public function __construct($session = null, ... $args)
 	{
-		$this->TIME = timestamp();
-		$this->ARGS = $args;
+		$this->session = $session;
+
+		$this->time = timestamp();
+		$this->args = $args;
 
 		echo '__construct(' . $this->className() . ')' . PHP_EOL;
 	}
@@ -43,10 +45,12 @@ class Quant
 
 	public function runtime()
 	{
-		return timestamp($this->TIME);
+		return timestamp($this->time);
 	}
 }
 
+require_once(__DIR__ . '/logger.inc.php');
+require_once(__DIR__ . '/session.inc.php');
 require_once(__DIR__ . '/math.inc.php');
 require_once(__DIR__ . '/environment.inc.php');
 require_once(__DIR__ . '/filesystem.inc.php');

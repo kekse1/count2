@@ -12,17 +12,15 @@ class Terminal extends Quant
 {
 	public $console;
 
-	public function __construct($session, $console, ... $args)
+	public function __construct($session = null, $console = null, ... $args)
 	{
 		if(!self::isTTY())
 		{
 			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
-		$this->session = $session;
 		$this->console = $console;
-
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

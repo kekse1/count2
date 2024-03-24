@@ -11,8 +11,7 @@ class Notification extends \kekse\Quant
 {
 	public function __construct($session, ... $args)
 	{
-		$this->session = $session;
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

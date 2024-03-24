@@ -3,13 +3,13 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
+namespace kekse;
 
-class IP extends \kekse\Quant
+class Session extends Quant
 {
-	public function __construct($session, ... $args)
+	public function __construct(... $args)
 	{
-		return parent::__construct($session, ... $args);
+		return parent::__construct($this, ... $args);
 	}
 
 	public function __destruct()

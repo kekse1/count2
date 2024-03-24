@@ -12,16 +12,7 @@ class Controller extends \kekse\Quant
 {
 	public function __construct(... $args)
 	{
-		try
-		{
-			$this->session = new Session($this);
-		}
-		catch(_error)
-		{
-			throw new \Exception('Unable to initialize new controller (session\'s mistake..)');
-		}
-		
-		return parent::__construct(... $args);
+		return parent::__construct(new Session($this), ... $args);
 	}
 
 	public function __destruct()

@@ -19,8 +19,6 @@ class Drawing extends \kekse\Quant
 			throw new \Exception('Unable to find the GD library module');
 		}
 		
-		$this->session = $session;
-		
 		if(is_string($mode) && strlen($mode) > 0)
 		{
 			$this->mode = self::checkMode($mode);
@@ -39,7 +37,7 @@ class Drawing extends \kekse\Quant
 			$this->type = null;
 		}
 		
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

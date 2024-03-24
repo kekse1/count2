@@ -7,10 +7,9 @@ namespace kekse\count2;
 
 class Logger extends \kekse\Quant
 {
-	public function __construct($session, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		$this->session = $session;
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
@@ -20,19 +19,26 @@ class Logger extends \kekse\Quant
 
 	public static function errorHandler(... $args)
 	{
-		return self::handler(... $args);
+		return self::handler('error', ... $args);
 	}
 
 	public static function exceptionHandler(... $args)
 	{
-		return self::handler(... $args);
+		return self::handler('exception', ... $args);
 	}
 
-	public static function handler(... $args)
+	public static function handler($type, ... $args)
 	{
 		var_dump($args);
 		//\kekse\Terminal::error(... $args);
-		exit(255);
+		
+		switch($type)
+		{
+			case 'error':
+				exit(255);
+			case 'exception':
+				break;
+		}
 	}
 }
 

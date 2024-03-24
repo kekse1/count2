@@ -7,10 +7,12 @@ namespace kekse\count2;
 
 class Counter extends \kekse\FileSystem
 {
-	public function __construct($session, ... $args)
+	public $carrier;
+
+	public function __construct($session, $carrier, ... $args)
 	{
-		$this->session = $session;
-		return parent::__construct(... $args);
+		$this->carrier = $carrier;
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

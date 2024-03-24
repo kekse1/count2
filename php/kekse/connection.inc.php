@@ -11,10 +11,9 @@ class Connection extends Quant
 {
 	private $headers = [];
 
-	public function __construct($session, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		$this->session = $session;
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

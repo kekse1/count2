@@ -12,15 +12,13 @@ class Environment extends Quant
 	public $file;
 	public $real;
 	
-	public function __construct($session, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		$this->session = $session;
-
 		$details = self::getScriptDetails();
 		$this->file = $details[0];
 		$this->real = $details[1];
 		
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()

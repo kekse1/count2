@@ -6,51 +6,38 @@
 namespace kekse;
 
 require_once(__DIR__ . '/filesystem.inc.php');
+require_once(__DIR__ . '/map.inc.php');
 
-class Configuration extends Quant
+class Configuration extends Map
 {
-	public $scheme = null;
-
-	public function __construct($session = null, $scheme = null, ... $args)
+	public function __construct($session = null, $values = null, ... $args)
 	{
-		$this->session = $session;
-		$this->scheme = $scheme;
-		return parent::__construct(... $args);
+		return parent::__construct($session, $values, ... $args);
 	}
 
 	public static function fromJSON($path, $session = null, ... $args)
 	{
-		$scheme = FileSystem::readFile($path);
+		$values = FileSystem::readFile($path);
 
-		if(!$scheme)
+		if(!$values)
 		{
 			return null;
 		}
 		
-		$scheme = json_decode($scheme, true, KEKSE_JSON_DEPTH);
+		$values = json_decode($values, true, KEKSE_JSON_DEPTH);
 		
-		if(!is_array($scheme))
+		if(!is_array($values))
 		{
 			return null;
 		}
-		
-		return new Configuration($session, $scheme, ... $args);
+
+		return new Configuration($session, $values, ... $args);
 	}
 
 	public function __destruct()
 	{
 		unset($this->session);
 		return parent::__destruct();
-	}
-
-	public function check($config)
-	{
-		if(!is_array($this->scheme))
-		{
-			return null;
-		}
-
-		//TODO/
 	}
 }
 

@@ -9,9 +9,9 @@ require_once(__DIR__ . '/terminal.inc.php');
 
 class Color extends Quant
 {
-	public function __construct(... $args)
+	public function __construct($session = null, ... $args)
 	{
-		return parent::__construct(... $args);
+		return parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
