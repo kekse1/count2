@@ -1,0 +1,3 @@
+
+	# importValues*()? dann bitte pure werte, kein schema w/ type/def./..
+
