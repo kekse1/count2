@@ -13,6 +13,9 @@ Most counter related things should be defined below `kekse\count2`.
 * `Error` if a programming error occures (so e.g. unexpected parameter type)
 * `Exception` if a user error like wrong `$_GET[]` params occures
 
+I wrote it this way: if it's an instance of **`\Error`**, the whole process
+will be stopped (return code `255`).
+
 > [!IMPORTANT]
 > I think you'd like to write `\Exception` etc. (so with the backslash `\`),
 > since most times we're working in the `namespace \kekse`.

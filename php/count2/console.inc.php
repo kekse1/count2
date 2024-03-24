@@ -20,7 +20,7 @@ class Console extends \kekse\Terminal
 
 		if(!parent::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
 		$this->session = $session;

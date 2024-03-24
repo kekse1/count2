@@ -16,7 +16,7 @@ class Terminal extends Quant
 	{
 		if(!self::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
 		$this->console = $console;

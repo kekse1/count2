@@ -14,7 +14,7 @@ class ANSI extends Quant
 	{
 		if(!self::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
 		return parent::__construct($session, ... $args);

@@ -79,7 +79,7 @@ class Map extends Quant
 		}
 		else if(!is_array($value))
 		{
-			throw new \Error('Invalid $value argument (neither String nor Array)');
+			throw new \Exception('Invalid $value argument (neither String nor Array)');
 		}
 
 		$result = [];
@@ -107,7 +107,7 @@ class Map extends Quant
 		}
 		else if(!is_array($value))
 		{
-			throw new \Error('Invalid $value argument (neither String nor Array)');
+			throw new \Exception('Invalid $value argument (neither String nor Array)');
 		}
 
 		$result = [];

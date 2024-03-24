@@ -27,14 +27,14 @@ class Security extends Quant
 		}
 		else if(!is_string($type))
 		{
-			throw new \Error('Invalid $type argument');
+			throw new \Exception('Invalid $type argument');
 		}
 		else switch($type = strtolower($type))
 		{
 			case 'host':
 			case 'path':
 				break;
-			default: throw new \Error('Invalid $type argument');
+			default: throw new \Exception('Invalid $type argument');
 		}
 		
 		$len = strlen($string);

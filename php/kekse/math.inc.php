@@ -173,7 +173,8 @@ function unit($string, $double = null, $unit = null, $fix = true)
 				}
 				break;
 			default:
-				throw new \Exception('Invalid $unit defined [ `px`, `pt` ]');
+				return null;
+				//throw new \Exception('Invalid $unit defined [ `px`, `pt` ]');
 				break;
 		}
 	}

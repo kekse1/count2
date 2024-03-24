@@ -16,7 +16,7 @@ class Drawing extends \kekse\Quant
 	{
 		if(!extension_loaded('gd'))
 		{
-			throw new \Exception('Unable to find the GD library module');
+			throw new \Error('Unable to find the GD library module');
 		}
 		
 		if(is_string($mode) && strlen($mode) > 0)
@@ -50,7 +50,7 @@ class Drawing extends \kekse\Quant
 	{
 		if(!($mode = self::checkMode($mode)))
 		{
-			throw new \Error('Invalid $mode argument');
+			throw new \Exception('Invalid $mode argument');
 		}
 		
 		return $this->mode = $mode;
@@ -65,7 +65,7 @@ class Drawing extends \kekse\Quant
 	{
 		if(!($type = self::checkType($type)))
 		{
-			throw new \Error('Invalid $type argument');
+			throw new \Exception('Invalid $type argument');
 		}
 		
 		return $this->type = $type;
@@ -199,27 +199,32 @@ throw new \Error('TODO');
 	{
 		if(!$this->session)
 		{
-			throw new \Exception('There\'s no [session] available');
+			return false;
+			//throw new \Exception('There\'s no [session] available');
 		}
 		
 		switch($this->type)
 		{
-			case 'png': return $this->session->connection->sendTypeHeader('image/png');
-			case 'jpg': return $this->session->connection->sendTypeHeader('image/jpeg');
+			case 'png': $this->session->connection->sendTypeHeader('image/png'); return true;
+			case 'jpg': $this->session->connection->sendTypeHeader('image/jpeg'); return true;
 		}
 
-		throw new \Error('Invalid [type] member, can\'t send valid image header');
+		return false;
+		//throw new \Error('Invalid [type] member, can\'t send valid image header');
 	}
 	
 	public function sendTextHeader()
 	{
 		if(!$this->session)
 		{
-			throw new \Exception('There\'s no [session] available');
+			return false;
+			//throw new \Exception('There\'s no [session] available');
 		}
-		
-		//TODO/config default etc..!!!
-		//return HTTP->sendTypeHeader($type); (w/ instance of http)
+
+		$type = $this->session->parameter->getString('type');
+		$this->session->connection->sendTypeHeader($type);
+
+		return true;
 	}
 	
 	public static getFont($name)
