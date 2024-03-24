@@ -77,6 +77,7 @@ class Counter extends \kekse\FileSystem
 
 		flock($fh, LOCK_EX);
 		$result = (int)fread($fh, KEKSE_COUNT2_LIMIT_FILE_SIZE);
+		fseek($fh, 0);
 		$result = ++$result;
 		$string = (string)$result;
 		ftruncate($fh, strlen($string));
