@@ -17,7 +17,8 @@
 	},
 	"threshold": {
 		"type": [ "integer" ],
-		"default": 7200
+		"default": 7200,
+		"min": 0
 	},
 	"drawing": {
 		"type": [ "boolean" ],
