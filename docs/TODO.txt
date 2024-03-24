@@ -1,3 +1,5 @@
 
 	# importValues*()? dann bitte pure werte, kein schema w/ type/def./..
 
+		@ "echte" config.json's! w/ pure values!!!
+
