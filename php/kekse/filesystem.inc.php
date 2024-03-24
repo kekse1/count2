@@ -5,16 +5,6 @@
 
 namespace kekse;
 
-define('KEKSE_KEEP', true);
-define('KEKSE_KEEP_HIDDEN', true);
-define('KEKSE_KEEP_GIT', true);
-define('KEKSE_KEEP_HTACCESS', true);
-
-define('KEKSE_MODE_FILE', 0600);
-define('KEKSE_MODE_DIR', 0700);
-
-define('KEKSE_FILE_CHUNK', 4096);
-
 class FileSystem extends Quant
 {
 	public function __construct($session = null, ... $args)

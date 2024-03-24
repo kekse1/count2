@@ -11,6 +11,14 @@
 		"type": "string",
 		"default": "count"
 	},
+	"visit": {
+		"type": "string",
+		"default": "visit"
+	},
+	"click": {
+		"type": "string",
+		"default": "click"
+	},
 	"text": {
 		"type": "integer",
 		"default": 64,

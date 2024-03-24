@@ -6,8 +6,6 @@
 //
 namespace kekse;
 
-define('KEKSE_JSON_DEPTH', 8);
-
 class Quant
 {
 	public $session = null;
@@ -54,14 +52,15 @@ class Quant
 
 function parseJSON($value)
 {
-	return json_decode($value, true, KEKSE_JSON_DEPTH);
+	return json_decode($value, true, KEKSE_LIMIT_JSON);
 }
 
 function renderJSON($string)
 {
-	return json_encode($string, 0, KEKSE_JSON_DEPTH);
+	return json_encode($string, 0, KEKSE_LIMIT_JSON);
 }
 
+require_once(__DIR__ . '/constants.inc.php');
 require_once(__DIR__ . '/logger.inc.php');
 require_once(__DIR__ . '/session.inc.php');
 require_once(__DIR__ . '/math.inc.php');
