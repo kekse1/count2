@@ -15,15 +15,16 @@ class Map extends Quant
 	{
 		if(is_array($values))
 		{
-			$this->values = self::check($values);
+			$this->values = self::check($values, null, true);
 		}
 
 		return parent::__construct($session, ... $args);
 	}
 
-	public static function check($values)
+	public static function check($values, $scheme = null, $throw = true)
 	{
 		if(!is_array($values)) return null;
+		if(!is_array($scheme)) $scheme = null;
 		$result = [];
 		
 		foreach($values as $key => $value)
@@ -35,6 +36,19 @@ class Map extends Quant
 			else
 			{
 				continue;
+			}
+			
+			if($scheme)
+			{
+				if(!array_key_exists($key, $scheme))
+				{
+					if($throw)
+					{
+						throw new \Exception('Array key \'' . $key . '\' is not specified within scheme');
+					}
+					
+					continue;
+				}
 			}
 			
 			if(is_string($value))
@@ -67,6 +81,19 @@ class Map extends Quant
 					case 'false':
 						$value = false;
 						break;
+				}
+			}
+			
+			if($scheme && isset($scheme[$key]['type']))
+			{
+				if($scheme[$key]['type'] !== self::getType($value))
+				{
+					if($throw)
+					{
+						throw new \Exception('Value type doesn\'t match scheme at key \'' . $key . '\'');
+					}
+					
+					continue;
 				}
 			}
 
@@ -199,10 +226,11 @@ class Map extends Quant
 	public function getDefaultValue($key, $type = '')
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
+		$key = self::decode($key);
 
 		$result;
 
-		if(isset($this->values) && isset($this->values[$key = self::decode($key)]) && is_array($this->values[$key]))
+		if(isset($this->values) && isset($this->values[$key]) && is_array($this->values[$key]))
 		{
 			$result = $this->values[$key];
 		}
@@ -221,7 +249,20 @@ class Map extends Quant
 		}
 		
 		$result = $result['default'];
+
+		if(!is_string($type))
+		{
+			$type = '';
+		}
 		
+		if(!$type)
+		{
+			if(($type = $this->getSchemeType($key)) === null)
+			{
+				$type = '';
+			}
+		}
+
 		switch($type)
 		{
 			case 'string':
@@ -241,20 +282,44 @@ class Map extends Quant
 				break;
 			case '':
 				break;
-			default:
-				$result = null;
-				break;
 		}
 		
 		return $result;
 	}
 	
-	public function get($key)
+	public function getSchemeType($key)
+	{
+		if(!is_array($this->scheme))
+		{
+			return null;
+		}
+		else if(!is_string($key = Security::checkString($key, true, true)))
+		{
+			return null;
+		}
+		else if(!isset($this->scheme[$key = self::decode($key)]))
+		{
+			return null;
+		}
+		
+		$result = $this->scheme[$key];
+		
+		if(!isset($result['type']))
+		{
+			return null;
+		}
+
+		return $result['type'];
+	}
+	
+	public function get($key, $scheme = '')
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
 		if(!isset($this->values[$key])) return $this->getDefaultValue($key, '');
 		$result = $this->values[$key = self::decode($key)];
-		$type = self::getType($result);
+		$type = ($scheme ? $this->getSchemeType($key) : null);
+		if($type === null) $type = self::getType($result);
+		
 		switch($type)
 		{
 			case '':
@@ -281,6 +346,7 @@ class Map extends Quant
 				}
 				break;
 		}
+
 		return $result;
 	}
 	
@@ -587,7 +653,7 @@ class Map extends Quant
 			$this->values = [];
 		}
 		
-		$result = self::check($values);
+		$result = self::check($values, $this->scheme);
 		$this->values = array_merge($this->values, $result);
 		
 		return $result;
@@ -604,7 +670,7 @@ class Map extends Quant
 			$this->scheme = [];
 		}
 
-		$result = self::check($scheme);
+		$result = self::check($scheme, null);
 		$this->scheme = array_merge($this->scheme, $result);
 		
 		return $result;
@@ -646,40 +712,6 @@ class Map extends Quant
 		}
 		
 		return $this->importScheme($scheme);
-	}
-		
-	//
-	public function filterValues()
-	{
-		$result = [];
-		if(!$this->scheme) return $result;
-		foreach($this->values as $key => $value)
-		{
-			if(!isset($this->scheme[$key]))
-			{
-				array_push($result, $key);
-				unset($this->values[$key]);
-			}
-			else
-			{
-				$type = parent::getType($value);
-			
-				if($type)
-				{
-					if(!in_array($type, $this->scheme[$key]['type']))
-					{
-						array_push($result, $key);
-						unset($this->values[$key]);
-					}
-				}
-				else
-				{
-					array_push($result, $key);
-					unset($this->values[$key]);
-				}
-			}
-		}
-		return $result;
 	}
 }
 

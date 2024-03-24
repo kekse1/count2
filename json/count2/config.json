@@ -1,37 +1,37 @@
 {
 	"file": {
-		"type": [ "integer" ],
+		"type": "integer",
 		"default": 448
 	},
 	"dir": {
-		"type": [ "integer" ],
+		"type": "integer",
 		"default": 384
 	},
 	"path": {
-		"type": [ "string" ],
+		"type": "string",
 		"default": "count"
 	},
 	"text": {
-		"type": [ "integer" ],
+		"type": "integer",
 		"default": 64,
 		"max": 255,
 		"min": 0
 	},
 	"threshold": {
-		"type": [ "integer" ],
+		"type": "integer",
 		"default": 7200,
 		"min": 0
 	},
 	"drawing": {
-		"type": [ "boolean" ],
+		"type": "boolean",
 		"default": true
 	},
 	"fonts": {
-		"type": [ "string" ],
+		"type": "string",
 		"default": "fonts"
 	},
 	"hash": {
-		"type": [ "string" ],
+		"type": "string",
 		"default": "sha3-256"
 	}
 }

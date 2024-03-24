@@ -32,8 +32,6 @@ class Parameter extends Map
 		$this->scheme = $scheme;
 
 		parent::__construct($session, $values, ... $args);
-
-		$this->filterValues();
 	}
 	
 	public function __destruct()
