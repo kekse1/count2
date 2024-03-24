@@ -13,48 +13,64 @@ class Map extends Quant
 	
 	public function __construct($session = null, $values = null, ... $args)
 	{
-		$this->values = self::castValues($values);
+		if(is_array($values))
+		{
+			$this->values = self::check($values);
+		}
+
 		return parent::__construct($session, ... $args);
 	}
 
-	public static function castValues($values)
+	public static function check($values)
 	{
 		if(!is_array($values)) return null;
 		$result = [];
 		
 		foreach($values as $key => $value)
 		{
-			$key = Security::checkString($key = self::decode($key), true, true);
-
-			if(is_string($value))
+			if(is_string($key = Security::checkString($key = self::decode($key), true, true)))
 			{
-				$value = Security::checkString($value = self::decode($value), true, true);
+				$key = self::decode($key);
+			}
+			else
+			{
+				continue;
 			}
 			
-			if($key && $value)
+			if(is_string($value))
 			{
-				if(is_string($value))
+				if(is_string($value = Security::checkString($value, true, true)))
 				{
-					if(is_numeric($value))
-					{
-						$value = (double)$value;
-						if(fmod($value, 1) == 0) $value = (int)$value;
-					}
-					else switch(strtolower($value))
-					{
-						case 'yes':
-						case 'true':
-							$value = true;
-							break;
-						case 'no':
-						case 'false':
-							$value = false;
-							break;
-					}
+					$value = self::decode($value);
+				}
+				else
+				{
+					continue;
 				}
 				
-				$result[$key] = $value;
+				if(is_numeric($value))
+				{
+					$value = (double)$value;
+					
+					if(fmod($value, 1) == 0)
+					{
+						$value = (int)$value;
+					}
+				}
+				else switch(strtolower($value))
+				{
+					case 'yes':
+					case 'true':
+						$value = true;
+						break;
+					case 'no':
+					case 'false':
+						$value = false;
+						break;
+				}
 			}
+
+			$result[$key] = $value;
 		}
 
 		return $result;
@@ -148,16 +164,33 @@ class Map extends Quant
 		return count($this->values);
 	}
 	
-	public function has($key)
+	public function contains($key, $default = false)
+	{
+		return $this->has($key, $default);
+	}
+	
+	public function has($key, $default = false)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		else $key = self::decode($key); return isset($this->values[$key]);
+		$key = self::decode($key);
+		if(isset($this->values[$key])) return true;
+		else if($default && $this->getDefaultValue($key) !== null) return true;
+		return false;
+	}
+	
+	public function type($key, $default = false)
+	{
+		if(!is_string($key = Security::checkString($key, true, true))) return null;
+		$key = self::decode($key);
+		if(isset($this->values[$key])) return self::getType($this->values[$key]);
+		if(!$default) return '';
+		return self::getType($this->getDefaultValue($key));
 	}
 	
 	public function delete($key)
 	{
 		if(!is_string($key = Security::checkString($key, true, true))) return null;
-		else $key = self::decode($key);
+		$key = self::decode($key);
 		if(!$this->has($key)) return false;
 		unset($this->values[$key]);
 		return true;
@@ -517,6 +550,115 @@ class Map extends Quant
 		if($value === null) return null;
 		$result = (isset($this->values[$key]) ? $this->values[$key] : null);
 		$this->values[$key] = $value;
+		return $result;
+	}
+	
+	//
+	//TODO/check for existence [oder so]..
+	//
+	public function importValues($values)
+	{
+		if(!is_array($values))
+		{
+			return null;
+		}
+		else if(!is_array($this->values))
+		{
+			$this->values = [];
+		}
+		
+		$result = self::check($values);
+		$this->values = array_merge($this->values, $result);
+		
+		return $result;
+	}
+	
+	public function importScheme($scheme)
+	{
+		if(!is_array($scheme))
+		{
+			return null;
+		}
+		else if(!is_array($this->scheme))
+		{
+			$this->scheme = [];
+		}
+
+		$result = self::check($scheme);
+		$this->scheme = array_merge($this->scheme, $result);
+		
+		return $result;
+	}
+
+	public function importValuesFromJSON($path)
+	{
+		$values = FileSystem::readFile($path);
+		
+		if(!$values)
+		{
+			return null;
+		}
+		
+		$values = parseJSON($values);
+		
+		if(!is_array($values))
+		{
+			return null;
+		}
+		
+		return $this->importValues($values);
+	}
+	
+	public function importSchemeFromJSON($path)
+	{
+		$scheme = FileSystem::readFile($path);
+		
+		if(!$scheme)
+		{
+			return null;
+		}
+		
+		$scheme = parseJSON($scheme);
+		
+		if(!is_array($scheme))
+		{
+			return null;
+		}
+		
+		return $this->importScheme($scheme);
+	}
+		
+	//
+	public function filterValues()
+	{
+		$result = [];
+		if(!$this->scheme) return $result;
+		foreach($this->values as $key => $value)
+		{
+			if(!isset($this->scheme[$key]))
+			{
+				array_push($result, $key);
+				unset($this->values[$key]);
+			}
+			else
+			{
+				$type = parent::getType($value);
+			
+				if($type)
+				{
+					if(!in_array($type, $this->scheme[$key]['type']))
+					{
+						array_push($result, $key);
+						unset($this->values[$key]);
+					}
+				}
+				else
+				{
+					array_push($result, $key);
+					unset($this->values[$key]);
+				}
+			}
+		}
 		return $result;
 	}
 }

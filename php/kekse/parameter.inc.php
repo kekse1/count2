@@ -36,60 +36,6 @@ class Parameter extends Map
 		$this->filterValues();
 	}
 	
-	//
-	public function filterValues()
-	{
-		$result = [];
-		if(!$this->scheme) return $result;
-		foreach($this->values as $key => $value)
-		{
-			if(!isset($this->scheme[$key]))
-			{
-				array_push($result, $key);
-				unset($this->values[$key]);
-			}
-			else
-			{
-				$type = parent::getType($value);
-			
-				if($type)
-				{
-					if(!in_array($type, $this->scheme[$key]['type']))
-					{
-						array_push($result, $key);
-						unset($this->values[$key]);
-					}
-				}
-				else
-				{
-					array_push($result, $key);
-					unset($this->values[$key]);
-				}
-			}
-		}
-		return $result;
-	}
-	
-	//
-	public static function withJSON($path, $session = null, $values = null, ... $args)
-	{
-		$scheme = FileSystem::readFile($path);
-
-		if(!$scheme)
-		{
-			return null;
-		}
-
-		$scheme = parseJSON($scheme);
-
-		if(!is_array($scheme))
-		{
-			return null;
-		}
-
-		return new Parameter($session, $scheme, $values, ... $args);
-	}
-	
 	public function __destruct()
 	{
 		return parent::__destruct();

@@ -28,7 +28,8 @@ class Session extends \kekse\Session
 		$this->controller = $controller;
 
 		$this->environment = new \kekse\Environment($this);
-		$this->configuration = \kekse\Configuration::fromJSON(KEKSE_COUNT2_JSON_CONFIG, $this);
+		$this->configuration = new \kekse\Configuration($this);
+		$this->configuration->importValuesFromJSON(KEKSE_COUNT2_JSON_CONFIG);
 
 		$this->makeSession();
 
@@ -67,7 +68,8 @@ class Session extends \kekse\Session
 		{
 			$this->loadBrowserModules();
 
-			$this->parameter = \kekse\Parameter::withJSON(KEKSE_COUNT2_JSON_PARAM, $this);
+			$this->parameter = new \kekse\Parameter($this);
+			$this->parameter->importSchemeFromJSON(KEKSE_COUNT2_JSON_PARAM);
 			$this->connection = new \kekse\Connection($this);
 
 			$fingerprint = $this->parameter->getString('fingerprint');
