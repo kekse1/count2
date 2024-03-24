@@ -119,7 +119,7 @@ class FileSystem extends Quant
 	
 	public static function isFile($path, $read = true, $write = false)
 	{
-		if(!is_file($path)) return false;
+		if(!is_string($path) || !is_file($path)) return false;
 		else if($read && !is_readable($path)) return false;
 		else if($write && !is_writable($path)) return false;
 		return true;
@@ -127,7 +127,7 @@ class FileSystem extends Quant
 	
 	public static function isDirectory($path, $read = true, $write = false)
 	{
-		if(!is_dir($path)) return false;
+		if(!is_string($path) || !is_dir($path)) return false;
 		else if($read && !is_readable($path)) return false;
 		else if($write && !is_writable($path)) return false;
 		return true;
