@@ -37,8 +37,7 @@ class Counter extends \kekse\FileSystem
 	
 	public function getType()
 	{
-		if(!$this->type)
-			return 'visit';
+		if(!$this->type) return 'visit';
 		return $this->type;
 	}
 
@@ -59,7 +58,7 @@ class Counter extends \kekse\FileSystem
 		return (int)file_get_contents($path);
 	}
 
-	public function increment()
+	public function incrementValue()
 	{
 		$path = $this->getValuePath();
 
