@@ -1,0 +1,7 @@
+
+	# importValues*()? dann bitte pure werte, kein schema w/ type/def./..
+
+		@ "echte" config.json's! w/ pure values!!!
+
+	# config und param .json anpassen und keep in sync
+

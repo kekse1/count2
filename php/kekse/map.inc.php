@@ -73,10 +73,12 @@ class Map extends Quant
 				}
 				else switch(strtolower($value))
 				{
+					case '1':
 					case 'yes':
 					case 'true':
 						$value = true;
 						break;
+					case '0':
 					case 'no':
 					case 'false':
 						$value = false;
@@ -335,10 +337,12 @@ class Map extends Quant
 				}
 				else switch(strtolower($result))
 				{
+					case '1':
 					case 'yes':
 					case 'true':
 						$result = true;
 						break;
+					case '0':
 					case 'no':
 					case 'false':
 						$result = false;
@@ -385,12 +389,10 @@ class Map extends Quant
 			case 'string':
 				switch(strtolower($value))
 				{
-					case '0': case '0.0':
-					case 'no': case 'false':
+					case '0': case 'no': case 'false':
 						$value = false;
 						break;
-					case '1': case '1.0':
-					case 'yes': case 'true':
+					case '1': case 'yes': case 'true':
 						$value = false;
 						break;
 					default:

@@ -9,7 +9,7 @@
 	},
 	"path": {
 		"type": "string",
-		"default": "count"
+		"default": "count2"
 	},
 	"visit": {
 		"type": "string",
