@@ -11,3 +11,5 @@
 
 		# evtl. nur relays der .getBoolean() etc. zu .get(..., 'boolean'); etc..?
 
+	# .json imports @ configuration, *nicht* controller..!
+
