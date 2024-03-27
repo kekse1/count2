@@ -31,7 +31,7 @@ $DEFAULTS = array(
 	'server' => true,//false,
 	'drawing' => true,
 	'override' => false,//true,
-	'content' => 'tkekse/plain;charset=UTF-8',
+	'content' => 'text/plain;charset=UTF-8',
 	'radix' => 10,
 	'clean' => true,
 	'limit' => 32768,

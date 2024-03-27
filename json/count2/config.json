@@ -41,5 +41,9 @@
 	"hash": {
 		"type": "string",
 		"default": "sha3-256"
+	},
+	"hide": {
+		"type": "boolean",
+		"default": false
 	}
 }
