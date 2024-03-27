@@ -9,5 +9,3 @@
 
 		# wenn später scheme, gleich alle values prüfen
 
-	# evtl __construct() *calls* weg??
-
