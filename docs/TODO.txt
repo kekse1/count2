@@ -9,3 +9,5 @@
 
 		# wenn später scheme, gleich alle values prüfen
 
+		# evtl. nur relays der .getBoolean() etc. zu .get(..., 'boolean'); etc..?
+
