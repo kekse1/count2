@@ -5,3 +5,5 @@
 
 	# config und param .json anpassen und keep in sync
 
+	# initiale casts @ map via scheme!
+
