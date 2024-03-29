@@ -5,6 +5,6 @@
 
 //
 namespace kekse\index;
-require_once(__DIR__ . '/sessiom.inc.php');
+require_once(__DIR__ . '/session.inc.php');
 $index = $GLOBALS['index'] = new Session();
 ?>
