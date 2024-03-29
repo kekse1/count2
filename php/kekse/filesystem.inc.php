@@ -17,13 +17,23 @@ class FileSystem extends Quant
 		parent::__destruct();
 	}
 
+	public static function secure($path)
+	{
+		return Security::secure($path, 'path');
+	}
+
 	public static function readFile($path, $callback = null, $chunk = KEKSE_FILE_CHUNK)
 	{
 		if(!FileSystem::isFile($path))
 		{
 			return false;
 		}
-		else if(!is_callable($callback))
+		/*else
+		{
+			$path = self::secure($path);
+		}*/
+
+		if(!is_callable($callback))
 		{
 			$callback = null;
 		}
