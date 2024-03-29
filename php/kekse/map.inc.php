@@ -11,11 +11,24 @@ class Map extends Quant
 	protected $values = null;
 	protected $scheme = null;
 	
-	public function __construct($session = null, $values = null, ... $args)
+	public function __construct($session = null, $scheme = null, $values = null, ... $args)
 	{
-		if(is_array($values))
+		if(is_string($scheme))
 		{
-			$this->values = self::check($values, null, true);
+			$this->importSchemeFromJSON($scheme, false, true);
+		}
+		else if(is_array($scheme))
+		{
+			$this->importScheme($scheme, false, true);
+		}
+
+		if(is_string($values))
+		{
+			$this->importValuesFromJSON($values, null, true);
+		}
+		else if(is_array($values))
+		{
+			$this->importValues($values, null, true);
 		}
 
 		parent::__construct($session, ... $args);
@@ -641,10 +654,7 @@ class Map extends Quant
 		return $result;
 	}
 	
-	//
-	//TODO/check for existence [oder so]..
-	//
-	public function importValues($values)
+	public function importValues($values, $check = null, $throw = true)
 	{
 		if(!is_array($values))
 		{
@@ -655,13 +665,16 @@ class Map extends Quant
 			$this->values = [];
 		}
 		
-		$result = self::check($values, $this->scheme);
-		$this->values = array_merge($this->values, $result);
+		if($check || ($check === null && $this->scheme))
+		{
+			$values = self::check($values, $this->scheme, $throw);
+		}
 		
-		return $result;
+		$this->values = array_merge($this->values, $values);
+		return $values;
 	}
 	
-	public function importScheme($scheme)
+	public function importScheme($scheme, $check = null, $throw = true)
 	{
 		if(!is_array($scheme))
 		{
@@ -672,13 +685,17 @@ class Map extends Quant
 			$this->scheme = [];
 		}
 
-		$result = self::check($scheme, null);
-		$this->scheme = array_merge($this->scheme, $result);
+		$this->scheme = array_merge($this->scheme, $scheme);
 		
-		return $result;
+		if($check || $check === null)
+		{
+			$this->values = self::check($this->values, $this->scheme, $throw);
+		}
+		
+		return $scheme;
 	}
 
-	public function importValuesFromJSON($path)
+	public function importValuesFromJSON($path, $check = true, $throw = true)
 	{
 		$values = FileSystem::readFile($path);
 		
@@ -694,10 +711,10 @@ class Map extends Quant
 			return null;
 		}
 		
-		return $this->importValues($values);
+		return $this->importValues($values, $check, $throw);
 	}
 	
-	public function importSchemeFromJSON($path)
+	public function importSchemeFromJSON($path, $check = true, $throw = true)
 	{
 		$scheme = FileSystem::readFile($path);
 		
@@ -713,7 +730,7 @@ class Map extends Quant
 			return null;
 		}
 		
-		return $this->importScheme($scheme);
+		return $this->importScheme($scheme, $check, $throw);
 	}
 }
 

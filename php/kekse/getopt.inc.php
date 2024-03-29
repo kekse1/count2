@@ -5,11 +5,11 @@
 
 namespace kekse;
 
-class GetOpt extends Quant//extends Map//!?!?!?!? hm..
+class GetOpt extends Quant extends Map
 {
 	public function __construct($session = null, ... $args)
 	{
-		parent::__construct($session, ... $args);
+		parent::__construct($session, null, null, ... $args);
 	}
 
 	public function __destruct()

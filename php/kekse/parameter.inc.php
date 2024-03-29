@@ -26,10 +26,16 @@ class Parameter extends Map
 			}
 		}
 
-		$values = self::parse($values);
-		$this->scheme = $scheme;
+		if(is_string($values))
+		{
+			$values = self::parse($values);
+		}
+		else if(!is_array($values))
+		{
+			$values = null;
+		}
 
-		parent::__construct($session, $values, ... $args);
+		parent::__construct($session, $scheme, $values, ... $args);
 	}
 	
 	public function __destruct()

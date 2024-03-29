@@ -10,9 +10,9 @@ require_once(__DIR__ . '/map.inc.php');
 
 class Configuration extends Map
 {
-	public function __construct($session = null, $values = null, ... $args)
+	public function __construct($session = null, $scheme = null, $values = null, ... $args)
 	{
-		parent::__construct($session, $values, ... $args);
+		parent::__construct($session, $scheme, $values, ... $args);
 		$this->checkEnvironment();
 	}
 	

@@ -1,3 +1,4 @@
 {
-	"path": "abc"
+	"path": "./overrided/path",
+	"hide": true
 }
