@@ -34,7 +34,7 @@ class Parameter extends Map
 	
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public function __toString()

@@ -33,12 +33,12 @@ class Session extends \kekse\Session
 
 		$this->makeSession();
 
-		return parent::__construct(... $args);
+		parent::__construct(... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	private function loadConsoleModules()

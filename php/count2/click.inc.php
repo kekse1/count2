@@ -9,12 +9,12 @@ class Click extends Counter
 {
 	public function __construct($session, $carrier, ... $args)
 	{
-		return parent::__construct($session, $carrier, 'click', ... $args);
+		parent::__construct($session, $carrier, 'click', ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 }
 

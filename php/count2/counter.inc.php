@@ -13,7 +13,7 @@ class Counter extends \kekse\FileSystem
 	{
 		$this->carrier = $carrier;
 		$this->type = self::checkType($type);
-		return parent::__construct($session, ... $args);
+		parent::__construct($session, ... $args);
 	}
 	
 	public static function checkType($type)
@@ -43,7 +43,7 @@ class Counter extends \kekse\FileSystem
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public function getValue()

@@ -7,16 +7,6 @@ namespace kekse;
 
 class Security extends Quant
 {
-	/*public function __construct(... $args)
-	{
-		return parent::__construct(... $args);
-	}
-
-	public function __destruct()
-	{
-		return parent::__destruct();
-	}*/
-	
 	public static function secure($string, $type)
 	{
 		if(!is_string($string) || $string === '')

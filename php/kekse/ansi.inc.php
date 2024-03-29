@@ -17,12 +17,12 @@ class ANSI extends Quant
 			throw new \Exception('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
-		return parent::__construct($session, ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public static function reset()

@@ -18,7 +18,7 @@ class Map extends Quant
 			$this->values = self::check($values, null, true);
 		}
 
-		return parent::__construct($session, ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public static function check($values, $scheme = null, $throw = true)
@@ -108,7 +108,7 @@ class Map extends Quant
 	public function __destruct()
 	{
 		unset($this->values);
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public function keys()

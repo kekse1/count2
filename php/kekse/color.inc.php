@@ -11,12 +11,12 @@ class Color extends Quant
 {
 	public function __construct($session = null, ... $args)
 	{
-		return parent::__construct($session, ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public static function fixColor($array, $gd = null)

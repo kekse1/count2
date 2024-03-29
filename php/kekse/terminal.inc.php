@@ -20,12 +20,12 @@ class Terminal extends Quant
 		}
 
 		$this->console = $console;
-		return parent::__construct($session, ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public static function isTTY()

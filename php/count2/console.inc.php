@@ -45,12 +45,12 @@ class Console extends \kekse\Terminal
 			throw new \Error('Invalid server state (argument vector/count not accessable)');
 		}
 
-		return parent::__construct($session, $this, ... $args);
+		parent::__construct($session, $this, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 }
 

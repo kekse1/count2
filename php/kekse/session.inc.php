@@ -9,12 +9,12 @@ class Session extends Quant
 {
 	public function __construct(... $args)
 	{
-		return parent::__construct($this, ... $args);
+		parent::__construct($this, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 }
 

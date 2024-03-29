@@ -37,13 +37,13 @@ class Drawing extends \kekse\Quant
 			$this->type = null;
 		}
 		
-		return parent::__construct($session, ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
 		$this->destroyImage();
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public function setMode($mode)
