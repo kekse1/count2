@@ -6,5 +6,8 @@
 # v2.0.0
 # 
 
-target="$(readlink "$0")"
+#target="$(readlink "$0")"
+
+echo TODO >&2
+exit 255
 
