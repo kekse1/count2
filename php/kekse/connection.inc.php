@@ -10,6 +10,7 @@ require_once(__DIR__ . '/security.inc.php');
 class Connection extends Quant
 {
 	private $headers = [];
+	private $sent = false;
 
 	public function __construct($session = null, ... $args)
 	{
@@ -20,31 +21,61 @@ class Connection extends Quant
 	{
 		parent::__destruct();
 	}
+
+	public function write($data)
+	{
+		if(!is_string($data))
+		{
+			if(is_number($data))
+			{
+				$data = (string)$data;
+			}
+			else
+			{
+				throw new \Error('Invalid $data argument');
+			}
+		}
+
+		$this->sent = true;
+		echo $data;
+		return strlen($data);
+	}
+
+	private function checkState($throw = true)
+	{
+		if(!$this.sent) return true;
+		else if($throw) throw new \Exception('Can\'t send any header after body data began.');
+		return false;
+	}
 	
-	public function sendTypeHeader($type)
+	public function setTypeHeader($type)
 	{
 		if(!is_string($type)) throw new \Exception('Invalid $type argument');
 		else if(str_starts_with($type, 'Content-Type:')) $type = substr($type, 13);
 		if(!($type = \kekse\Security::checkString($type, true, true))) throw new \Exception('Invalid $type argument');
-		$this->sendHeader('Content-Type', $type);
+		$this->setHeader('Content-Type', $type);
 		$this->typeSent = true;
 		return $type;
 	}
 
-	public function sendLengthHeader($length)
+	public function setLengthHeader($length)
 	{
 		if(is_int($length)) $length = (string)$length;
 		else if(!is_string($length)) throw new \Exception('Invalid $length argument');
 		else if(str_starts_with($length, 'Content-Length')) $length = substr($length, 14);
 		if(!($length = \kekse\Security::checkString($length, true, true))) throw new \Exception('Invalid $length argument');
-		$this->sendHeader('Content-Length', $length);
+		$this->setHeader('Content-Length', $length);
 		$this->lengthSent = true;
 		return $type;
 	}
 
-	public function sendHeader($item, $value = null)
+	public function setHeader($item, $value = null)
 	{
-		if(is_array($item))
+		if(!$this->checkState())
+		{
+			return null;
+		}
+		else if(is_array($item))
 		{
 			$result = 0;
 			

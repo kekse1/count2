@@ -9,32 +9,11 @@ class Drawing extends \kekse\Quant
 {
 	private $image = null;
 
-	private $mode;
-	private $type;
-
-	public function __construct($session, $mode, $type, ... $args)
+	public function __construct($session, ... $args)
 	{
 		if(!extension_loaded('gd'))
 		{
 			throw new \Error('Unable to find the GD library module');
-		}
-		
-		if(is_string($mode) && strlen($mode) > 0)
-		{
-			$this->mode = self::checkMode($mode);
-		}
-		else
-		{
-			$this->mode = null;
-		}
-		
-		if(is_string($type) && strlen($type) > 0)
-		{
-			$this->type = self::checkType($type);
-		}
-		else
-		{
-			$this->type = null;
 		}
 		
 		parent::__construct($session, ... $args);
@@ -46,53 +25,7 @@ class Drawing extends \kekse\Quant
 		parent::__destruct();
 	}
 
-	public function setMode($mode)
-	{
-		if(!($mode = self::checkMode($mode)))
-		{
-			throw new \Exception('Invalid $mode argument');
-		}
-		
-		return $this->mode = $mode;
-	}
-	
-	public function getMode()
-	{
-		return $this->mode;
-	}
-	
-	public function setType($type)
-	{
-		if(!($type = self::checkType($type)))
-		{
-			throw new \Exception('Invalid $type argument');
-		}
-		
-		return $this->type = $type;
-	}
-	
-	public function getType()
-	{
-		return $this->type;
-	}
-	
-	public static function checkMode($mode)
-	{
-		if(!is_string($mode))
-		{
-			return null;
-		}
-		else switch(strtolower($mode))
-		{
-			case 'draw': return 'draw'; 
-			case 'text': return 'text';
-			case 'zero': return 'zero';
-		}
-		
-		return null;
-	}
-	
-	public static function checkType($type)
+	public static function checkType($type = 'png')
 	{
 		if(!is_string($type)) return null;
 		else $type = strtolower($type);
@@ -195,7 +128,7 @@ throw new \Error('TODO');
 		//
 	}
 	
-	public function sendImageHeader()
+	public function setImageHeader()
 	{
 		if(!$this->session)
 		{
@@ -205,15 +138,15 @@ throw new \Error('TODO');
 		
 		switch($this->type)
 		{
-			case 'png': $this->session->connection->sendTypeHeader('image/png'); return true;
-			case 'jpg': $this->session->connection->sendTypeHeader('image/jpeg'); return true;
+			case 'png': $this->session->connection->setTypeHeader('image/png'); return true;
+			case 'jpg': $this->session->connection->setTypeHeader('image/jpeg'); return true;
 		}
 
 		return false;
 		//throw new \Error('Invalid [type] member, can\'t send valid image header');
 	}
 	
-	public function sendTextHeader()
+	public function setTextHeader()
 	{
 		if(!$this->session)
 		{
@@ -222,7 +155,7 @@ throw new \Error('TODO');
 		}
 
 		$type = $this->session->parameter->getString('type');
-		$this->session->connection->sendTypeHeader($type);
+		$this->session->connection->setTypeHeader($type);
 
 		return true;
 	}

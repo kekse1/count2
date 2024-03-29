@@ -55,7 +55,7 @@
 		"type": "double",
 		"default": 0.0
 	},
-	"image": {
+	"img": {
 		"type": "string",
 		"default": "png",
 		"min": 3,
@@ -84,5 +84,9 @@
 		"default": 0,
 		"min": -512,
 		"max": 512
+	},
+	"readonly": {
+		"type": "boolean",
+		"default": false
 	}
 }

@@ -30,7 +30,7 @@
 		"default": 7200,
 		"min": 0
 	},
-	"drawing": {
+	"draw": {
 		"type": "boolean",
 		"default": true
 	},
