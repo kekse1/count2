@@ -24,7 +24,7 @@ will be stopped (return code `255`).
 
 I'm handling those ones via the [`logger`](kekse/logger.md) module, which will,
 one the one hand, write anything into log files, but is also going to create
-nice console outputs (if terminal is used).
+nice outputs, both in console and browser.
 
 ## String security
 There are some functions available at `kekse/security.inc.php`. Also used to
