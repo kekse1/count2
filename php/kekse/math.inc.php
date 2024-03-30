@@ -173,7 +173,8 @@ function unit($string, $double = null, $unit = null, $fix = true)
 				}
 				break;
 			default:
-				throw new \Exception('Invalid $unit defined [ `px`, `pt` ]');
+				return null;
+				//throw new \Exception('Invalid $unit defined [ `px`, `pt` ]');
 				break;
 		}
 	}
@@ -189,6 +190,21 @@ function px2pt($value)
 function pt2px($value)
 {
 	return ($value / 0.75);
+}
+
+function getIndex($index, $length)
+{
+	if($length < 1)
+	{
+		return null;
+	}
+
+	if(($index = ((int)$index % ($length = (int)$length))) < 0)
+	{
+		$index = (($length + $index) % $length);
+	}
+
+	return $index;
 }
 
 ?>

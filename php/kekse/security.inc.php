@@ -5,20 +5,8 @@
 
 namespace kekse;
 
-define('KEKSE_LIMIT_STRING', 255);
-
 class Security extends Quant
 {
-	public function __construct(... $args)
-	{
-		return parent::__construct('Security', ... $args);
-	}
-
-	public function __destruct()
-	{
-		return parent::__destruct();
-	}
-	
 	public static function secure($string, $type)
 	{
 		if(!is_string($string) || $string === '')
@@ -27,14 +15,14 @@ class Security extends Quant
 		}
 		else if(!is_string($type))
 		{
-			throw new \Error('Invalid $type argument');
+			throw new \Exception('Invalid $type argument');
 		}
 		else switch($type = strtolower($type))
 		{
 			case 'host':
 			case 'path':
 				break;
-			default: throw new \Error('Invalid $type argument');
+			default: throw new \Exception('Invalid $type argument');
 		}
 		
 		$len = strlen($string);

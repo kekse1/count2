@@ -5,35 +5,27 @@
 
 namespace kekse;
 
-require_once('kekse/quant.inc.php');//TODO/
-require_once('kekse/ansi.inc.php');
+//require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/
+require_once(__DIR__ . '/../kekse/ansi.inc.php');
 
 class Terminal extends Quant
 {
-	public $session;
 	public $console;
 
-	public function __construct($session, $console, ... $args)
+	public function __construct($session = null, $console = null, ... $args)
 	{
 		if(!self::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in CLI mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
-		$this->session = $session;
 		$this->console = $console;
-
-		return parent::__construct('Terminal', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
-	}
-
-	public static function isTTY()
-	{
-		return (php_sapi_name() === 'cli');
+		parent::__destruct();
 	}
 
 	public static function log($format, ... $args)

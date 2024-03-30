@@ -5,19 +5,19 @@ I'm currently planning and working on my newer version of my original [**`count.
 as [already discussed with the community](https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60).
 
 ```
-Die wichtigsten Punkte werden damit wohl sein: mehrere Dateien,
-diesmal mit Klassen; Dateien mit flock() sichern fuer parallele
-Zugriffe, sowie statt Cookies und IPs diesmal eher Fingerprinting.
-Weisz zu letztem Punkt zwar nicht, wie das mit der DSGVO harmoniert,
-aber immerhin verzichte ich dann auf die IP-Adressen.. und zuletzt
-bessere `git`-Nutzung, sowie uebersichtlichere Dokumentation. ^_^
+Die wichtigsten Punkte werden damit wohl sein: mehrere Dateien, diesmal mit Klassen;
+Dateien mit flock() sichern fuer parallele Zugriffe, sowie statt Cookies und IPs diesmal
+eher Fingerprinting. Weisz zu letztem Punkt zwar nicht, wie das mit der DSGVO harmoniert,
+aber immerhin verzichte ich dann auf die IP-Adressen.. und zuletzt bessere `git`-Nutzung,
+sowie uebersichtlichere Dokumentation. ^_^
 ```
 
 ## Documentation
-Someone gave me this tipp: to separate the 'user manual' from the 'developer pages' or 'internal/technical details'.
+This is just the beginning of the documentation. The project itself takes all my free time, but I'm extending
+this one from time to time, in parallel to the code itself.
 
-That'd make it much easier for my audience. Additionally I just figured out it 'd also be easier to separate nearly
-all into even more (markdown) documents, so I just began(!) here.
+And someone suggested me to divide the docs into more than just one big `.md` markdown document, since my first
+[`count.php`](https://github.com/kekse1/count.php/) version (with it's docs) was way to complex. Now it's better.
 
 ### Important infos for all users
 * [**Installation**](docs/installation.md)
@@ -32,12 +32,33 @@ all into even more (markdown) documents, so I just began(!) here.
 * [**Coding Guidelines**](docs/guidelines.md)
 * [**JSON vectors**](docs/json.md)
 
-#### Writing the `.md` documentation
-* [**Markdown** (hints, etc.)](docs/markdown.md)
+### Base structure
+I planned this whole repository/fs for more than just the **`count2`** project. Considering this and more, like the
+namespace hierarchy, I structured the PHP parts in the `php/` directory this way: everything's below the `kekse`
+namespace, which are my base [extensions](docs/kekse.md); the rest is all the apps (like `count2`, and more TODO),
+which should have their own directory and namespace below `kekse`, e.g. `kekse\count2`.
 
-## Original version(s)
-Here's the [last/previous version](original.php/count.php) (and [here's the repo](https://github.com/kekse1/count.php/)),
-and there's the [first/original version](original.php/original.php) (more [here](https://github.com/kekse1/count.php/#the-original-version)).
+See also the [Modules section](#modules) below.
+
+### Modules
+Currently there are, beneath the main `kekse` extensions (and the `test` part), the following modules/apps (all
+under development, and even more planned yet):
+
+* [**`count2`**](md/count2.md)
+* [**`index`**](md/index.md)
+* [**`ip`**](md/ip.md)
+
+The plans for bigger (sub) projects do already exist, but I'm keeping 'em (more/less) secret for now, since it's
+the most important thing to begin with the main `count2` part!
+
+See also the [base structure](#base-structure) section above. And they all need to fulfill some requirements,
+mainly in their structure and the way they use the [`kekse` extensions](docs/kekse.md).
+
+### Directory structure
+Most important parts can be found in the `src/` directory (only symlinks).
+
+### Writing the `.md` documentation
+* [**Markdown** (hints, etc.)](docs/markdown.md)
 
 # Copyright and License
 The Copyright is [(c) Sebastian Kucharczyk](COPYRIGHT.txt),

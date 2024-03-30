@@ -5,29 +5,25 @@
 
 namespace kekse;
 
-require_once('quant.inc.php');
+require_once(__DIR__ . '/main.inc.php');
 
 class Environment extends Quant
 {
-	public $session;
-
 	public $file;
 	public $real;
 	
-	public function __construct($session, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		$this->session = $session;
-
 		$details = self::getScriptDetails();
 		$this->file = $details[0];
 		$this->real = $details[1];
 		
-		return parent::__construct('Environment', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 	
 	public static function getScriptDetails()

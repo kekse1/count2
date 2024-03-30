@@ -1,0 +1,53 @@
+{
+	"file": {
+		"type": "integer",
+		"default": 448
+	},
+	"dir": {
+		"type": "integer",
+		"default": 384
+	},
+	"path": {
+		"type": "string",
+		"default": "count2"
+	},
+	"visit": {
+		"type": "boolean",
+		"default": true
+	},
+	"click": {
+		"type": "boolean",
+		"default": true
+	},
+	"override": {
+		"type": "boolean",
+		"default": true
+	},
+	"text": {
+		"type": "integer",
+		"default": 64,
+		"max": 255,
+		"min": 0
+	},
+	"threshold": {
+		"type": "integer",
+		"default": 7200,
+		"min": 0
+	},
+	"draw": {
+		"type": "boolean",
+		"default": true
+	},
+	"fonts": {
+		"type": "string",
+		"default": "fonts"
+	},
+	"hash": {
+		"type": "string",
+		"default": "sha3-256"
+	},
+	"hide": {
+		"type": "boolean",
+		"default": false
+	}
+}

@@ -5,18 +5,19 @@
 
 namespace kekse\count2;
 
-require_once('kekse/quant.inc.php');
-
 class Fingerprint extends \kekse\Quant
 {
-	public function __construct(... $args)
+	public $fingerprint;
+
+	public function __construct($session, $fingerprint, ... $args)
 	{
-		return parent::__construct('Fingerprint', ... $args);
+		parent::__construct($session, ... $args);
+		$this->fingerprint = $fingerprint;
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 }
 

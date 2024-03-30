@@ -5,18 +5,16 @@
 
 namespace kekse\count2;
 
-require_once('kekse/quant.inc.php');
-
 class Template extends \kekse\Quant
 {
-	public function __construct(... $args)
+	public function __construct($session, ... $args)
 	{
-		return parent::__construct('Template', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 }
 

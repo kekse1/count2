@@ -5,54 +5,77 @@
 
 namespace kekse;
 
-require_once('kekse/security.inc.php');
+require_once(__DIR__ . '/security.inc.php');
 
 class Connection extends Quant
 {
-	public $session;
-
 	private $headers = [];
+	private $sent = false;
 
-	public function __construct($session, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		$this->session = $session;
-		return parent::__construct('Connection', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
-	}
-	
-	function getHeaders()
-	{
-		return [ ... $this->headers ];
+		parent::__destruct();
 	}
 
-	public function sendTypeHeader($type)
+	public function write($data)
 	{
-		if(!is_string($type)) throw new \Error('Invalid $type argument');
+		if(!is_string($data))
+		{
+			if(is_number($data))
+			{
+				$data = (string)$data;
+			}
+			else
+			{
+				throw new \Error('Invalid $data argument');
+			}
+		}
+
+		$this->sent = true;
+		echo $data;
+		return strlen($data);
+	}
+
+	private function checkState($throw = true)
+	{
+		if(!$this.sent) return true;
+		else if($throw) throw new \Exception('Can\'t send any header after body data began.');
+		return false;
+	}
+	
+	public function setTypeHeader($type)
+	{
+		if(!is_string($type)) throw new \Exception('Invalid $type argument');
 		else if(str_starts_with($type, 'Content-Type:')) $type = substr($type, 13);
-		if(!($type = \kekse\Security::checkString($type, true, true))) throw new \Error('Invalid $type argument');
-		$this->sendHeader('Content-Type', $type);
+		if(!($type = \kekse\Security::checkString($type, true, true))) throw new \Exception('Invalid $type argument');
+		$this->setHeader('Content-Type', $type);
 		$this->typeSent = true;
 		return $type;
 	}
 
-	public function sendLengthHeader($length)
+	public function setLengthHeader($length)
 	{
 		if(is_int($length)) $length = (string)$length;
-		else if(!is_string($length)) throw new \Error('Invalid $length argument');
+		else if(!is_string($length)) throw new \Exception('Invalid $length argument');
 		else if(str_starts_with($length, 'Content-Length')) $length = substr($length, 14);
-		if(!($length = \kekse\Security::checkString($length, true, true))) throw new \Error('Invalid $length argument');
-		$this->sendHeader('Content-Length', $length);
+		if(!($length = \kekse\Security::checkString($length, true, true))) throw new \Exception('Invalid $length argument');
+		$this->setHeader('Content-Length', $length);
 		$this->lengthSent = true;
 		return $type;
 	}
 
-	public function sendHeader($item, $value = null)
+	public function setHeader($item, $value = null)
 	{
-		if(is_array($item))
+		if(!$this->checkState())
+		{
+			return null;
+		}
+		else if(is_array($item))
 		{
 			$result = 0;
 			
@@ -81,7 +104,7 @@ class Connection extends Quant
 		}
 		else if(!($item = \kekse\Security::checkString($item, true, true)))
 		{
-			throw new \Error('Invalid $item argument');
+			throw new \Exception('Invalid $item argument');
 		}
 
 		if(is_number($value))
@@ -97,12 +120,12 @@ class Connection extends Quant
 		{
 			if(count($item = explode(':', $item, 2)) !== 2)
 			{
-				throw new \Error('Invalid $item argument');
+				throw new \Exception('Invalid $item argument');
 			}
 		}
 		else if(!($value = \kekse\Security::checkString($value, true, true)))
 		{
-			throw new \Error('Invalid $value argument');
+			throw new \Exception('Invalid $value argument');
 		}
 		else
 		{

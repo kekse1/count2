@@ -1,4 +1,4 @@
-#!/usr/bin/env php
 <?php
-var_dump((1.0 == 1));
+header('Content-Type: text/plain;charset=UTF-8');
+require_once(__DIR__ . '/count2/main.php');
 ?>

@@ -5,18 +5,18 @@
 
 namespace kekse;
 
-require_once('kekse/terminal.inc.php');
+require_once(__DIR__ . '/terminal.inc.php');
 
 class Color extends Quant
 {
-	public function __construct(... $args)
+	public function __construct($session = null, ... $args)
 	{
-		return parent::__construct('Color', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public static function fixColor($array, $gd = null)

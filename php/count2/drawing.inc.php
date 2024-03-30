@@ -5,107 +5,27 @@
 
 namespace kekse\count2;
 
-require_once('kekse/color.inc.php');
-
 class Drawing extends \kekse\Quant
 {
 	private $image = null;
 
-	private $session;
-
-	private $mode;
-	private $type;
-
-	public function __construct($session, $mode, $type, ... $args)
+	public function __construct($session, ... $args)
 	{
 		if(!extension_loaded('gd'))
 		{
-			throw new \Exception('Unable to find the GD library module');
+			throw new \Error('Unable to find the GD library module');
 		}
 		
-		if($session)
-		{
-			$this->session = $session;
-		}
-		else
-		{
-			$this->session = null;
-		}
-		
-		if(is_string($mode) && strlen($mode) > 0)
-		{
-			$this->mode = self::checkMode($mode);
-		}
-		else
-		{
-			$this->mode = null;
-		}
-		
-		if(is_string($type) && strlen($type) > 0)
-		{
-			$this->type = self::checkType($type);
-		}
-		else
-		{
-			$this->type = null;
-		}
-		
-		return parent::__construct('Drawing', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
 		$this->destroyImage();
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
-	public function setMode($mode)
-	{
-		if(!($mode = self::checkMode($mode)))
-		{
-			throw new \Error('Invalid $mode argument');
-		}
-		
-		return $this->mode = $mode;
-	}
-	
-	public function getMode()
-	{
-		return $this->mode;
-	}
-	
-	public function setType($type)
-	{
-		if(!($type = self::checkType($type)))
-		{
-			throw new \Error('Invalid $type argument');
-		}
-		
-		return $this->type = $type;
-	}
-	
-	public function getType()
-	{
-		return $this->type;
-	}
-	
-	public static function checkMode($mode)
-	{
-		if(!is_string($mode))
-		{
-			return null;
-		}
-		else switch(strtolower($mode))
-		{
-			case 'draw': return 'draw'; 
-			case 'text': return 'text';
-			case 'zero': return 'zero';
-		}
-		
-		return null;
-	}
-	
-	public static function checkType($type)
+	public static function checkType($type = 'png')
 	{
 		if(!is_string($type)) return null;
 		else $type = strtolower($type);
@@ -208,31 +128,36 @@ throw new \Error('TODO');
 		//
 	}
 	
-	public function sendImageHeader()
+	public function setImageHeader()
 	{
 		if(!$this->session)
 		{
-			throw new \Exception('There\'s no [session] available');
+			return false;
+			//throw new \Exception('There\'s no [session] available');
 		}
 		
 		switch($this->type)
 		{
-			case 'png': return $this->session->connection->sendTypeHeader('image/png');
-			case 'jpg': return $this->session->connection->sendTypeHeader('image/jpeg');
+			case 'png': $this->session->connection->setTypeHeader('image/png'); return true;
+			case 'jpg': $this->session->connection->setTypeHeader('image/jpeg'); return true;
 		}
 
-		throw new \Error('Invalid [type] member, can\'t send valid image header');
+		return false;
+		//throw new \Error('Invalid [type] member, can\'t send valid image header');
 	}
 	
-	public function sendTextHeader()
+	public function setTextHeader()
 	{
 		if(!$this->session)
 		{
-			throw new \Exception('There\'s no [session] available');
+			return false;
+			//throw new \Exception('There\'s no [session] available');
 		}
-		
-		//TODO/config default etc..!!!
-		//return HTTP->sendTypeHeader($type); (w/ instance of http)
+
+		$type = $this->session->parameter->getString('type');
+		$this->session->connection->setTypeHeader($type);
+
+		return true;
 	}
 	
 	public static getFont($name)

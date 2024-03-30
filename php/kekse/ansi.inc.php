@@ -5,24 +5,24 @@
 
 namespace kekse;
 
-require_once('kekse/quant.inc.php');//TODO/
-require_once('kekse/terminal.inc.php');
+require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/
+require_once(__DIR__ . '/../kekse/terminal.inc.php');
 
 class ANSI extends Quant
 {
-	public function __construct(... $args)
+	public function __construct($session = null, ... $args)
 	{
 		if(!self::isTTY())
 		{
-			throw new \Error('Not allowed since PHP doesn\'t run in TTY mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in TTY mode!');
 		}
 
-		return parent::__construct('ANSI', ... $args);
+		parent::__construct($session, ... $args);
 	}
 
 	public function __destruct()
 	{
-		return parent::__destruct();
+		parent::__destruct();
 	}
 
 	public static function reset()
