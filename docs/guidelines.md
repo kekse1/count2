@@ -4,6 +4,8 @@
 Since I'm learning PHP **again**, I'm putting some comments into this file,
 to give a rough outline of how to implement "correctly"[tm]..
 
+//TODO/
+
 ## Namespace
 Most general abstractions are implemented in my own `kekse` namespace.
 Most counter related things should be defined below `kekse\count2`.
@@ -20,17 +22,17 @@ will be stopped (return code `255`).
 > I think you'd like to write `\Exception` etc. (so with the backslash `\`),
 > since most times we're working in the `namespace \kekse`.
 
+I'm handling those ones via the [`logger`](kekse/logger.md) module, which will,
+one the one hand, write anything into log files, but is also going to create
+nice console outputs (if terminal is used).
+
 ## String security
-There are some functions available at `mod/security.inc.php`. The first one,
-marked bold, is the most recommended one:
+There are some functions available at `kekse/security.inc.php`. Also used to
+secure up fs paths. And more is yet to come.
 
-* **`Security::checkString($string, $removeBinary = true, $trim = true)`**
-* `Security::isValidString($value)`
-* `Security::removeBinary($string, $null = false, $removeSpaces = false)`
-* `Security::removeWhiteSpaces($string, $null = false)`
+Therefore there's also the constant `KEKSE_LIMIT_STRING = 255`, which is heavily
+used e.g. to avoid too long `$_GET[]` parameters, and more.
 
-Therefore there's also the constant `KEKSE_LIMIT_STRING = 255`.
-
-## Documentation
-//TODO//
+## TODO
+//TODO/
 
