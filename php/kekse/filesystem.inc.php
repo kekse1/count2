@@ -30,19 +30,15 @@ class FileSystem extends Quant
 		return parent::__toString();
 	}
 
-	public function setRoot($path, $resolve = true, $real = true, $writable = false)
+	public function setRoot($path, $real = true, $writable = false)
 	{
 		if(!self::isDirectory($path, true, true, $writable))
 		{
 			return false;
 		}
-		else if($resolve)
-		{
-			$path = self::resolve($path);
-		}
 		else
 		{
-			$path = self::normalize($path);
+			$path = self::resolve($path);
 		}
 
 		if($real)
@@ -54,19 +50,15 @@ class FileSystem extends Quant
 		return true;
 	}
 
-	public function path($path, $resolve = true, $real = true, $exists = false)
+	public function path($path, $real = true, $exists = false)
 	{
 		if(!is_string($path))
 		{
 			return null;
 		}
-		else if($resolve)
-		{
-			$path = self::resolve($path);
-		}
 		else
 		{
-			$path = self::normalize($path);
+			$path = self::resolve($path);
 		}
 
 		if($real)
@@ -86,9 +78,9 @@ class FileSystem extends Quant
 		return $path;
 	}
 
-	public function check($path, $resolve = true, $real = true, $exists = false)
+	public function check($path, $real = true, $exists = false)
 	{
-		$path = $this->path($path, $resolve, $real, $exists);
+		$path = $this->path($path, $real, $exists);
 
 		if($path === null)
 		{
