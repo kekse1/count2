@@ -16,9 +16,6 @@ $controller = $GLOBALS['count2'] = new Controller();
 
 //
 var_dump($controller);
-echo "\n\n\n";
-var_dump((string)$controller);
-echo "\n\n";
 
 //
 

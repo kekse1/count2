@@ -5,7 +5,7 @@
 
 namespace kekse\count2;
 
-class Click extends Counter
+class Click extends Counting
 {
 	public function __construct($session, $carrier, ... $args)
 	{

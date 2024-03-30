@@ -1,8 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
-# Modules
-Using the [Extensions](kekse.md), residing in the `count2`
-directory, using my namespace `kekse\count2`.
+# **`count2`**
+Using the [Extensions](kekse.md), residing in the `count2` directory, using the namespace `kekse\count2`.
 
 * [Cache](count2/cache.md)
 * [Configuration](count2/configuration.md)
@@ -25,4 +24,6 @@ directory, using my namespace `kekse\count2`.
 * [Template](count2/template.md)
 * [Text](count2/text.md)
 * [User](count2/user.md)
+
+It's one of more (planned) modules/apps, but was the beginning of this whole project.
 

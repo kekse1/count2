@@ -16,11 +16,6 @@ class Session extends Quant
 	{
 		parent::__destruct();
 	}
-
-	public function isTTY()
-	{
-		return (php_sapi_name() === 'cli');
-	}
 }
 
 ?>

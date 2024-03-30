@@ -5,7 +5,7 @@
 
 namespace kekse;
 
-require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/
+//require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/
 require_once(__DIR__ . '/../kekse/ansi.inc.php');
 
 class Terminal extends Quant
@@ -26,11 +26,6 @@ class Terminal extends Quant
 	public function __destruct()
 	{
 		parent::__destruct();
-	}
-
-	public static function isTTY()
-	{
-		return (php_sapi_name() === 'cli');
 	}
 
 	public static function log($format, ... $args)

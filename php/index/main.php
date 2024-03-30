@@ -5,6 +5,6 @@
 
 //
 namespace kekse\index;
-require_once(__DIR__ . '/session.inc.php');
-$index = $GLOBALS['index'] = new Session();
+require_once(__DIR__ . '/controller.inc.php');
+$index = $GLOBALS['index'] = new Controller();
 ?>

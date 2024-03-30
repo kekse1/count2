@@ -6,7 +6,7 @@
 //
 if(php_sapi_name() === 'cli')
 {
-	fprintf(STDERR, 'This script won\'t run in CLI mode.' . PHP_EOL);
+	fprintf(STDERR, 'This script won\'t run in CLI mode, so please use your HTTPD!' . PHP_EOL);
 	exit(1);
 }
 header('Content-Type: text/plain;charset=UTF-8');

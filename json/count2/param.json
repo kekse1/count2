@@ -4,6 +4,10 @@
 		"default": "",
 		"max": 256
 	},
+	"carrier": {
+		"type": "string",
+		"default": ""
+	},
 	"click": {
 		"type": "string",
 		"default": "",
@@ -88,5 +92,9 @@
 	"readonly": {
 		"type": "boolean",
 		"default": false
+	},
+	"count": {
+		"type": "string",
+		"default": "visit"
 	}
 }

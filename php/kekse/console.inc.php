@@ -3,12 +3,12 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
+namespace kekse;
 
-require_once(__DIR__ . '/../kekse/terminal.inc.php');
-require_once(__DIR__ . '/../kekse/getopt.inc.php');
+require_once(__DIR__ . '/terminal.inc.php');
+require_once(__DIR__ . '/getopt.inc.php');
 
-class Console extends \kekse\Terminal
+class Console extends Terminal
 {
 	public $ARGV;
 	public $ARGC;

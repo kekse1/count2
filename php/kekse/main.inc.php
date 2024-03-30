@@ -33,6 +33,11 @@ class Quant
 		return $this->classPath();// . ';' . $this->runtime();
 	}
 
+	public static function isTTY()
+	{
+		return (php_sapi_name() === 'cli');
+	}
+
 	public function className()
 	{
 		$result = explode('\\',  get_class($this));
@@ -65,7 +70,6 @@ require_once(__DIR__ . '/logger.inc.php');
 require_once(__DIR__ . '/session.inc.php');
 require_once(__DIR__ . '/math.inc.php');
 require_once(__DIR__ . '/environment.inc.php');
-require_once(__DIR__ . '/filesystem.inc.php');
 require_once(__DIR__ . '/numeric.inc.php');
 require_once(__DIR__ . '/security.inc.php');
 require_once(__DIR__ . '/timing.inc.php');

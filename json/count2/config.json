@@ -12,12 +12,16 @@
 		"default": "count2"
 	},
 	"visit": {
-		"type": "string",
-		"default": "visit"
+		"type": "boolean",
+		"default": true
 	},
 	"click": {
-		"type": "string",
-		"default": "click"
+		"type": "boolean",
+		"default": true
+	},
+	"override": {
+		"type": "boolean",
+		"default": true
 	},
 	"text": {
 		"type": "integer",
