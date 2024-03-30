@@ -60,12 +60,9 @@ Most important parts can be found in the `src/` directory (only symlinks).
 ### Writing the `.md` documentation
 * [**Markdown** (hints, etc.)](docs/markdown.md)
 
-## Original version(s)
-Here's the [last/previous version](original.php/count.php) (and [here's the repo](https://github.com/kekse1/count.php/)),
-and there's the [first/original version](original.php/original.php) (more [here](https://github.com/kekse1/count.php/#the-original-version)).
-
 # Copyright and License
 The Copyright is [(c) Sebastian Kucharczyk](COPYRIGHT.txt),
 and it's licensed under the [MIT](LICENSE.txt) (also known as 'X' or 'X11' license).
 
 ![kekse.biz](favicon.png)
+
