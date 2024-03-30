@@ -7,14 +7,103 @@ namespace kekse;
 
 class FileSystem extends Quant
 {
-	public function __construct($session = null, ... $args)
+	public $root = null;
+
+	public function __construct($session = null, $root = null, ... $args)
 	{
 		parent::__construct($session, ... $args);
+		$this->setRoot($root);
 	}
 
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+
+	public function __toString()
+	{
+		if(is_string($this->root))
+		{
+			return '(' . $this->root . ')';
+		}
+
+		return parent::__toString();
+	}
+
+	public function setRoot($path, $resolve = true, $real = true, $writable = false)
+	{
+		if(!self::isDirectory($path, true, true, $writable))
+		{
+			return false;
+		}
+		else if($resolve)
+		{
+			$path = self::resolve($path);
+		}
+		else
+		{
+			$path = self::normalize($path);
+		}
+
+		if($real)
+		{
+			$path = realpath($path);
+		}
+
+		$this->root = $path;
+		return true;
+	}
+
+	public function path($path, $resolve = true, $real = true, $exists = false)
+	{
+		if(!is_string($path))
+		{
+			return null;
+		}
+		else if($resolve)
+		{
+			$path = self::resolve($path);
+		}
+		else
+		{
+			$path = self::normalize($path);
+		}
+
+		if($real)
+		{
+			$path = realpath($path);
+		}
+
+		if($exists && !file_exists($path))
+		{
+			return null;
+		}
+		else if(is_string($this->root) && !$this->check($path))
+		{
+			return null;
+		}
+
+		return $path;
+	}
+
+	public function check($path, $resolve = true, $real = true, $exists = false)
+	{
+		$path = $this->path($path, $resolve, $real, $exists);
+
+		if($path === null)
+		{
+			return false;
+		}
+		else if(!is_string($this->root))
+		{
+			return true;
+		}
+		else if($path === $this->root)
+		{
+			return true;
+		}
+
+		return str_starts_with($path, $this->root);
 	}
 
 	public static function secure($path)
@@ -123,19 +212,20 @@ class FileSystem extends Quant
 		return true;
 	}
 
-	public static function isFile($path, $read = true, $write = false)
+	public static function isFile($path, $readable = true, $writable = false)
 	{
 		if(!is_string($path) || !is_file($path)) return false;
-		else if($read && !is_readable($path)) return false;
-		else if($write && !is_writable($path)) return false;
+		else if($readable && !is_readable($path)) return false;
+		else if($writable && !is_writable($path)) return false;
 		return true;
 	}
 	
-	public static function isDirectory($path, $read = true, $write = false)
+	public static function isDirectory($path, $executable = true, $readable = true, $writable = false)
 	{
 		if(!is_string($path) || !is_dir($path)) return false;
-		else if($read && !is_readable($path)) return false;
-		else if($write && !is_writable($path)) return false;
+		else if($executable && !is_executable($path)) return false;
+		else if($readable && !is_readable($path)) return false;
+		else if($writable && !is_writable($path)) return false;
 		return true;
 	}
 	
@@ -362,7 +452,7 @@ class FileSystem extends Quant
 			{
 				if($sub !== '.' && $sub !== '..')
 				{
-					$res = delete(FileSystem.joinPath($path, $sub), $depth, ($extended === null ? null : true), $currentDepth + 1);
+					$res = delete(FileSystem.join($path, $sub), $depth, ($extended === null ? null : true), $currentDepth + 1);
 					
 					if($extended === null)
 					{
@@ -479,7 +569,7 @@ class FileSystem extends Quant
 		return ($f === 0);
 	}
 
-	public static function resolvePath(... $args)
+	public static function resolve(... $args)
 	{
 		$origin;
 
@@ -492,16 +582,16 @@ class FileSystem extends Quant
 			$origin = getcwd();
 		}
 
-		return self::joinPath($origin, ... $args);
+		return self::join($origin, ... $args);
 	}
 	
-	public static function joinPath(... $args)
+	public static function join(... $args)
 	{
 		$result = implode(DIRECTORY_SEPARATOR, $args);
-		return self::normalizePath($result);
+		return self::normalize($result);
 	}
 	
-	public static function normalizePath($path)
+	public static function normalize($path)
 	{
 		if(!is_string($path))
 		{

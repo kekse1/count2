@@ -123,7 +123,7 @@ class Counting extends \kekse\FileSystem
 	
 	public function getPath($prefix = '')
 	{
-		return \kekse\FileSystem::joinPath(
+		return \kekse\FileSystem::join(
 			$this->session->configuration->get('path'),
 			$this->session->configuration->get($this->type),
 			$prefix . $this->carrier);

@@ -33,9 +33,9 @@ class Configuration extends Map
 				'base'	=> $this->session->environment->real['base'] ];
 		$file = [	'dir'	=> $this->session->environment->file['dir'],
 				'base'	=> $this->session->environment->file['base'] ];
-		$real['full'] = \kekse\FileSystem::joinPath($real['dir'], $real['base']);
+		$real['full'] = \kekse\FileSystem::join($real['dir'], $real['base']);
 		$real['json'] = $real['full'] . '.json';
-		$file['full'] = \kekse\FileSystem::joinPath($file['dir'], $file['base']);
+		$file['full'] = \kekse\FileSystem::join($file['dir'], $file['base']);
 		$file['json'] = $file['full'] . '.json';
 
 		$result = [];
