@@ -13,11 +13,11 @@ sowie uebersichtlichere Dokumentation. ^_^
 ```
 
 ## Documentation
-This is just the beginning of the documentation. The project itself takes all my free time, but I'm extending
-this one from time to time, in parallel to the code itself.
+This is just the beginning of the documentation. The project itself is more
+important to get finished, but I'm also extending this part from time to time.
 
-And someone suggested me to divide the docs into more than just one big `.md` markdown document, since my first
-[`count.php`](https://github.com/kekse1/count.php/) version (with it's docs) was way to complex. Now it's better.
+Someone suggested me to divide the docs into more than just one big `.md`
+markdown document, since my first [`count.php`](https://github.com/kekse1/count.php/) version (with it's docs) was way to complex. Now it's better.
 
 ### Important infos for all users
 * [**Installation**](docs/installation.md)
