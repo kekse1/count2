@@ -9,9 +9,15 @@ class FileSystem extends Quant
 {
 	public $root = null;
 
-	public function __construct($session = null, $root = null, ... $args)
+	public function __construct($session = null, $root = true, ... $args)
 	{
 		parent::__construct($session, ... $args);
+
+		if($root === true)
+		{
+			$root = self::getDocumentRoot();
+		}
+
 		$this->setRoot($root);
 	}
 
@@ -559,6 +565,21 @@ class FileSystem extends Quant
 		}
 		
 		return ($f === 0);
+	}
+
+	public static function getDocumentRoot()
+	{
+		if(isset($_SERVER['DOCUMENT_ROOT']))
+		{
+			return $_SERVER['DOCUMENT_ROOT'];
+		}
+
+		return null;
+	}
+
+	public static function getWorkingDirectory()
+	{
+		return getcwd();
 	}
 
 	public static function resolve(... $args)
