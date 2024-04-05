@@ -58,7 +58,11 @@ function unit($string, $double = null, $unit = null, $fix = true)
 		
 		$result['value'] = (double)$result['value'];
 		
-		if($double !== true && fmod($result['value'], 1) == 0)
+		if($double === false)
+		{
+			$result['value'] = (int)$result['value'];
+		}
+		else if($double === null && fmod($result['value'], 1) == 0)
 		{
 			$result['value'] = (int)$result['value'];
 		}
