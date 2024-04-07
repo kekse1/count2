@@ -6,11 +6,11 @@
 namespace kekse;
 
 //
-function parse($string, $radix, $float = true)
+function parse($string, $radix = 10, $float = true)
 {
 }
 
-function render($value, $radix, $float = true)
+function render($value, $radix = 10, $float = true)
 {
 }
 
@@ -92,7 +92,7 @@ function negativeRadix($radix)
 //
 //TODO/"strrev()" @ https://www.php.net/strrev
 //
-function getAlphabet($radix)
+function getAlphabet($radix = 10)
 {
 	if(is_int($radix))
 	{
@@ -121,6 +121,15 @@ function getAlphabet($radix)
 		return null;
 	}
 }
+
+
+//
+const KEKSE_ALPHABET_DECIMAL = '0123456789';
+const KEKSE_ALPHABET_LOWER = 'abcdefghijklmnopqrstuvwxyz';
+const KEKSE_ALPHABET_UPPER = 'ABCDEFGHIJKLMONPQRSTUVWXYZ';
+const KEKSE_ALPHABET_REGULAR = KEKSE_ALPHABET_DECIMAL . KEKSE_ALPHABET_LOWER;
+const KEKSE_ALPHABET_EXTENDED = KEKSE_ALPHABET_REGULAR . KEKSE_ALPHABET_UPPER;
+const KEKSE_ALPHABET_ALPHA = KEKSE_ALPHABET_LOWER . KEKSE_ALPHABET_UPPER;
 
 //
 ?>
