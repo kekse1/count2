@@ -68,7 +68,9 @@ function renderJSON($string)
 require_once(__DIR__ . '/constants.inc.php');
 require_once(__DIR__ . '/logger.inc.php');
 require_once(__DIR__ . '/session.inc.php');
+require_once(__DIR__ . '/string.inc.php');
 require_once(__DIR__ . '/math.inc.php');
+require_once(__DIR__ . '/radix.inc.php');
 require_once(__DIR__ . '/environment.inc.php');
 require_once(__DIR__ . '/numeric.inc.php');
 require_once(__DIR__ . '/security.inc.php');
