@@ -113,53 +113,7 @@ class Security extends Quant
 	{
 		return self::secure($path, 'path');
 	}
-	
-	public static function removeBinary($string, $null = false, $removeSpaces = false)
-	{
-		if(!is_string($string))
-		{
-			return ($null ? null : '');
-		}
-		
-		$len = strlen($string);
-		
-		if($len > KEKSE_LIMIT_STRING)
-		{
-			return ($null ? null : '');
-		}
 
-		$result = '';
-		
-		if($len > 0)
-		{
-			$byte;
-
-			for($i = 0; $i < $len; ++$i)
-			{
-				if($removeSpaces && $string[$i] === ' ')
-				{
-					continue;
-				}
-				else if(($byte = ord($string[$i])) > 31 && $byte !== 127)
-				{
-					$result .= $string[$i];
-				}
-			}
-		}
-
-		if($null && strlen($result) === 0)
-		{
-			return null;
-		}
-
-		return $result;
-	}
-	
-	public static function removeWhiteSpaces($string, $null = false)
-	{
-		self::removeBinary($string, $null, true);
-	}
-	
 	public static function checkString($string, $removeBinary = true, $trim = true)
 	{
 		if(!is_string($string))
@@ -177,12 +131,12 @@ class Security extends Quant
 		
 		if($removeBinary)
 		{
-			$string = self::removeBinary($string, true, false);
+			$string = str_remove_binary($string, false);
 		}
 		
 		if($trim)
 		{
-			$string = trim($string);
+			$string = str_trim($string);
 		}
 		
 		return $string;
