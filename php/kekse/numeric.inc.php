@@ -12,14 +12,228 @@ function is_number($value)
 }
 
 //
-function parse($string, $radix = 10, $float = true)
+function parse($string, $radix = 10, $double = true, $throw = true)
 {
+	if(!is_string($string))
+	{
+		if($throw)
+		{
+			throw new \Error('Invalid $string argument');
+		}
+
+		return null;
+	}
+
+	$alpha;
+
+	if(($alpha = alphabet($radix)) === null)
+	{
+		if($throw)
+		{
+			throw new \Error('Invalid $radix argument');
+		}
+
+		return null;
+	}
+	else if(positiveRadix($radix) === 10)
+	{
+		$string = str_prepare_decimal($string, $double);
+	}
+	else
+	{
+		$string = str_prepare_parse($string, $alpha, $double);
+	}
+
+	$radix = strlen($alphabet);
+		
 	//
 }
 
-function render($value, $radix = 10, $float = true)
+function render($value, $radix = 10, $double = true, $throw = true)
 {
+	if(!is_number($value))
+	{
+		if($throw)
+		{
+			throw new \Error('Invalid $value argument');
+		}
+
+		return null;
+	}
+	else if(is_int($value))
+	{
+		$double = false;
+	}
+	
+	$alpha;
+
+	if(($alpha = alphabet($radix)) === null)
+	{
+		if($throw)
+		{
+			throw new \Error('Invalid $radix argument');
+		}
+
+		return null;
+	}
+	else
+	{
+		$radix = strlen($alpha);
+	}
+
 	//
+}
+
+//
+function str_prepare_parse($string, $alphabet, $double = true)
+{
+	if(!is_string($string))
+	{
+		throw new \Error('Invalid $string argument');
+	}
+	else if($string === '')
+	{
+		return $alphabet[0];
+	}
+	else if(!str_contains_binary($alphabet))
+	{
+		$string = str_trim($string);
+	}
+
+	if(str_contains($alphabet, '.'))
+	{
+		$double = false;
+	}
+
+	$result = '';
+	$len = strlen($string);
+	$hadPoint = false;
+	$byte;
+
+	for($i = 0; $i < $len; ++$i)
+	{
+		$byte = ord($string[$i]);
+
+		if(str_contains($alphabet, $string[$i]))
+		{
+			$result .= $string[$i];
+		}
+		else if($byte === 46)
+		{
+			if($double)
+			{
+				if($hadPoint)
+				{
+					break;
+				}
+				else
+				{
+					$hadPoint = true;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if($result === '')
+	{
+		return $alphabet[0];
+	}
+	else if(!str_contains($alphabet, '.'))
+	{
+		if($result[0] === '.')
+		{
+			if(!$double)
+			{
+				return '0';
+			}
+
+			return $alphabet[0] . $result;
+		}
+	}
+
+	return $result;
+}
+
+function str_prepare_decimal($string, $double = true)
+{
+	if(!is_string($string))
+	{
+		return null;
+	}
+	else
+	{
+		$string = str_trim($string);
+	}
+
+	$len = strlen($string);
+
+	if($len === 0)
+	{
+		return '0';
+	}
+	else if($len > KEKSE_LIMIT_STRING)
+	{
+		return null;
+	}
+
+	$byte = ord($string[0]);
+
+	if($byte < 48 || $byte > 57)
+	{
+		return '0';
+	}
+
+	$result = '';
+	$hadPoint = false;
+
+	for($i = 0; $i < $len; ++$i)
+	{
+		$byte = ord($string[$i]);
+
+		if($byte === 46)
+		{
+			if($double)
+			{
+				if($hadPoint)
+				{
+					break;
+				}
+				else
+				{
+					$hadPoint = true;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		else if($byte < 48 || $byte > 57)
+		{
+			break;
+		}
+
+		$result .= chr($byte);
+	}
+
+	if($result === '')
+	{
+		return '0';
+	}
+	else if($result[0] === '.')
+	{
+		return '0' . $result;
+	}
+	
+	return $result;
 }
 
 /*

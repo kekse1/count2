@@ -102,4 +102,27 @@ function str_remove_spaces($string)
 	return str_remove_binary($string, true);
 }
 
+function str_contains_binary($string)
+{
+	if(!is_string($string))
+	{
+		return null;
+	}
+
+	$len = strlen($string);
+	$byte;
+
+	for($i = 0; $i < $len; ++$i)
+	{
+		$byte = ord($string[$i]);
+
+		if($byte < 32 || $byte === 127)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 ?>
