@@ -37,9 +37,9 @@ function str_trim($string)
 	$result = '';
 	$len = strlen($string);
 	$start = -1;
-	$end = -1;
+	$stop = -1;
 	$byte;
-	
+
 	for($i = 0; $i < $len; ++$i)
 	{
 		$byte = ord($string[$i]);
@@ -50,24 +50,29 @@ function str_trim($string)
 			break;
 		}
 	}
-	
-	for($i = $len - 1; $i >= 0; --$i)
+
+	for($i = $len - 1; $i > $start; --$i)
 	{
 		$byte = ord($string[$i]);
-		
+
 		if($byte > 32 && $byte !== 127)
 		{
-			$end = $i;
+			$stop = $i;
 			break;
 		}
 	}
-	
-	if($start === -1 || $end === -1)
+
+	if($start > -1)
 	{
-		return '';
+		$string = substr($string, $start);
 	}
-	
-	return substr($string, $start, $end - $start + 1);
+
+	if($stop > -1)
+	{
+		$string = substr($string, 0, $stop - $start + 1);
+	}
+
+	return $string;
 }
 
 function str_remove_binary($string, $whiteSpaces = false)
@@ -123,6 +128,26 @@ function str_contains_binary($string)
 	}
 
 	return false;
+}
+
+function str_is_lower($string)
+{
+	if(!is_string($string))
+	{
+		return null;
+	}
+
+	return (strtolower($string) === $string);
+}
+
+function str_is_upper($string)
+{
+	if(!is_string($string))
+	{
+		return null;
+	}
+
+	return (strtoupper($string) === $string);
 }
 
 ?>
