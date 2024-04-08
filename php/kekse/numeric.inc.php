@@ -56,16 +56,83 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 		return null;
 	}
-	else
+	else if(str_contains($alpha, '.'))
 	{
-		$string = str_prepare_numeric($string, $radix, $double);
-		$radix = strlen($alpha);
+		$double = false;
 	}
 
-	//
-	$result = 0;
+	$string = str_prepare_numeric($string, $radix, $double);
+	$radix = strlen($alpha);
+
+	if($string === '' || $string === '.')
+	{
+		if($double)
+		{
+			return 0.0;
+		}
+		
+		return 0;
+	}
+
+	$split = explode('.', $string, ($double === false ? 1 : 2));
+	$len = count($split);
 
 	//
+	$negative = (($split[0] !== '' && $split[0][0]) === '-');
+	
+	if($negative)
+	{
+		$split[0] = substr($split[0], 1);
+		--$len;
+	}
+
+	$lenInt = strlen($split[0]);
+	$lenDouble = ($len > 1 ? strlen($split[1]) : 0);
+	$result = 0;
+	$pos;
+	
+	//
+	for($i = $lenInt - 1, $mul = 1; $i >= 0; --$i)
+	{
+		$pos = strpos($alpha, $split[0][$i]);
+		
+		if($pos === false)
+		{
+			if($throw)
+			{
+				throw new \Exception('Character \'' . $split[0][$i] . '\' not found in alphabet for radix with len = ' . $radix);
+			}
+			
+			return null;
+		}
+		
+		$result += ($mul * $pos);
+		$mul *= $radix;
+	}
+	
+	if($lenDouble > 0)
+	{
+		$result = (double)$result;
+
+		for($i = 0, $mul = (double)(1 / $radix); $i < $lenDouble; ++$i)
+		{
+			$pos = strpos($alpha, $split[1][$i]);
+			
+			if($pos === false)
+			{
+				if($throw)
+				{
+					throw new \Exception('Character \'' . $split[1][$i] . '\' not found in alphabet for radix with len = ' . $radix);
+				}
+				
+				return null;
+			}
+			
+			$result += ($mul * $pos);
+			$mul /= $radix;
+		}
+	}
+	
 	if($double === null)
 	{
 		if(fmod($result, 1) == 0)
@@ -80,6 +147,11 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	else
 	{
 		$result = (int)$result;
+	}
+	
+	if($negative)
+	{
+		$result = (0 - $result);
 	}
 
 	//
@@ -185,7 +257,7 @@ function is_numeric($value, $radix = 10)
 	{
 		if(!str_contains($alpha, $value[$i]))
 		{
-			if($hadPoint === false && $value[$i] === '.')
+			if($value[$i] === '.' && $hadPoint === false)
 			{
 				$hadPoint = true;
 			}
@@ -199,13 +271,52 @@ function is_numeric($value, $radix = 10)
 	return true;
 }
 
+function str_numeric_sign($string, $noMinusInAlpha = true, $noPlusInAlpha = true)
+{
+	if(!is_string($string))
+	{
+		throw new \Error('Invalid $string argument');
+	}
+	else if(!($noMinusInAlpha || $noPlusInAlpha))
+	{
+		return [ $string, false ];
+	}
+	
+	$len = strlen($string);
+	$negative = false;
+	$pos = 0;
+	
+	for(; $pos < $len; ++$pos)
+	{
+		if($noPlusInAlpha && $string[$pos] === '+')
+		{
+			continue;
+		}
+		else if($noMinusInAlpha && $string[$pos] === '-')
+		{
+			$negative = !$negative;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if($pos > 0)	
+	{
+		$string = substr($string, $pos);
+	}
+	
+	return [ $string, $negative ];
+}
+
 function str_prepare_numeric($string, $radix, $double = null)
 {
 	if(!is_string($string))
 	{
 		throw new \Error('Invalid $string argument');
 	}
-	
+
 	$alpha;
 	$dec;
 	
@@ -221,6 +332,13 @@ function str_prepare_numeric($string, $radix, $double = null)
 	{
 		$dec = false;
 	}
+	
+	$noMinusInAlpha = !str_contains($alpha, '-');
+	$noPlusInAlpha = !str_contains($alpha, '+');
+
+	$r = str_numeric_sign($string, $noMinusInAlpha, $noPlusInAlpha);
+	$string = $r[0];
+	$negative = $r[1];
 
 	if($string === '')
 	{
@@ -316,12 +434,16 @@ function str_prepare_numeric($string, $radix, $double = null)
 		}
 	}
 
-	if($l > 0)
+	if($l === 0)
+	{
+		$string = '';
+	}
+	else
 	{
 		$split = explode('.', $string, 2);
 		$len = strlen($split[0]);
 		$pos = 0;
-		
+
 		for(; $pos < $len; ++$pos)
 		{
 			if($split[0][$pos] !== $alpha[0])
@@ -333,16 +455,19 @@ function str_prepare_numeric($string, $radix, $double = null)
 		$split[0] = substr($split[0], $pos);
 		$count = count($split);
 
-		if(!$double)
+		if($count === 1)
 		{
-			if($count > 1)
-			{
-				array_pop($split);
-			}
+			$double = false;
 		}
-		else if($count > 1)
+		else
 		{
-			$pos = (($len = strlen($split[1])) - 1);
+			if($double === null)
+			{
+				$double = true;
+			}
+
+			$len = strlen($split[1]);
+			$pos = $len - 1;
 
 			for(; $pos >= 0; --$pos)
 			{
@@ -352,7 +477,10 @@ function str_prepare_numeric($string, $radix, $double = null)
 				}
 			}
 			
-			$split[1] = substr($split[1], 0, $pos + 1);
+			if($pos < ($len - 1))
+			{
+				$split[1] = substr($split[1], 0, $pos + 1);
+			}
 			
 			if(strlen($split[1]) === 0)
 			{
@@ -361,6 +489,11 @@ function str_prepare_numeric($string, $radix, $double = null)
 		}
 		
 		$string = implode('.', $split);
+		
+		if($negative)
+		{
+			$string = '-' . $string;
+		}
 	}
 
 	return $string;

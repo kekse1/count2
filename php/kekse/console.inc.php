@@ -10,8 +10,8 @@ require_once(__DIR__ . '/getopt.inc.php');
 
 class Console extends Terminal
 {
-	public $ARGV;
-	public $ARGC;
+	public $argv;
+	public $argc;
 
 	public function __construct($session, ... $args)
 	{
@@ -27,22 +27,28 @@ class Console extends Terminal
 
 		if(is_int($argc) && isset($argv))
 		{
-			$this->ARGC = $argc;
-			$this->ARGV = [ ... $argv ];
+			$this->argc = $argc;
+			$this->argv = [ ... $argv ];
 		}
 		else if(is_int($_SERVER['argc']) && isset($_SERVER['argv']))
 		{
-			$this->ARGC = $_SERVER['argc'];
-			$this->ARGV = [ ... $_SERVER['argv'] ];
+			$this->argc = $_SERVER['argc'];
+			$this->argv = [ ... $_SERVER['argv'] ];
 		}
 		else if(is_int($GLOBALS['argc']) && isset($GLOBALS['argv']))
 		{
-			$this->ARGC = $GLOBALS['argc'];
-			$this->ARGV = [ ... $GLOBALS['argv'] ];
+			$this->argc = $GLOBALS['argc'];
+			$this->argv = [ ... $GLOBALS['argv'] ];
 		}
 		else
 		{
-			throw new \Error('Invalid server state (argument vector/count not accessable)');
+			$this->argc = 0;
+			$this->argv = [];
+		}
+
+		if($this->argv > 0)
+		{
+			$this->getOptions();
 		}
 
 		parent::__construct($session, $this, ... $args);
@@ -51,6 +57,11 @@ class Console extends Terminal
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+
+	private function getOptions()
+	{
+		//TODO/ using 'getopt.inc.php'!
 	}
 }
 

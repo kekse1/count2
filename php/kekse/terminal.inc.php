@@ -5,8 +5,8 @@
 
 namespace kekse;
 
-//require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/
-require_once(__DIR__ . '/../kekse/ansi.inc.php');
+//require_once(__DIR__ . '/../kekse/main.inc.php');//TODO/??
+//require_once(__DIR__ . '/../kekse/ansi.inc.php');//?!??
 
 class Terminal extends Quant
 {
