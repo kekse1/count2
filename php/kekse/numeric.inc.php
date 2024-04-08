@@ -227,6 +227,10 @@ function is_numeric($value, $radix = 10)
 	{
 		return is_number($value);
 	}
+	else if(positiveRadix($radix) === 256)
+	{
+		return true;
+	}
 
 	$alpha;
 
