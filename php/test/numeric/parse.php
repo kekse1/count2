@@ -1,15 +1,10 @@
 <?php
 namespace kekse;
 require_once(__DIR__ . '/../kekse/main.inc.php');
-<<<<<<< HEAD
-var_dump(parse("---0\n1", 10));
-var_dump(parse(" --- 0\n1", 99));
-=======
 var_dump(parse(" ---0\n10", 10));
 var_dump(parse(" --- 0\n10 ", 10));
 var_dump(parse(" ---0.2\n14 ", 10));
 var_dump(parse(" --- 0\n10", 99));
->>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 var_dump(parse(" ---0\n1", 256));
 var_dump(parse('  ---3.14 FF  ', 16));
 var_dump(parse('  ---3.14FF ', 16));

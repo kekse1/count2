@@ -87,18 +87,6 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	$split = explode('.', $string, ($double === false ? 1 : 2));
 	$len = count($split);
 	
-	//
-<<<<<<< HEAD
-	$negative = (($split[0] !== '' && $split[0][0]) === '-');
-	
-	if($negative)
-	{
-		$split[0] = substr($split[0], 1);
-		--$len;
-	}
-	
-=======
->>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 	$lenInt = strlen($split[0]);
 	$lenDouble = ($len > 1 ? strlen($split[1]) : 0);
 	$result = 0;
@@ -191,6 +179,22 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	return $result;
 }
 
+function renderInt($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+{
+	return render($value, $radix, false, $throw);
+}
+
+function renderDouble($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+{
+	return render($value, $radix, true, $throw);
+}
+
+function renderFloat($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+{
+	return renderDouble($value, $radix, $throw);
+}
+
+//todo/am ende $double-casts
 function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
 	if(is_string($value))
@@ -513,11 +517,7 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 	{
 		$string = substr($string, 0, $pos + 1);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 	[ $string, $negative ] = str_numeric_sign($string,
 		$noMinusInAlpha, $noPlusInAlpha);
 
@@ -572,11 +572,7 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 		}
 		
 		$string = implode('.', $split);
-<<<<<<< HEAD
 		
-=======
-
->>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 		if($negative && $string !== '')
 		{
 			$string = '-' . $string;
