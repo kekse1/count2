@@ -56,7 +56,11 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 		return null;
 	}
-	else if(str_contains($alpha, '.'))
+	
+	$byteRadix = (positiveRadix($radix) === 256);
+	$negativeRadix = ($radix < 0);
+	
+	if($byteRadix || str_contains($alpha, '.'))
 	{
 		$double = false;
 	}
@@ -90,23 +94,41 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	$lenDouble = ($len > 1 ? strlen($split[1]) : 0);
 	$result = 0;
 	$pos;
+	$b;
 	
 	//
 	for($i = $lenInt - 1, $mul = 1; $i >= 0; --$i)
 	{
-		$pos = strpos($alpha, $split[0][$i]);
-		
-		if($pos === false)
+		if($byteRadix)
 		{
-			if($throw)
+			$b = ord($split[0][$i]);
+
+			if(!$negativeRadix)
 			{
-				throw new \Exception('Character \'' . $split[0][$i] . '\' not found in alphabet for radix with len = ' . $radix);
+				$result += ($b * $mul);
+			}
+			else
+			{
+				$result += ((255 - $b) * $mul);
+			}
+		}
+		else
+		{
+			$pos = strpos($alpha, $split[0][$i]);
+			
+			if($pos === false)
+			{
+				if($throw)
+				{
+					throw new \Exception('Character \'' . $split[0][$i] . '\' not found in alphabet for radix with len = ' . $radix);
+				}
+				
+				return null;
 			}
 			
-			return null;
+			$result += ($mul * $pos);
 		}
 		
-		$result += ($mul * $pos);
 		$mul *= $radix;
 	}
 	
