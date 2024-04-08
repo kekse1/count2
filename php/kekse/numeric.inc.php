@@ -67,7 +67,6 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 	$string = str_prepare_numeric($string, $radix, $double, true);
 	$radix = strlen($alpha);
-	
 	$negative = ($string[0] === '-');
 	
 	if($negative)
@@ -183,22 +182,6 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
-	$alpha;
-
-	if(($alpha = alphabet($radix)) === null)
-	{
-		if($throw)
-		{
-			throw new \Error('Invalid $radix argument');
-		}
-
-		return null;
-	}
-	else
-	{
-		$radix = strlen($alpha);
-	}
-
 	if(is_string($value))
 	{
 		if(is_numeric($value, $radix, $double))
@@ -225,8 +208,37 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	{
 		$double = false;
 	}
+	else if(!is_bool($double))
+	{
+		$double = true;
+	}
+
+	$alpha;
+
+	if(($alpha = alphabet($radix)) === null)
+	{
+		if($throw)
+		{
+			throw new \Error('Invalid $radix argument');
+		}
+
+		return null;
+	}
+
+	$byteRadix = (is_int($radix) && positiveRadix($radix) === 256);
+	$negativeRadix = ($radix < 0);
+	$radix = strlen($alpha);
+	$negative = ($value < 0);
+	if($negative) $value = abs($value);
+
+	if($byteRadix || str_contains($alpha, '.'))
+	{
+		$double = false;
+	}
 
 	//
+	$result = '';
+throw new \Error('TODO');
 }
 
 //
