@@ -430,21 +430,16 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 	}
 
 	$alpha;
-	$dec;
 	
 	if(($alpha = alphabet($radix)) === null)
 	{
 		throw new \Error('Invalid $radix argument');
 	}
-	else if(($radix = strlen($alpha)) === 10 && $alpha === KEKSE_ALPHABET_DECIMAL)
-	{
-		$dec = true;
-	}
 	else
 	{
-		$dec = false;
+		$radix = strlen($alpha);
 	}
-
+	
 	if(str_contains($alpha, '.'))
 	{
 		$double = false;
