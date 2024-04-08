@@ -52,7 +52,8 @@ class Connection extends Quant
 	{
 		if(!is_string($type)) throw new \Exception('Invalid $type argument');
 		else if(str_starts_with($type, 'Content-Type:')) $type = substr($type, 13);
-		if(!($type = \kekse\Security::checkString($type, true, true))) throw new \Exception('Invalid $type argument');
+		if(!($type = \kekse\Security::checkString($type, true))) throw new \Exception('Invalid $type argument');
+		else if(!($type = str_trim($type))) throw new \Exception('Invalid $type argument');
 		$this->setHeader('Content-Type', $type);
 		$this->typeSent = true;
 		return $type;
@@ -63,7 +64,8 @@ class Connection extends Quant
 		if(is_int($length)) $length = (string)$length;
 		else if(!is_string($length)) throw new \Exception('Invalid $length argument');
 		else if(str_starts_with($length, 'Content-Length')) $length = substr($length, 14);
-		if(!($length = \kekse\Security::checkString($length, true, true))) throw new \Exception('Invalid $length argument');
+		if(!($length = \kekse\Security::checkString($length, true))) throw new \Exception('Invalid $length argument');
+		else if(!($length = str_trim($length))) throw new \Exception('Invalid $length argument');
 		$this->setHeader('Content-Length', $length);
 		$this->lengthSent = true;
 		return $type;
@@ -81,7 +83,11 @@ class Connection extends Quant
 			
 			foreach($item as $key => $value)
 			{
-				if(!($key = \kekse\Security::checkString($key, true, true)))
+				if(!($key = \kekse\Security::checkString($key, true)))
+				{
+					continue;
+				}
+				else if(!($key = \kekse\str_trim($key)))
 				{
 					continue;
 				}
@@ -102,7 +108,11 @@ class Connection extends Quant
 			
 			return $result;
 		}
-		else if(!($item = \kekse\Security::checkString($item, true, true)))
+		else if(!($item = \kekse\Security::checkString($item, true)))
+		{
+			throw new \Exception('Invalid $item argument');
+		}
+		else if(!($item = \kekse\str_trim($item)))
 		{
 			throw new \Exception('Invalid $item argument');
 		}
@@ -111,7 +121,11 @@ class Connection extends Quant
 		{
 			$value = (string)$value;
 		}
-		else if(!($value = \kekse\Security::checkString($value, true, true)))
+		else if(!($value = \kekse\Security::checkString($value, true)))
+		{
+			$value = null;
+		}
+		else if(!($value = \kekse\str_trim($value)))
 		{
 			$value = null;
 		}
@@ -123,7 +137,11 @@ class Connection extends Quant
 				throw new \Exception('Invalid $item argument');
 			}
 		}
-		else if(!($value = \kekse\Security::checkString($value, true, true)))
+		else if(!($value = \kekse\Security::checkString($value, true)))
+		{
+			throw new \Exception('Invalid $value argument');
+		}
+		else if(!($value = \kekse\str_trim($value)))
 		{
 			throw new \Exception('Invalid $value argument');
 		}

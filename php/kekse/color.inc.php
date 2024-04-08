@@ -160,9 +160,13 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else if(!($value = Security::checkString($value, true, true)))
+		else if(!($value = Security::checkString($value, true)))
 		{
 			return false;
+		}
+		else
+		{
+			$value = str_trim($value);
 		}
 		
 		$len = strlen($value);
@@ -204,9 +208,13 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else if(!($value = Security::checkString($value, true, true)))
+		else if(!($value = Security::checkString($value, true)))
 		{
 			return false;
+		}
+		else
+		{
+			$value = str_trim($value);
 		}
 		
 		if($value[0] === '#')
@@ -333,9 +341,13 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(!($value = Security::checkString($value, true, true)))
+		else if(!($value = Security::checkString($value, true)))
 		{
 			return null;
+		}
+		else
+		{
+			$value = str_trim($value);
 		}
 		
 		if(substr($value, 0, 5) === 'rgba(')
@@ -397,9 +409,13 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(!($string = Security::checkString($string, true, true)))
+		else if(!($string = Security::checkString($string, true)))
 		{
 			return null;
+		}
+		else
+		{
+			$string = str_trim($string);
 		}
 		
 		if($string[0] === '#')
@@ -485,9 +501,13 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(!($string = Security::checkString($string, true, true)))
+		else if(!($string = Security::checkString($string, true)))
 		{
 			return null;
+		}
+		else
+		{
+			$string = str_trim($string);
 		}
 		
 		$split = explode(',', $string);

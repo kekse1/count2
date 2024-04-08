@@ -114,7 +114,7 @@ class Security extends Quant
 		return self::secure($path, 'path');
 	}
 
-	public static function checkString($string, $removeBinary = true, $trim = true)
+	public static function checkString($string, $removeBinary = true)
 	{
 		if(!is_string($string))
 		{
@@ -132,11 +132,6 @@ class Security extends Quant
 		if($removeBinary)
 		{
 			$string = str_remove_binary($string, false);
-		}
-		
-		if($trim)
-		{
-			$string = str_trim($string);
 		}
 		
 		return $string;

@@ -10,34 +10,23 @@ require_once(__DIR__ . '/../kekse/environment.inc.php');
 
 class Session extends \kekse\Session
 {
-	public $controller;
-
-	public $environment;
-	public $configuration;
-
-	public $console = null;
-
-	public $parameter = null;
-	public $connection = null;
-	
-	public $fingerprint = null;
-	public $count = null;
+//	public $fingerprint = null;
+//	public $count = null;
 
 	public function __construct($controller, ... $args)
 	{
-		$this->controller = $controller;
-
-		$this->environment = new \kekse\Environment($this);
-
-		$this->configuration = new \kekse\Configuration($this);
-		$this->configuration->importSchemeFromJSON(KEKSE_COUNT2_JSON_CONFIG);
-
-		parent::__construct(... $args);
+		parent::__construct($this->controller = $controller, ... $args);
 	}
 
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+	
+	protected function create()
+	{
+		parent::create();
+		$this->configuration->importSchemeFromJSON(KEKSE_COUNT2_JSON_CONFIG);
 	}
 }
 

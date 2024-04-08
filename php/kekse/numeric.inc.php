@@ -33,7 +33,7 @@ function parseFloat($string, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
 	return parseDouble($string, $radix, $throw);
 }
 
-function parse($string, $radix = 10, $double, $throw = DEFAULT_NUMERIC_THROW)
+function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
 	if(!is_string($string))
 	{
@@ -63,9 +63,30 @@ function parse($string, $radix = 10, $double, $throw = DEFAULT_NUMERIC_THROW)
 	}
 
 	//
+	$result = 0;
+
+	//
+	if($double === null)
+	{
+		if(fmod($result, 1) == 0)
+		{
+			$result = (int)$result;
+		}
+	}
+	else if($double)
+	{
+		$result = (double)$result;
+	}
+	else
+	{
+		$result = (int)$result;
+	}
+
+	//
+	return $result;
 }
 
-function render($value, $radix = 10, $double = true, $throw = DEFAULT_NUMERIC_THROW)
+function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
 	$alpha;
 
@@ -178,7 +199,7 @@ function is_numeric($value, $radix = 10)
 	return true;
 }
 
-function str_prepare_numeric($string, $radix, $double = true)
+function str_prepare_numeric($string, $radix, $double = null)
 {
 	if(!is_string($string))
 	{
@@ -234,7 +255,7 @@ function str_prepare_numeric($string, $radix, $double = true)
 		$withDouble = false;
 	}
 
-	$hadPoint = ($double ? false : null);
+	$hadPoint = ($double !== false ? false : null);
 	$len = strlen($string);
 	$str = $string;
 	$string = '';
@@ -310,8 +331,16 @@ function str_prepare_numeric($string, $radix, $double = true)
 		}
 		
 		$split[0] = substr($split[0], $pos);
-		
-		if(count($split) > 1)
+		$count = count($split);
+
+		if(!$double)
+		{
+			if($count > 1)
+			{
+				array_pop($split);
+			}
+		}
+		else if($count > 1)
 		{
 			$pos = (($len = strlen($split[1])) - 1);
 

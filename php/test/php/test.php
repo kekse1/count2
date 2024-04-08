@@ -1,3 +1,5 @@
 <?php
-var_dump(is_numeric(' 12334. '));
+$a = [ "eins" => "zwei" ];
+
+var_dump(isset($a['einz']));
 ?>

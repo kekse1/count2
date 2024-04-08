@@ -229,7 +229,7 @@ class FileSystem extends Quant
 	
 	public static function delete($path, $depth = 0, $extended = false, $currentDepth = 0)
 	{
-		if(Security::checkString($path, true, true))
+		if(Security::checkString($path, true))
 		{
 			if(!is_link($path))
 			{
@@ -612,7 +612,7 @@ class FileSystem extends Quant
 		}
 		else
 		{
-			$path = Security::checkString($path, true, true);
+			$path = Security::checkString($path, true);
 		}
 		
 		$len = strlen($path);
@@ -676,6 +676,97 @@ class FileSystem extends Quant
 		}
 		
 		return implode(DIRECTORY_SEPARATOR, $result);
+	}
+
+	public static function extname($path, $count = 1)
+	{
+		if(!is_string($path))
+		{
+			return null;
+		}
+		else if(!($path = Security::checkString($path, true)))
+		{
+			return null;
+		}
+		else if(!is_int($count))
+		{
+			$count = 1;
+		}
+
+		$rev = ($count < 0);
+		$count = abs($count);
+		$split = explode(DIRECTORY_SEPARATOR, $path);
+		$len = count($split);
+
+		for($i = $len - 1; $i >= 0; --$i)
+		{
+			if(strlen($split[$i]) === 0)
+			{
+				array_pop($split);
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		if(($len = count($split)) === 0)
+		{
+			return '';
+		}
+
+		$split = explode('.', array_pop($split));
+
+		if(($len = count($split)) === 0)
+		{
+			return '';
+		}
+		else if(strlen($split[0]) === 0)
+		{
+			array_shift($split);
+			--$len;
+		}
+
+		array_shift($split);
+		
+		if(--$len === 0)
+		{
+			return '';
+		}
+		else if($count > $len)
+		{
+			$count = $len;
+		}
+
+		$result;
+
+		if($count === 0)
+		{
+			$result = $split;
+		}
+		else
+		{
+			$result = [];
+		}
+
+		if($count !== 0)
+		{
+			if($rev) for($i = 0; $i < $len && $i < $count; ++$i)
+			{
+				$result[$i] = $split[$i];
+			}
+			else for($i = $len - $count, $j = 0; $i < $len && $j < $count; ++$i, ++$j)
+			{
+				$result[$j] = $split[$i];
+			}
+		}
+
+		if(count($result) === 0)
+		{
+			return '';
+		}
+
+		return ('.' . implode('.', $result));
 	}
 }
 

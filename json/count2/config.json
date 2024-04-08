@@ -19,7 +19,11 @@
 		"type": "boolean",
 		"default": true
 	},
-	"override": {
+	"mail": {
+		"type": "boolean",
+		"default": true
+	},
+	"carrier": {
 		"type": "boolean",
 		"default": true
 	},
@@ -41,6 +45,10 @@
 	"fonts": {
 		"type": "string",
 		"default": "fonts"
+	},
+	"font": {
+		"type": "string",
+		"default": "Candara"
 	},
 	"hash": {
 		"type": "string",

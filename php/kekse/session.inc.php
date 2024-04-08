@@ -7,14 +7,34 @@ namespace kekse;
 
 class Session extends Quant
 {
-	public function __construct(... $args)
+	public $controller = null;
+	public $log = null;
+
+	public $environment = null;
+	public $configuration = null;
+
+	public $console = null;
+	public $connection = null;
+
+	public $parameter = null;
+
+	public function __construct($controller = null, ... $args)
 	{
 		parent::__construct($this, ... $args);
+		$this->controller = $controller;
+		$this->create();
 	}
 
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+	
+	protected function create()
+	{
+		$this->environment = new Environment($this);
+		$this->log = new Log($this, $this->environment);
+		$this->configuration = new Configuration($this);
 	}
 }
 

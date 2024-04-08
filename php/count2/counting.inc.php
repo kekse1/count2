@@ -24,8 +24,7 @@ class Counting extends \kekse\FileSystem
 		switch($this->type)
 		{
 			case 'visit':
-				if(!$this->session->configuration->getBoolean(
-					'visit'))
+				if(!$this->session->configuration->getBoolean('visit'))
 				{
 					throw new \Error('Counting visits is not allowed');
 				}
@@ -38,10 +37,19 @@ class Counting extends \kekse\FileSystem
 				}
 				break;
 			case 'click':
-				if(!$this->session->configuration->getBoolean(
-					'click'))
+				if(!$this->session->configuration->getBoolean('click'))
 				{
 					throw new \Error('Counting clicks is not allowed');
+				}
+				else if(!$this->session->parameter->getString('carrier'))
+				{
+					throw new \Error('Missing carrier parameter');
+				}
+				break;
+			case 'mail':
+				if(!$this->session->configuration->getBoolean('mail'))
+				{
+					throw new \Error('Counting mails is not allowed');
 				}
 				else if(!$this->session->parameter->getString('carrier'))
 				{
@@ -53,7 +61,7 @@ class Counting extends \kekse\FileSystem
 
 	public static function count()
 	{
-		return [ 'visit', 'click' ];
+		return [ 'visit', 'click', 'mail' ];
 	}
 	
 	public static function checkType($type, $error = true)
