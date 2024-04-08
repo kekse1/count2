@@ -67,7 +67,13 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 	$string = str_prepare_numeric($string, $radix, $double, true);
 	$radix = strlen($alpha);
-
+	$negative = ($string[0] === '-');
+	
+	if($negative)
+	{
+		$string = substr($string, 1);
+	}
+	
 	if($string === '' || $string === '.')
 	{
 		if($double)
@@ -82,6 +88,7 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	$len = count($split);
 	
 	//
+<<<<<<< HEAD
 	$negative = (($split[0] !== '' && $split[0][0]) === '-');
 	
 	if($negative)
@@ -90,6 +97,8 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 		--$len;
 	}
 	
+=======
+>>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 	$lenInt = strlen($split[0]);
 	$lenDouble = ($len > 1 ? strlen($split[1]) : 0);
 	$result = 0;
@@ -184,22 +193,6 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
-	$alpha;
-
-	if(($alpha = alphabet($radix)) === null)
-	{
-		if($throw)
-		{
-			throw new \Error('Invalid $radix argument');
-		}
-
-		return null;
-	}
-	else
-	{
-		$radix = strlen($alpha);
-	}
-
 	if(is_string($value))
 	{
 		if(is_numeric($value, $radix, $double))
@@ -226,8 +219,37 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	{
 		$double = false;
 	}
+	else if(!is_bool($double))
+	{
+		$double = true;
+	}
+
+	$alpha;
+
+	if(($alpha = alphabet($radix)) === null)
+	{
+		if($throw)
+		{
+			throw new \Error('Invalid $radix argument');
+		}
+
+		return null;
+	}
+
+	$byteRadix = (is_int($radix) && positiveRadix($radix) === 256);
+	$negativeRadix = ($radix < 0);
+	$radix = strlen($alpha);
+	$negative = ($value < 0);
+	if($negative) $value = abs($value);
+
+	if($byteRadix || str_contains($alpha, '.'))
+	{
+		$double = false;
+	}
 
 	//
+	$result = '';
+throw new \Error('TODO');
 }
 
 //
@@ -355,32 +377,33 @@ function str_numeric_sign($string, $noMinusInAlpha = true, $noPlusInAlpha = true
 		return [ $string, false ];
 	}
 	
-	$len = strlen($string);
+	$result = '';
 	$negative = false;
-	$pos = 0;
-	
-	for(; $pos < $len; ++$pos)
+	$hadSigns = false;
+	$len = strlen($string);
+
+	for($i = 0; $i < $len; ++$i)
 	{
-		if($noPlusInAlpha && $string[$pos] === '+')
+		if($hadSigns)
+		{
+			$result .= $string[$i];
+		}
+		else if($string[$i] === '+' && $noPlusInAlpha)
 		{
 			continue;
 		}
-		else if($noMinusInAlpha && $string[$pos] === '-')
+		else if($string[$i] === '-' && $noMinusInAlpha)
 		{
 			$negative = !$negative;
 		}
 		else
 		{
-			break;
+			$result .= $string[$i];
+			$hadSigns = true;
 		}
 	}
 
-	if($pos > 0)	
-	{
-		$string = substr($string, $pos);
-	}
-	
-	return [ $string, $negative ];
+	return [ $result, $negative ];
 }
 
 function str_prepare_numeric($string, $radix, $double = null, $filter = true)
@@ -490,7 +513,11 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 	{
 		$string = substr($string, 0, $pos + 1);
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 	[ $string, $negative ] = str_numeric_sign($string,
 		$noMinusInAlpha, $noPlusInAlpha);
 
@@ -507,7 +534,7 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 				break;
 			}
 		}
-		
+
 		$split[0] = substr($split[0], $pos);
 		$count = count($split);
 
@@ -545,7 +572,11 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 		}
 		
 		$string = implode('.', $split);
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> 4a206ee3f7e4812d2614a8de527c27530218d0cb
 		if($negative && $string !== '')
 		{
 			$string = '-' . $string;
