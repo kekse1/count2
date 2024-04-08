@@ -620,7 +620,7 @@ throw new \Error('TODO');
 		return ($f === 0);
 	}
 
-	public static function getRoot($real = true)
+	public static function getRoot($real = DEFAULT_FILESYSTEM_REAL_PATH)
 	{
 		$result;
 
