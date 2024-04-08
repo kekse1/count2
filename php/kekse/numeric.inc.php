@@ -7,7 +7,7 @@
 namespace kekse;
 
 //
-const DEFAULT_NUMERIC_THROW = true;
+const DEFAULT_NUMERIC_THROW = false;
 
 //
 const KEKSE_ALPHABET_DECIMAL = '0123456789';
@@ -58,14 +58,14 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	}
 	
 	$byteRadix = (positiveRadix($radix) === 256);
-	$negativeRadix = ($radix < 0);
+	$negativeRadix = (is_int($radix) && $radix < 0);
 	
 	if($byteRadix || str_contains($alpha, '.'))
 	{
 		$double = false;
 	}
 
-	$string = str_prepare_numeric($string, $radix, $double);
+	$string = str_prepare_numeric($string, $radix, $double, true);
 	$radix = strlen($alpha);
 
 	if($string === '' || $string === '.')
@@ -80,7 +80,7 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 	$split = explode('.', $string, ($double === false ? 1 : 2));
 	$len = count($split);
-
+	
 	//
 	$negative = (($split[0] !== '' && $split[0][0]) === '-');
 	
@@ -89,7 +89,7 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 		$split[0] = substr($split[0], 1);
 		--$len;
 	}
-
+	
 	$lenInt = strlen($split[0]);
 	$lenDouble = ($len > 1 ? strlen($split[1]) : 0);
 	$result = 0;
@@ -122,8 +122,9 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 				{
 					throw new \Exception('Character \'' . $split[0][$i] . '\' not found in alphabet for radix with len = ' . $radix);
 				}
-				
-				return null;
+
+				break;
+				//return null;
 			}
 			
 			$result += ($mul * $pos);
@@ -146,8 +147,9 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 				{
 					throw new \Exception('Character \'' . $split[1][$i] . '\' not found in alphabet for radix with len = ' . $radix);
 				}
-				
-				return null;
+
+				break;
+				//return null;
 			}
 			
 			$result += ($mul * $pos);
@@ -200,7 +202,7 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 	if(is_string($value))
 	{
-		if(is_numeric($value, $radix))
+		if(is_numeric($value, $radix, $double))
 		{
 			return $value;
 		}
@@ -229,25 +231,56 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 }
 
 //
-function is_number($value, $radix = null)
+function is_int($value, $radix = null)
 {
-	if(is_int($value) || is_double($value))
+	return is_number($value, $radix, false);
+}
+
+function is_double($value, $radix = null)
+{
+	return is_number($value, $radix, true);
+}
+
+function is_float($value, $radix = null)
+{
+	return is_double($value, $radix);
+}
+
+function is_number($value, $radix = null, $double = true)
+{
+	if(\is_int($value) || \is_double($value))
 	{
 		return true;
 	}
-	else if($radix === null)
+	else if($radix !== null)
 	{
-		return false;
+		if(!isRadix($radix))
+		{
+			throw new \Error('Invalid $radix argument');
+		}
+
+		return is_numeric($value, $radix, $double);
 	}
-	
-	return is_numeric($value, $radix);
+
+	return false;
 }
 
-function is_numeric($value, $radix = 10)
+function is_numeric($value, $radix = 10, $double = true)
 {
 	if(!is_string($value))
 	{
 		return is_number($value);
+	}
+	else if(!is_bool($double))
+	{
+		$double = true;
+	}
+
+	$len = strlen($value);
+
+	if($len === 0 || $len > KEKSE_LIMIT_STRING)
+	{
+		return false;
 	}
 	else if(positiveRadix($radix) === 256)
 	{
@@ -256,15 +289,15 @@ function is_numeric($value, $radix = 10)
 
 	$alpha;
 
-	if(($alpha = alphabet($radix)) === null || $radix === 10 || $alpha === KEKSE_ALPHABET_DECIMAL)
+	if(!($alpha = alphabet($radix)))
 	{
-		return \is_numeric($value);
+		throw new \Error('Invalid $radix argument');
 	}
-	else if(!str_contains_binary($alpha))
+	else if(!($value = str_prepare_numeric($value, $radix, $double, false)))
 	{
-		$value = str_trim($value);
+		return false;
 	}
-
+	
 	$radix = strlen($alpha);
 	$len = strlen($value);
 	$hadPoint;
@@ -273,17 +306,27 @@ function is_numeric($value, $radix = 10)
 	if(str_contains($alpha, '.'))
 	{
 		$hadPoint = null;
+		$double = false;
+	}
+	else if($double && str_contains($value, '.'))
+	{
+		$hadPoint = false;
 	}
 	else
 	{
-		$hadPoint = false;
+		$double = false;
+		$hadPoint = null;
 	}
 	
 	for($i = 0; $i < $len; ++$i)
 	{
 		if(!str_contains($alpha, $value[$i]))
 		{
-			if($value[$i] === '.' && $hadPoint === false)
+			if($value[$i] === '-')
+			{
+				continue;
+			}
+			else if($value[$i] === '.' && $hadPoint === false)
 			{
 				$hadPoint = true;
 			}
@@ -302,6 +345,10 @@ function str_numeric_sign($string, $noMinusInAlpha = true, $noPlusInAlpha = true
 	if(!is_string($string))
 	{
 		throw new \Error('Invalid $string argument');
+	}
+	else if($string === '')
+	{
+		return [ '', false ];
 	}
 	else if(!($noMinusInAlpha || $noPlusInAlpha))
 	{
@@ -336,11 +383,23 @@ function str_numeric_sign($string, $noMinusInAlpha = true, $noPlusInAlpha = true
 	return [ $string, $negative ];
 }
 
-function str_prepare_numeric($string, $radix, $double = null)
+function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 {
 	if(!is_string($string))
 	{
 		throw new \Error('Invalid $string argument');
+	}
+	else if($string === '')
+	{
+		return '';
+	}
+	else if(strlen($string) > KEKSE_LIMIT_STRING)
+	{
+		return '';
+	}
+	else if(positiveRadix($radix) === 256)
+	{
+		return $string;
 	}
 
 	$alpha;
@@ -358,27 +417,12 @@ function str_prepare_numeric($string, $radix, $double = null)
 	{
 		$dec = false;
 	}
-	
-	$noMinusInAlpha = !str_contains($alpha, '-');
-	$noPlusInAlpha = !str_contains($alpha, '+');
 
-	$r = str_numeric_sign($string, $noMinusInAlpha, $noPlusInAlpha);
-	$string = $r[0];
-	$negative = $r[1];
+	if(str_contains($alpha, '.'))
+	{
+		$double = false;
+	}
 
-	if($string === '')
-	{
-		return '';
-	}
-	else if(strlen($string) > KEKSE_LIMIT_STRING)
-	{
-		return '';
-	}
-	else if(!str_contains_binary($alpha))
-	{
-		$string = str_trim($string);
-	}
-	
 	if(str_is_lower($alpha))
 	{
 		$string = strtolower($string);
@@ -387,84 +431,70 @@ function str_prepare_numeric($string, $radix, $double = null)
 	{
 		$string = strtoupper($string);
 	}
-	
-	$withDouble;
-	
-	if(str_contains($alpha, '.'))
+
+	$negative;
+	$noMinusInAlpha = !str_contains($alpha, '-');
+	$noPlusInAlpha = !str_contains($alpha, '+');
+
+	if(!$filter)
 	{
-		$withDouble = !($double = false);
-	}
-	else
-	{
-		$withDouble = false;
+		[ $string, $negative ] = str_numeric_sign($string,
+			$noMinusInAlpha, $noPlusInAlpha);
+
+		if($negative && $string !== '')
+		{
+			return '-' . $string;
+		}
+
+		return $string;
 	}
 
-	$hadPoint = ($double !== false ? false : null);
 	$len = strlen($string);
-	$str = $string;
-	$string = '';
-	$l = 0;
-	
-	for($i = 0; $i < $len; ++$i)
-	{
-		if($str[$i] === '.')
-		{
-			if($hadPoint === false)
-			{
-				$hadPoint = true;
-			}
-			else
-			{
-				break;
-			}
-		}
-		
-		$string .= $str[$i];
-		++$l;
-	}
+	$pos = 0;
 
-	$str = $string;
-	$string = '';
-	$len = $l;
-	$l = 0;
-	
-	for($i = 0; $i < $len; ++$i)
+	for(; $pos < $len; ++$pos)
 	{
-		if($str[$i] === '.')
+		if(str_contains($alpha, $string[$pos]))
 		{
-			$string .= '.';
-			++$l;
+			break;
 		}
-		else if($dec)
+		else if($double !== false && $string[$pos] === '.')
 		{
-			$byte = ord($str[$i]);
-			
-			if($byte >= 48 && $byte <= 57)
-			{
-				$string .= chr($byte);
-				++$l;
-			}
-			else if($l > 0)
-			{
-				break;
-			}
+			break;
 		}
-		else if(str_contains($alpha, $str[$i]))
-		{
-			$string .= $str[$i];
-			++$l;
-		}
-		else if($l > 0)
+		else if($string[$pos] === '-' || $string[$pos] === '+')
 		{
 			break;
 		}
 	}
 
-	if($l === 0)
+	if($pos > 0)
 	{
-		$string = '';
+		$string = substr($string, $pos);
+		$len -= $pos;
 	}
-	else
+
+	for($pos = $len - 1; $pos >= 0; --$pos)
+	{
+		if(str_contains($alpha, $string[$pos]))
+		{
+			break;
+		}
+		else if($string[$pos] === '-' || $string[$pos] === '+')
+		{
+			break;
+		}
+	}
+
+	if($pos < ($len - 1))
+	{
+		$string = substr($string, 0, $pos + 1);
+	}
+	
+	[ $string, $negative ] = str_numeric_sign($string,
+		$noMinusInAlpha, $noPlusInAlpha);
+
+	if($string !== '')
 	{
 		$split = explode('.', $string, 2);
 		$len = strlen($split[0]);
@@ -516,7 +546,7 @@ function str_prepare_numeric($string, $radix, $double = null)
 		
 		$string = implode('.', $split);
 		
-		if($negative)
+		if($negative && $string !== '')
 		{
 			$string = '-' . $string;
 		}
