@@ -238,7 +238,47 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 	//
 	$result = '';
-throw new \Error('TODO');
+	$rest = (double)$value;
+	
+	while($rest > $radix)
+	{
+		$result = $alpha[(int)($rest % $radix)] . $result;
+		$rest = (double)($rest / $radix);
+	}
+	
+	if($rest > 0)
+	{
+		$result = $alpha[(int)$rest] . $result;
+	}
+	
+	if($double && (($rest = (double)fmod((double)$value, 1)) != 0))
+	{
+		$zero = 0;
+		$started = false;
+		
+		while((double)fmod($rest, 1) != 0)
+		{
+			$rest = (double)($rest * $radix);
+			
+			if(!$started && $rest < 1)
+			{
+				++$zero;
+			}
+			else
+			{
+				$started = true;
+			}
+		}
+		
+		$result .= str_repeat($alpha[0], $zero) . render($rest, $radix, $double, $throw);
+	}
+	
+	if($negative)
+	{
+		$result = '-' . $result;
+	}
+
+	return $result;
 }
 
 //
@@ -749,6 +789,15 @@ function alphabet($radix = 10)
 		return null;
 	}
 }
+
+//
+/*var_dump(render(3.14));
+var_dump(render(3.14, 10, null));
+var_dump(render(3, 10, null));
+var_dump(render(3.14, 10, false));
+var_dump(render(3, 10, null));
+var_dump(render(3.14, 10, false));
+var_dump(render(3, 10, true));*/
 
 //
 ?>
