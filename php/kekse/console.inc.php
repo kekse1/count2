@@ -45,13 +45,9 @@ class Console extends Terminal
 			$this->argv = [];
 		}
 
-		if($this->argv > 0)
-		{
-			require_once(__DIR__ . '/getopt.inc.php');
-			$this->getOptions();
-		}
-
 		parent::__construct($session, $this, ... $args);
+
+		$this->getOptions();
 	}
 
 	public function __destruct()
@@ -59,9 +55,16 @@ class Console extends Terminal
 		parent::__destruct();
 	}
 
-	private function getOptions()
+	public function getOptions()
 	{
-		//TODO/ using 'getopt.inc.php'!
+		if($this->argc === 0)
+		{
+			return null;
+		}
+		else
+		{
+			require_once(__DIR__ . '/getopt.inc.php');
+		}
 	}
 }
 

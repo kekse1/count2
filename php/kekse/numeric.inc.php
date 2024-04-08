@@ -194,7 +194,6 @@ function renderFloat($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
 	return renderDouble($value, $radix, $throw);
 }
 
-//todo/am ende $double-casts
 function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
 	if(is_string($value))
