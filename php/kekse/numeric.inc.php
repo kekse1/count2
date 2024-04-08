@@ -532,7 +532,11 @@ function isRadix($radix)
 
 function reverseRadix($radix)
 {
-	if(!is_int($radix))
+	if(is_string($radix))
+	{
+		return strrev($radix);
+	}
+	else if(!is_int($radix))
 	{
 		return null;
 	}
@@ -550,7 +554,11 @@ function reverseRadix($radix)
 
 function positiveRadix($radix)
 {
-	if(!is_int($radix))
+	if(is_string($radix))
+	{
+		return false;
+	}
+	else if(!is_int($radix))
 	{
 		return null;
 	}
@@ -564,7 +572,11 @@ function positiveRadix($radix)
 
 function negativeRadix($radix)
 {
-	if(!is_int($radix))
+	if(is_string($radixA))
+	{
+		return false;
+	}
+	else if(!is_int($radix))
 	{
 		return null;
 	}
