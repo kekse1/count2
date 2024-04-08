@@ -5,20 +5,27 @@
 
 namespace kekse;
 
+//
+const DEFAULT_FILESYSTEM_REAL_PATH = false;
+
+//
 class FileSystem extends Quant
 {
 	public $root = null;
 
-	public function __construct($session = null, $root = true, ... $args)
+	public function __construct($session = null, $root = true, $real = DEFAULT_FILESYSTEM_REAL_PATH, $writable = false, ... $args)
 	{
 		parent::__construct($session, ... $args);
 
 		if($root === true)
 		{
-			$root = self::getDocumentRoot();
+			$root = self::getRoot();
 		}
 
-		$this->setRoot($root);
+		if(is_string($root))
+		{
+			$this->setRoot($root, $real, $writable);
+		}
 	}
 
 	public function __destruct()
@@ -36,11 +43,11 @@ class FileSystem extends Quant
 		return parent::__toString();
 	}
 
-	public function setRoot($path, $real = true, $writable = false)
+	public function setRoot($path, $real = DEFAULT_FILESYSTEM_REAL_PATH, $writable = false, $mode = null)
 	{
-		if(!self::isDirectory($path, true, true, $writable))
+		if(!is_string($path))
 		{
-			return false;
+			return null;
 		}
 		else
 		{
@@ -52,11 +59,30 @@ class FileSystem extends Quant
 			$path = realpath($path);
 		}
 
+		if(!self::isDirectory($path, true, true, $writable))
+		{
+			if(file_exists($path))
+			{
+				throw new \Exception('Invalid root directory: path exists, but ain\'t a directory.');
+			}
+			else if(!is_int($mode))
+			{
+				throw new \Exception('Root directory doesn\'t exist (try setting $mode argument to create it)');
+			}
+
+			self::makeDirectory($path, $mode, true);
+		}
+
+		if($path[strlen($path) - 1] !== DIRECTORY_SEPARATOR)
+		{
+			$path .= DIRECTORY_SEPARATOR;
+		}
+
 		$this->root = $path;
 		return true;
 	}
 
-	public function path($path, $real = true, $exists = false)
+	public function path($path, $real = DEFAULT_FILESYSTEM_REAL_PATH, $exists = false)
 	{
 		if(!is_string($path))
 		{
@@ -84,7 +110,7 @@ class FileSystem extends Quant
 		return $path;
 	}
 
-	public function check($path, $real = true, $exists = false)
+	public function check($path, $real = DEFAULT_FILESYSTEM_REAL_PATH, $exists = false)
 	{
 		$path = $this->path($path, $real, $exists);
 
@@ -107,6 +133,11 @@ class FileSystem extends Quant
 	public static function secure($path)
 	{
 		return Security::secure($path, 'path');
+	}
+
+	public static function appendToFile($path, $data_or_callback, $chunk = KEKSE_FILE_CHUNK)
+	{
+throw new \Error('TODO');
 	}
 
 	public static function readFile($path, $callback = null, $chunk = KEKSE_FILE_CHUNK)
@@ -225,6 +256,28 @@ class FileSystem extends Quant
 		else if($readable && !is_readable($path)) return false;
 		else if($writable && !is_writable($path)) return false;
 		return true;
+	}
+
+	public static function makeDirectory($path, $mode = KEKSE_MODE_DIR, $recursive = true)
+	{
+		if(!is_string($path) || file_exists($path)) return false;
+		return mkdir($path, $mode, $recursive);
+	}
+
+	public static function changeMode($path, $mode)
+	{
+		if(!is_string($path) || !file_exists($path)) return false;
+		return chmod($path, $mode);
+	}
+
+	public static function changeFileMode($path, $mode = KEKSE_MODE_FILE)
+	{
+		return self::changeMode($path, $mode);
+	}
+	
+	public static function changeDirMode($path, $mode = KEKSE_MODE_DIR)
+	{
+		return self::changeMode($path, $mode);
 	}
 	
 	public static function delete($path, $depth = 0, $extended = false, $currentDepth = 0)
@@ -567,41 +620,105 @@ class FileSystem extends Quant
 		return ($f === 0);
 	}
 
-	public static function getDocumentRoot()
+	public static function getRoot($real = true)
 	{
+		$result;
+
 		if(isset($_SERVER['DOCUMENT_ROOT']))
 		{
-			return $_SERVER['DOCUMENT_ROOT'];
+			$result = $_SERVER['DOCUMENT_ROOT'];
+		}
+		else
+		{
+			$result = getcwd();
 		}
 
-		return null;
-	}
+		if(!$result)
+		{
+			$result = '.';
+		}
 
-	public static function getWorkingDirectory()
-	{
-		return getcwd();
+		if($real)
+		{
+			$result = realpath($result);
+		}
+
+		return $result;
 	}
 
 	public static function resolve(... $args)
 	{
-		$origin;
+		$origin = self::getRoot();
+		$len = count($args);
+		$rem = 0;
 
-		if(!!$_SERVER['DOCUMENT_ROOT'])
+		for($i = $len - 1; $i >= 0; --$i)
 		{
-			$origin = $_SERVER['DOCUMENT_ROOT'];
-		}
-		else
-		{
-			$origin = getcwd();
+			if(!is_string($args[$i]) || $args[$i] === '')
+			{
+				array_splice($args, $i, 1);
+				--$len;
+			}
 		}
 
-		return self::join($origin, ... $args);
+		if($len === 0)
+		{
+			return $origin;
+		}
+		else if(is_string($args[0]) && $args[0] !== '' && $args[0] !== $origin)
+		{
+			$len1 = strlen($args[0]);
+			$len2 = strlen($origin);
+
+			$argWith;
+			$originWith;
+
+			if($args[0][$len1 - 1] === DIRECTORY_SEPARATOR)
+			{
+				$argWith = $args[0];
+			}
+			else
+			{
+				$argWith = substr($args[0], 0, -1);
+			}
+
+			if($origin[$len2 - 1] === DIRECTORY_SEPARATOR)
+			{
+				$originWith = $origin;
+			}
+			else
+			{
+				$originWith = substr($origin, 0, -1);
+			}
+
+			if(str_starts_with($argWith, $originWith) || str_starts_with($originWith, $argWith))
+			{
+				array_unshift($args, $origin);
+			}
+		}
+
+		return self::join(... $args);
 	}
 	
 	public static function join(... $args)
 	{
-		$result = implode(DIRECTORY_SEPARATOR, $args);
-		return self::normalize($result);
+		$len = count($args);
+
+		for($i = $len - 1; $i >= 0; --$i)
+		{
+			if(!is_string($args[$i]) || $args[$i] === '')
+			{
+				array_splice($args, $i, 1);
+				--$len;
+			}
+		}
+
+		if($len === 0)
+		{
+			return '.';
+		}
+
+		return self::normalize(implode(DIRECTORY_SEPARATOR, $args));
 	}
 	
 	public static function normalize($path)
@@ -610,9 +727,9 @@ class FileSystem extends Quant
 		{
 			return null;
 		}
-		else
+		else if(!($path = Security::checkString($path, true)))
 		{
-			$path = Security::checkString($path, true);
+			return null;
 		}
 		
 		$len = strlen($path);
