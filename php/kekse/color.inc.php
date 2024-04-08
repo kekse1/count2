@@ -5,6 +5,8 @@
 
 namespace kekse;
 
+require_once(__DIR__ . '/main.inc.php');
+
 class Color extends Quant
 {
 	public function __construct($session = null, ... $args)

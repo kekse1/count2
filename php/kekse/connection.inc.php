@@ -5,7 +5,8 @@
 
 namespace kekse;
 
-//require_once(__DIR__ . '/security.inc.php');
+require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/security.inc.php');
 
 class Connection extends Quant
 {

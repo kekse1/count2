@@ -18,6 +18,10 @@ const KEKSE_ALPHABET_EXTENDED = KEKSE_ALPHABET_REGULAR . KEKSE_ALPHABET_UPPER;
 const KEKSE_ALPHABET_ALPHA = KEKSE_ALPHABET_LOWER . KEKSE_ALPHABET_UPPER;
 
 //
+require_once(__DIR__ . '/constants.inc.php');
+require_once(__DIR__ . '/string.inc.php');
+
+//
 function parseInt($string, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
 {
 	return parse($string, $radix, false, $throw);
@@ -218,13 +222,9 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 		return null;
 	}
-	else if(is_int($value))
-	{
-		$double = false;
-	}
 	else if(!is_bool($double))
 	{
-		$double = true;
+		$double = null;
 	}
 
 	$alpha;
@@ -245,27 +245,22 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	$negative = ($value < 0);
 	if($negative) $value = abs($value);
 
-	if($byteRadix || str_contains($alpha, '.'))
-	{
-		$double = false;
-	}
-
 	//
 	$result = '';
 	$rest = (double)$value;
 	
-	while($rest > $radix)
+	while($rest >= $radix)
 	{
 		$result = $alpha[(int)($rest % $radix)] . $result;
-		$rest = (double)($rest / $radix);
+		$rest /= $radix;
 	}
 	
 	if($rest > 0)
 	{
 		$result = $alpha[(int)$rest] . $result;
 	}
-	
-	if($double && (($rest = (double)fmod((double)$value, 1)) != 0))
+
+	if($double !== false && (($rest = (double)fmod((double)$value, 1)) != 0))
 	{
 		$zero = 0;
 		$started = false;
@@ -284,9 +279,47 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 			}
 		}
 		
-		$result .= str_repeat($alpha[0], $zero) . render($rest, $radix, $double, $throw);
+		$rest = str_repeat($alpha[0], $zero) . render($rest, $radix, $double, $throw);
+		$len = strlen($rest);
+		
+		if(KEKSE_NUMERIC_ZERO_LIMIT > 0)
+		{
+			$count = 0;
+			$cut = -1;
+
+			for($i = 0; $i < $len; ++$i)
+			{
+				if($rest[$i] === $alpha[0])
+				{
+					if(++$count >= KEKSE_NUMERIC_ZERO_LIMIT)
+					{
+						$cut = $i;
+						break;
+					}
+				}
+				else
+				{
+					$count = 0;
+				}
+			}
+			
+			if($cut > -1)
+			{
+				$rest = substr($rest, 0, $cut - KEKSE_NUMERIC_ZERO_LIMIT + 1);
+			}
+		}
+		
+		$result .= '.' . $rest;
 	}
 	
+	if($double === true)
+	{
+		if(!str_contains($result, '.'))
+		{
+			$result .= '.0';
+		}
+	}
+
 	if($negative)
 	{
 		$result = '-' . $result;
@@ -296,21 +329,6 @@ function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 }
 
 //
-function is_int($value, $radix = null)
-{
-	return is_number($value, $radix, false);
-}
-
-function is_double($value, $radix = null)
-{
-	return is_number($value, $radix, true);
-}
-
-function is_float($value, $radix = null)
-{
-	return is_double($value, $radix);
-}
-
 function is_number($value, $radix = null, $double = true)
 {
 	if(\is_int($value) || \is_double($value))
@@ -361,6 +379,28 @@ function is_numeric($value, $radix = 10, $double = true)
 	else if(!($value = str_prepare_numeric($value, $radix, $double, false)))
 	{
 		return false;
+	}
+	
+	if(str_contains($alpha, '.'))
+	{
+		if($double)
+		{
+			return false;
+		}
+	}
+	else if(!$double)
+	{
+		if(str_contains($value, '.'))
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if(!str_contains($value, '.'))
+		{
+			return false;
+		}
 	}
 	
 	$radix = strlen($alpha);
@@ -798,15 +838,6 @@ function alphabet($radix = 10)
 		return null;
 	}
 }
-
-//
-/*var_dump(render(3.14));
-var_dump(render(3.14, 10, null));
-var_dump(render(3, 10, null));
-var_dump(render(3.14, 10, false));
-var_dump(render(3, 10, null));
-var_dump(render(3.14, 10, false));
-var_dump(render(3, 10, true));*/
 
 //
 ?>

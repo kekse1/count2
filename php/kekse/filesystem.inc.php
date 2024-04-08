@@ -9,6 +9,10 @@ namespace kekse;
 const DEFAULT_FILESYSTEM_REAL_PATH = false;
 
 //
+require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/security.inc.php');
+
+//
 class FileSystem extends Quant
 {
 	public $root = null;
@@ -142,7 +146,7 @@ throw new \Error('TODO');
 
 	public static function readFile($path, $callback = null, $chunk = KEKSE_FILE_CHUNK)
 	{
-		if(!FileSystem::isFile($path))
+		if(!self::isFile($path))
 		{
 			return false;
 		}
@@ -503,7 +507,7 @@ throw new \Error('TODO');
 			{
 				if($sub !== '.' && $sub !== '..')
 				{
-					$res = delete(FileSystem.join($path, $sub), $depth, ($extended === null ? null : true), $currentDepth + 1);
+					$res = delete(self::join($path, $sub), $depth, ($extended === null ? null : true), $currentDepth + 1);
 					
 					if($extended === null)
 					{

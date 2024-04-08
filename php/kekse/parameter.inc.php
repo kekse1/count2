@@ -5,8 +5,6 @@
 
 namespace kekse;
 
-//require_once(__DIR__ . '/main.inc.php');
-//require_once(__DIR__ . '/filesystem.inc.php');
 require_once(__DIR__ . '/map.inc.php');
 
 class Parameter extends Map

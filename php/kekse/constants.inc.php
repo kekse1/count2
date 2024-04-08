@@ -19,4 +19,6 @@ define('KEKSE_MODE_DIR', 0700);
 
 define('KEKSE_FILE_CHUNK', 4096);
 
+define('KEKSE_NUMERIC_ZERO_LIMIT', 8);
+
 //

@@ -5,6 +5,10 @@
 
 namespace kekse;
 
+require_once(__DIR__ . '/log.inc.php');
+require_once(__DIR__ . '/environment.inc.php');
+require_once(__DIR__ . '/configuration.inc.php');
+
 class Session extends Quant
 {
 	public $controller = null;

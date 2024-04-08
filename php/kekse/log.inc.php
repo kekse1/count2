@@ -5,6 +5,9 @@
 
 namespace kekse;
 
+require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/filesystem.inc.php');
+
 class Log extends Quant
 {
 	public static $ext = '.log';
@@ -17,6 +20,7 @@ class Log extends Quant
 	public function __construct($session = null, $env = null, ... $args)
 	{
 		parent::__construct($session, ... $args);
+
 		$this->env = $env;
 		$this->init();
 	}

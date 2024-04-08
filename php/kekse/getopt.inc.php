@@ -5,6 +5,8 @@
 
 namespace kekse;
 
+require_once(__DIR__ . '/map.inc.php');
+
 class GetOpt extends Map
 {
 	public function __construct($session = null, ... $args)

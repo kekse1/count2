@@ -33,32 +33,32 @@ class Configuration extends Map
 				'base'	=> $this->session->environment->real['base'] ];
 		$file = [	'dir'	=> $this->session->environment->file['dir'],
 				'base'	=> $this->session->environment->file['base'] ];
-		$real['full'] = \kekse\FileSystem::join($real['dir'], $real['base']);
+		$real['full'] = FileSystem::join($real['dir'], $real['base']);
 		$real['json'] = $real['full'] . '.json';
-		$file['full'] = \kekse\FileSystem::join($file['dir'], $file['base']);
+		$file['full'] = FileSystem::join($file['dir'], $file['base']);
 		$file['json'] = $file['full'] . '.json';
 
 		$result = [];
 
-		if(\kekse\FileSystem::isFile($real['json'], true))
+		if(FileSystem::isFile($real['json'], true))
 		{
-			$real['data'] = \kekse\FileSystem::readFile($real['json']);
-			$this->importValues(\kekse\parseJSON($real['data']));
+			$real['data'] = FileSystem::readFile($real['json']);
+			$this->importValues(parseJSON($real['data']));
 			array_push($result, $real['json']);
 		}
 
-		if(\kekse\FileSystem::isFile($file['json'], true))
+		if(FileSystem::isFile($file['json'], true))
 		{
 			if(count($result) === 0)
 			{
-				$file['data'] = \kekse\FileSystem::readFile($file['json']);
-				$this->importValues(\kekse\parseJSON($file['data']));
+				$file['data'] = FileSystem::readFile($file['json']);
+				$this->importValues(parseJSON($file['data']));
 				array_push($result, $file['json']);
 			}
 			else if($real !== $file)
 			{
-				$file['data'] = \kekse\FileSystem::readFile($file['json']);
-				$this->importValues(\kekse\parseJSON($file['data']));
+				$file['data'] = FileSystem::readFile($file['json']);
+				$this->importValues(parseJSON($file['data']));
 				array_push($result, $file['json']);
 			}
 		}
