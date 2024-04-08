@@ -86,8 +86,7 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 
 	$split = explode('.', $string, ($double === false ? 1 : 2));
 	$len = count($split);
-
-	//
+	
 	$lenInt = strlen($split[0]);
 	$lenDouble = ($len > 1 ? strlen($split[1]) : 0);
 	$result = 0;
@@ -180,6 +179,22 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	return $result;
 }
 
+function renderInt($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+{
+	return render($value, $radix, false, $throw);
+}
+
+function renderDouble($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+{
+	return render($value, $radix, true, $throw);
+}
+
+function renderFloat($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+{
+	return renderDouble($value, $radix, $throw);
+}
+
+//todo/am ende $double-casts
 function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
 {
 	if(is_string($value))
@@ -455,21 +470,16 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 	}
 
 	$alpha;
-	$dec;
 	
 	if(($alpha = alphabet($radix)) === null)
 	{
 		throw new \Error('Invalid $radix argument');
 	}
-	else if(($radix = strlen($alpha)) === 10 && $alpha === KEKSE_ALPHABET_DECIMAL)
-	{
-		$dec = true;
-	}
 	else
 	{
-		$dec = false;
+		$radix = strlen($alpha);
 	}
-
+	
 	if(str_contains($alpha, '.'))
 	{
 		$double = false;
@@ -597,7 +607,7 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 		}
 		
 		$string = implode('.', $split);
-
+		
 		if($negative && $string !== '')
 		{
 			$string = '-' . $string;

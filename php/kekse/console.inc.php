@@ -6,7 +6,6 @@
 namespace kekse;
 
 require_once(__DIR__ . '/terminal.inc.php');
-require_once(__DIR__ . '/getopt.inc.php');
 
 class Console extends Terminal
 {
@@ -48,6 +47,7 @@ class Console extends Terminal
 
 		if($this->argv > 0)
 		{
+			require_once(__DIR__ . '/getopt.inc.php');
 			$this->getOptions();
 		}
 
