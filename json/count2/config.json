@@ -1,11 +1,11 @@
 {
 	"file": {
 		"type": "integer",
-		"default": 384
+		"default": 438
 	},
 	"dir": {
 		"type": "integer",
-		"default": 448
+		"default": 511
 	},
 	"path": {
 		"type": "string",

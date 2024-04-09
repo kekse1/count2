@@ -76,6 +76,10 @@ class FileSystem extends Quant
 
 			self::makeDirectory($path, $mode, true);
 		}
+		else if(is_int($mode))
+		{
+			self::changeDirectoryMode($path, $mode);
+		}
 
 		if($path[strlen($path) - 1] !== DIRECTORY_SEPARATOR)
 		{
@@ -279,7 +283,7 @@ throw new \Error('TODO');
 		return self::changeMode($path, $mode);
 	}
 	
-	public static function changeDirMode($path, $mode = KEKSE_MODE_DIR)
+	public static function changeDirectoryMode($path, $mode = KEKSE_MODE_DIR)
 	{
 		return self::changeMode($path, $mode);
 	}
