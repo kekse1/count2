@@ -67,7 +67,7 @@ class FileSystem extends Quant
 		{
 			if(file_exists($path))
 			{
-				throw new \Exception('Invalid root directory: path exists, but ain\'t a directory.');
+				throw new \Exception('Invalid root directory: path exists, but ain\'t a directory, or you can\'t access it.');
 			}
 			else if(!is_int($mode))
 			{
@@ -143,16 +143,158 @@ class FileSystem extends Quant
 		return Security::secure($path, 'path');
 	}
 
-	public static function appendToFile($path, $data_or_callback, $chunk = KEKSE_FILE_CHUNK)
+	public static function appendFile($path, $data_or_callback, $mode = 'a', $chunk = KEKSE_FILE_CHUNK)
 	{
-throw new \Error('TODO');
+		if(!is_string($mode))
+		{
+			$mode = 'a';
+		}
+		
+		return self::writeFile($path, $data_or_callback, $mode, $chunk);
+	}
+	
+	public static function writeFile($path, $data_or_callback, $mode = 'c', $chunk = KEKSE_FILE_CHUNK)
+	{
+		if(!is_string($path))
+		{
+			return null;
+		}
+		/*else
+		{
+			$path = self::secure($path);
+		}*/
+		
+		$data; $callback;
+		
+		if(is_callable($data_or_callback))
+		{
+			$data = null;
+			$callback = $data_or_callback;
+		}
+		else if(is_string($data_or_callback))
+		{
+			$data = $data_or_callback;
+			$callback = null;
+		}
+		else
+		{
+			return false;
+		}
+		
+		if(!is_int($chunk) || $chunk < 1)
+		{
+			if($chunk === true)
+			{
+				$chunk = KEKSE_FILE_CHUNK;
+			}
+			else
+			{
+				$chunk = 0;
+			}
+		}
+		
+		if(!is_string($mode))
+		{
+			$mode = 'c';
+		}
+
+		$size = ($data === null ? 0 : strlen($data));
+		
+		if($data !== null && $chunk === 0)
+		{
+			$chunk = $size;
+		}
+		
+		$fh = fopen($path, $mode);
+		
+		if($fh === false)
+		{
+			return false;
+		}
+		else
+		{
+			flock($fh, LOCK_EX);
+		}
+		
+		if($mode !== 'a')
+		{
+			ftruncate($fh, 0);
+		}
+
+		$written = 0;
+		$chunks = 0;
+		
+		$write = function($data) use($chunk, &$chunks, &$written, &$fh)
+		{
+			$len = strlen($data);
+			$rest = $len;
+			$pos = 0;
+			$c = min($rest, $chunk);
+			$w = 0;
+
+			while($rest > 0)
+			{
+				$c = min($c, $rest);
+				$d = substr($data, $pos, $c);
+				$r = fwrite($fh, $d);
+				
+				if($r === false)
+				{
+					fclose($fh);
+					return false;
+				}
+				
+				$pos += $r;
+				$rest -= $r;
+				++$chunks;
+			}
+			
+			$written += $len;
+			return true;
+		};
+		
+		if($data === null)
+		{
+			do
+			{
+				$data = $callback();
+				
+				if(is_string($data) && $data !== '')
+				{
+					if(!$write($data))
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+			while(true);
+		}
+		else
+		{
+			$write($data);
+		}
+		
+		if($callback)
+		{
+			return $written;
+		}
+		
+		return $chunks;
 	}
 
 	public static function readFile($path, $callback = null, $chunk = KEKSE_FILE_CHUNK)
 	{
-		if(!self::isFile($path))
+		if(!is_string($path))
 		{
-			return false;
+			return null;
+		}
+		else if(!self::isFile($path))
+		{
+			return null;
 		}
 		/*else
 		{
@@ -180,7 +322,7 @@ throw new \Error('TODO');
 
 		if($fh === false)
 		{
-			return null;
+			return false;
 		}
 
 		$size = fstat($fh)['size'];
@@ -275,7 +417,7 @@ throw new \Error('TODO');
 	public static function changeMode($path, $mode)
 	{
 		if(!is_string($path) || !file_exists($path)) return false;
-		return chmod($path, $mode);
+		return @chmod($path, $mode);
 	}
 
 	public static function changeFileMode($path, $mode = KEKSE_MODE_FILE)
@@ -934,10 +1076,10 @@ throw new \Error('TODO');
 			}
 		}
 
-		$maxDepth = max($fromLen, $toLen);
+		$minDepth = min($fromLen, $toLen);
 		$same;
 
-		for($same = 0; $same < $maxDepth; ++$same)
+		for($same = 0; $same < $minDepth; ++$same)
 		{
 			if($from[$same] !== $to[$same]) break;
 		}

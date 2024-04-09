@@ -46,14 +46,38 @@ class Log extends Quant
 
 	public static function handler($type, $object, ... $args)
 	{
-		if(!isset($GLOBALS['log']))
+		$text = '';
+		
+		if(is_object($object))
 		{
-			return var_dump($object);
+			$text = $object->getFile() . ':' . $object->getLine() . ' <' . $type . '/' . $object->getCode() . '> ' . $object->getMessage();
+		}
+		else if(is_array($args[0]))
+		{
+			$args = $args[0];
+			$text = $args[1] . ':' . $args[2] . ' <' . $type . '> ' . $args[0];
+		}
+		else
+		{
+			$text = print_r($args, true);
 		}
 
-		//
-		$text = $object->getFile() . ' <' . $type . '/' . $object->getCode() . '> ' . $object->getMessage();
-		$GLOBALS['log']->log($text);
+		if(!isset($GLOBALS['log']))
+		{
+			if(php_sapi_name() === 'cli')
+			{
+				fprintf(STDERR, $text . PHP_EOL);
+			}
+			else
+			{
+				@header('Content-Type: text/plain; charset=UTF-8');
+				echo $text;
+			}
+		}
+		else
+		{
+			$GLOBALS['log']->log($text);
+		}
 
 		//
 		switch($type)
@@ -141,19 +165,22 @@ class Log extends Quant
 
 	public function log(... $args)
 	{
-		$this->log2console(... $args);
+		$this->log2stdout(... $args);
 		$this->log2file(... $args);
-
-		return $result;
 	}
 
-	public function log2console(... $args)
+	public function log2stdout(... $args)
 	{
 		$result = $this->make(false, ... $args);
 
-		if(! ($this->session && isset($this->session->console)))
+		if(php_sapi_name() === 'cli')
 		{
-			return fprintf(STDERR, $result . PHP_EOL);
+			fprintf(STDERR, $result . PHP_EOL);
+		}
+		else
+		{
+			@header('Content-Type: text/plain; charset=UTF-8');
+			echo $result . PHP_EOL;
 		}
 
 		return $this->session->console->log($result);
@@ -162,18 +189,14 @@ class Log extends Quant
 	public function log2file(... $args)
 	{
 		if(!$this->targets) return false;
-		
-		if(isset($this->targets[0])) self::appendToFile($this->targets[0], $this->make(true, ... $args));
-		if(isset($this->targets[1])) self::appendToFile($this->targets[1], $this->make(false, ... $args));
-
+		if(isset($this->targets[0])) self::appendToFile($this->targets[0], $this->make(true, ... $args) . PHP_EOL);
+		if(isset($this->targets[1])) self::appendToFile($this->targets[1], $this->make(false, ... $args) . PHP_EOL);
 		return true;
 	}
 
 	public static function appendToFile($path, $string)
 	{
-		var_dump($path . ' => \'' . $string . '\'');
-return;//DEBUG/..
-throw new \Error('TODO @ filesystem.inc.php, w/ callback & chunks, etc.. and FILE LOCK & APPEND!!!!');
+		return FileSystem::appendFile($path, $string);
 	}
 }
 
