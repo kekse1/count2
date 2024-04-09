@@ -1,11 +1,11 @@
 {
 	"file": {
 		"type": "integer",
-		"default": 448
+		"default": 384
 	},
 	"dir": {
 		"type": "integer",
-		"default": 384
+		"default": 448
 	},
 	"client": {
 		"type": "boolean",

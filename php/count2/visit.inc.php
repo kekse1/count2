@@ -7,7 +7,7 @@ namespace kekse\count2;
 
 require_once(__DIR__ . '/counting.inc.php');
 
-class Click extends Counting
+class Visit extends Counting
 {
 	public function __construct($session, ... $args)
 	{

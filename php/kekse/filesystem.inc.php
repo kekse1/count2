@@ -17,7 +17,7 @@ class FileSystem extends Quant
 {
 	public $root = null;
 
-	public function __construct($session = null, $root = true, $real = DEFAULT_FILESYSTEM_REAL_PATH, $writable = false, ... $args)
+	public function __construct($session = null, $root = true, $real = DEFAULT_FILESYSTEM_REAL_PATH, $writable = false, $mode = null, ... $args)
 	{
 		parent::__construct($session, ... $args);
 
@@ -28,7 +28,7 @@ class FileSystem extends Quant
 
 		if(is_string($root))
 		{
-			$this->setRoot($root, $real, $writable);
+			$this->setRoot($root, $real, $writable, $mode);
 		}
 	}
 

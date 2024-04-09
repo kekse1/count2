@@ -6,20 +6,18 @@
 //
 namespace kekse\count2;
 
+require_once(__DIR__ . '/../kekse/filesystem.inc.php');
+
 class Counting extends \kekse\FileSystem
 {
-	public $carrier;
 	public $type;
 
-	public function __construct($session, $type, $carrier, ... $args)
+	public function __construct($session, ... $args)
 	{
-		$this->carrier = $carrier;
-		$this->type = self::checkType($type);
-		$this->checkCarrier($this->carrier = $carrier);
 		parent::__construct($session, ... $args);
 	}
 
-	private function checkCarrier($carrier)
+	/*private function checkCarrier($carrier)
 	{
 		switch($this->type)
 		{
@@ -88,9 +86,9 @@ class Counting extends \kekse\FileSystem
 	public function __destruct()
 	{
 		parent::__destruct();
-	}
+	}*/
 
-	public function getValue()
+/*	public function getValue()
 	{
 		$path = $this->getValuePath();
 
@@ -101,8 +99,10 @@ class Counting extends \kekse\FileSystem
 
 		return (int)file_get_contents($path);
 	}
+ */
 
-	public function incrementValue()
+	//TODO @ \kekse\numeric.inc.php.. @ rdx = 256! ;-)
+	/*public function incrementValue()
 	{
 		$path = $this->getValuePath();
 
@@ -127,30 +127,7 @@ class Counting extends \kekse\FileSystem
 		fwrite($fh, $string);
 		fclose($fh);
 		return $result;
-	}
-	
-	public function getPath($prefix = '')
-	{
-		return \kekse\FileSystem::join(
-			$this->session->configuration->get('path'),
-			$this->session->configuration->get($this->type),
-			$prefix . $this->carrier);
-	}
-	
-	public function getValuePath()
-	{
-		return $this->getPath(KEKSE_COUNT2_PREFIX_VALUE);
-	}
-	
-	public function getCachePath()
-	{
-		return $this->getPath(KEKSE_COUNT2_PREFIX_CACHE);
-	}
-	
-	public function getConfigPath()
-	{
-		return $this->getPath(KEKSE_COUNT2_PREFIX_CONFIG);
-	}
+	}*/
 }
 
 ?>
