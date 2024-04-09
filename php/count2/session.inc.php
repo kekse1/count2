@@ -11,14 +11,31 @@ require_once(__DIR__ . '/../kekse/filesystem.inc.php');
 
 class Session extends \kekse\Session
 {
-	private $path = null;
 	public $directory = null;
+
+	private $path = null;
 
 	public function __construct($controller, ... $args)
 	{
 		parent::__construct($this->controller = $controller, ... $args);
-		$this->directory = new \kekse\FileSystem($this, $this->setPath(),
+		$this->setPath();
+	}
+
+	private function setPath()
+	{
+		if($this->configuration->has('path', true))
+		{
+			$this->path = $this->configuration->get('path');
+		}
+		else
+		{
+			$this->path = $this->environment->file['base'];
+		}
+
+		$this->directory = new \kekse\FileSystem($this, $this->path,
 			false, true, $this->configuration->get('dir'));
+
+		return $this->path;
 	}
 
 	public function __destruct()
@@ -30,11 +47,6 @@ class Session extends \kekse\Session
 	{
 		parent::create();
 		$this->configuration->importSchemeFromJSON(KEKSE_COUNT2_JSON_CONFIG);
-	}
-
-	private function setPath()
-	{
-		return $this->path = $this->environment->file['base'];
 	}
 }
 

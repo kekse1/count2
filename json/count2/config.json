@@ -7,6 +7,10 @@
 		"type": "integer",
 		"default": 448
 	},
+	"path": {
+		"type": "string",
+		"default": ""
+	},
 	"client": {
 		"type": "boolean",
 		"default": true
