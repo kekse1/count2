@@ -7,9 +7,17 @@
 		"type": "integer",
 		"default": 384
 	},
-	"path": {
-		"type": "string",
-		"default": "count2"
+	"client": {
+		"type": "boolean",
+		"default": true
+	},
+	"server": {
+		"type": "boolean",
+		"default": true
+	},
+	"fingerprint": {
+		"type": "boolean",
+		"default": true
 	},
 	"visit": {
 		"type": "boolean",
@@ -20,10 +28,6 @@
 		"default": true
 	},
 	"mail": {
-		"type": "boolean",
-		"default": true
-	},
-	"carrier": {
 		"type": "boolean",
 		"default": true
 	},
@@ -46,15 +50,11 @@
 		"type": "string",
 		"default": "fonts"
 	},
-	"font": {
-		"type": "string",
-		"default": "Candara"
-	},
 	"hash": {
 		"type": "string",
 		"default": "sha3-256"
 	},
-	"hide": {
+	"privacy": {
 		"type": "boolean",
 		"default": false
 	}

@@ -8,7 +8,7 @@
 		"type": "string",
 		"default": ""
 	},
-	"type": {
+	"count": {
 		"type": "string",
 		"default": "visit"
 	},
@@ -18,16 +18,21 @@
 	},
 	"text": {
 		"type": "string",
-		"default": ""
+		"default": "",
+		"max": 64
 	},
 	"zero": {
 		"type": "boolean",
 		"default": false
 	},
-	"mime": {
+	"hide": {
+		"type": "boolean",
+		"default": false
+	},
+	"type": {
 		"type": "string",
 		"default": "text/plain;charset=UTF-8",
-		"max": 48
+		"max": 64
 	},
 	"radix": {
 		"type": "integer",
@@ -37,12 +42,18 @@
 	},
 	"font": {
 		"type": "string",
-		"default": "candara",
+		"default": "Candara",
 		"max": 64
 	},
 	"size": {
 		"type": "integer",
-		"default": 64
+		"default": 64,
+		"min": 0,
+		"max": 384
+	},
+	"scale": {
+		"type": "boolean",
+		"default": false
 	},
 	"fg": {
 		"type": "string",
@@ -58,7 +69,7 @@
 		"type": "double",
 		"default": 0.0
 	},
-	"img": {
+	"image": {
 		"type": "string",
 		"default": "png",
 		"min": 3,
@@ -91,9 +102,5 @@
 	"readonly": {
 		"type": "boolean",
 		"default": false
-	},
-	"count": {
-		"type": "string",
-		"default": "visit"
 	}
 }
