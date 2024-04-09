@@ -16,6 +16,7 @@ class Log extends Quant
 
 	protected $source = '';
 	protected $targets = [];
+	protected $relative;
 
 	public function __construct($session = null, $env = null, ... $args)
 	{
@@ -34,25 +35,32 @@ class Log extends Quant
 	{
 		if(!($no & E_WARNING))
 		{
-			return self::handler('error', $no, ... $args);
+			return self::handler('Error', $no, ... $args);
 		}
 	}
 
 	public static function exceptionHandler(... $args)
 	{
-		return self::handler('exception', ... $args);
+		return self::handler('Exception', ... $args);
 	}
 
-	public static function handler($type, ... $args)
+	public static function handler($type, $object, ... $args)
 	{
-		var_dump($args);
-		//\kekse\Terminal::error(... $args);
-		
+		if(!isset($GLOBALS['log']))
+		{
+			return var_dump($object);
+		}
+
+		//
+		$text = $object->getFile() . ' <' . $type . '/' . $object->getCode() . '> ' . $object->getMessage();
+		$GLOBALS['log']->log($text);
+
+		//
 		switch($type)
 		{
-			case 'error':
+			case 'Error':
 				exit(255);
-			case 'exception':
+			case 'Exception':
 				break;
 		}
 	}
@@ -118,52 +126,53 @@ class Log extends Quant
 		{
 			array_push($this->targets, self::makeLogFilePath($this->env->file['file']));
 		}
+
+		$this->relative = FileSystem::relative($this->env->real['dir'], $this->source);
 	}
 
 	//
-	public function create(... $args)
+	public function make($relative = true, ... $args)
 	{
-		$result = '[' . timestamp() . ']';
-
-		if($this->source)
-		{
-			$result .= '(' . $this->source . ')';
-		}
-
-		return ($result . ' ' . sprintf(... $args));
+		$result = timestamp();
+		if($relative) $result .= ' (' . $this->relative . ')';
+		if($args = sprintf(... $args)) $result .= ' ' . $args;
+		return $result;
 	}
 
 	public function log(... $args)
 	{
 		$this->log2console(... $args);
-		return $this->log2file(... $args);
-	}
-
-	public function log2console(... $args)
-	{
-		if(! ($this->session && isset($this->session->console)))
-		{
-			return fprintf(STDERR, $this->create(... $args) . PHP_EOL);
-		}
-
-		return $this->session->console->log(... $args);
-	}
-
-	public function log2file(... $args)
-	{
-		$string = $this->create(... $args);
-		$result = 0;
-
-		foreach($this->targets as &$path)
-		{
-			self::appendToFile($path, $string);
-		}
+		$this->log2file(... $args);
 
 		return $result;
 	}
 
+	public function log2console(... $args)
+	{
+		$result = $this->make(false, ... $args);
+
+		if(! ($this->session && isset($this->session->console)))
+		{
+			return fprintf(STDERR, $result . PHP_EOL);
+		}
+
+		return $this->session->console->log($result);
+	}
+
+	public function log2file(... $args)
+	{
+		if(!$this->targets) return false;
+		
+		if(isset($this->targets[0])) self::appendToFile($this->targets[0], $this->make(true, ... $args));
+		if(isset($this->targets[1])) self::appendToFile($this->targets[1], $this->make(false, ... $args));
+
+		return true;
+	}
+
 	public static function appendToFile($path, $string)
 	{
+		var_dump($path . ' => \'' . $string . '\'');
+return;//DEBUG/..
 throw new \Error('TODO @ filesystem.inc.php, w/ callback & chunks, etc.. and FILE LOCK & APPEND!!!!');
 	}
 }

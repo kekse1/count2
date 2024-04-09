@@ -37,9 +37,11 @@ class Session extends Quant
 	protected function create()
 	{
 		$this->environment = new Environment($this);
-		$this->log = new Log($this, $this->environment);
+		$this->log = $GLOBALS['log'] = new Log($this, $this->environment);
 		$this->configuration = new Configuration($this);
 	}
 }
+
+$GLOBALS['log'] = null;
 
 ?>

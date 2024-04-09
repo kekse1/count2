@@ -893,6 +893,82 @@ throw new \Error('TODO');
 
 		return ('.' . implode('.', $result));
 	}
+
+	public static function relative($from, $to)
+	{
+		if(!(is_string($from) && is_string($to)))
+		{
+			return null;
+		}
+		
+		if(($from = self::normalize($from))[0] !== DIRECTORY_SEPARATOR)
+		{
+			$from = self::resolve($from);
+		}
+
+		if(($to = self::normalize($to))[0] !== DIRECTORY_SEPARATOR)
+		{
+			$to = self::resolve($to);
+		}
+
+		$from = explode(DIRECTORY_SEPARATOR, $from);
+		$fromLen = count($from);
+		$to = explode(DIRECTORY_SEPARATOR, $to);
+		$toLen = count($to);
+
+		for($i = $fromLen - 1; $i >= 0; --$i)
+		{
+			if($from[$i] === '')
+			{
+				array_splice($from, $i, 1);
+				--$fromLen;
+			}
+		}
+
+		for($i = $toLen - 1; $i >= 0; --$i)
+		{
+			if($to[$i] === '')
+			{
+				array_splice($to, $i, 1);
+				--$toLen;
+			}
+		}
+
+		$maxDepth = max($fromLen, $toLen);
+		$same;
+
+		for($same = 0; $same < $maxDepth; ++$same)
+		{
+			if($from[$same] !== $to[$same]) break;
+		}
+
+		if($same > 0)
+		{
+			array_splice($from, 0, $same);
+			$fromLen -= $same;
+			array_splice($to, 0, $same);
+			$toLen -= $same;
+		}
+
+		if($fromLen === 0 && $toLen === 0)
+		{
+			return '';
+		}
+
+		$result = [];
+
+		for($i = 0; $i < $fromLen; ++$i)
+		{
+			$result[$i] = '..';
+		}
+
+		for($i = 0, $j = $fromLen; $i < $toLen; ++$i, ++$j)
+		{
+			$result[$j] = $to[$i];
+		}
+
+		return implode(DIRECTORY_SEPARATOR, $result);
+	}
 }
 
 ?>
