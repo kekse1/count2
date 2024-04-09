@@ -30,9 +30,12 @@ class Log extends Quant
 		parent::__destruct();
 	}
 
-	public static function errorHandler(... $args)
+	public static function errorHandler($no, ... $args)
 	{
-		return self::handler('error', ... $args);
+		if(!($no & E_WARNING))
+		{
+			return self::handler('error', $no, ... $args);
+		}
 	}
 
 	public static function exceptionHandler(... $args)
