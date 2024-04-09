@@ -367,16 +367,13 @@ class Map extends Quant
 				}
 			}
 			
-			if(is_string($value))
+			if(is_string($value = Security::checkString($value, true)))
 			{
-				if(is_string($value = Security::checkString($value, true)))
-				{
-					$value = self::decode(str_trim($value));
-				}
-				else
-				{
-					continue;
-				}
+				$value = self::decode(str_trim($value));
+			}
+			else
+			{
+				continue;
 			}
 
 			if($scheme && isset($scheme[$key]['type']))
