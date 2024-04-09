@@ -8,10 +8,9 @@
 		"type": "string",
 		"default": ""
 	},
-	"click": {
+	"type": {
 		"type": "string",
-		"default": "",
-		"max": 96
+		"default": "visit"
 	},
 	"draw": {
 		"type": "boolean",
@@ -25,16 +24,16 @@
 		"type": "boolean",
 		"default": false
 	},
-	"type": {
+	"mime": {
 		"type": "string",
 		"default": "text/plain;charset=UTF-8",
-		"max": 32
+		"max": 48
 	},
 	"radix": {
 		"type": "integer",
 		"default": 10,
-		"min": 2,
-		"max": 36
+		"min": -257,
+		"max": 256
 	},
 	"font": {
 		"type": "string",
