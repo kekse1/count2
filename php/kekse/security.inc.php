@@ -124,7 +124,7 @@ class Security extends Quant
 		}
 		else if($string === '')
 		{
-			return null;
+			return '';
 		}
 		else if(strlen($string) > KEKSE_LIMIT_STRING)
 		{

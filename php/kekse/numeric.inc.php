@@ -7,7 +7,7 @@
 namespace kekse;
 
 //
-const DEFAULT_NUMERIC_THROW = false;
+const KEKSE_NUMERIC_THROW = false;
 
 //
 const KEKSE_ALPHABET_DECIMAL = '0123456789';
@@ -22,22 +22,22 @@ require_once(__DIR__ . '/constants.inc.php');
 require_once(__DIR__ . '/string.inc.php');
 
 //
-function parseInt($string, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+function parseInt($string, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
 {
 	return parse($string, $radix, false, $throw);
 }
 
-function parseDouble($string, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+function parseDouble($string, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
 {
 	return parse($string, $radix, true, $throw);
 }
 
-function parseFloat($string, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+function parseFloat($string, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
 {
 	return parseDouble($string, $radix, $throw);
 }
 
-function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
+function parse($string, $radix = 10, $double = null, $throw = KEKSE_NUMERIC_THROW)
 {
 	if(!is_string($string))
 	{
@@ -183,22 +183,22 @@ function parse($string, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_TH
 	return $result;
 }
 
-function renderInt($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+function renderInt($value, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
 {
 	return render($value, $radix, false, $throw);
 }
 
-function renderDouble($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+function renderDouble($value, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
 {
 	return render($value, $radix, true, $throw);
 }
 
-function renderFloat($value, $radix = 10, $throw = DEFAULT_NUMERIC_THROW)
+function renderFloat($value, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
 {
 	return renderDouble($value, $radix, $throw);
 }
 
-function render($value, $radix = 10, $double = null, $throw = DEFAULT_NUMERIC_THROW)
+function render($value, $radix = 10, $double = null, $throw = KEKSE_NUMERIC_THROW)
 {
 	if(is_string($value))
 	{

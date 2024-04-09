@@ -3,7 +3,12 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
+
+//
+const KEKSE_META_SCHEME = (__DIR__ . '/../../json/kekse/map.json');
+const KEKSE_META_SCHEME_KEYS = [ 'keys', 'types', 'limits' ];
 
 //
 require_once(__DIR__ . '/main.inc.php');
@@ -15,6 +20,8 @@ class Map extends Quant
 {
 	protected $values = null;
 	protected $scheme = null;
+	
+	private static $metaScheme = null;
 	
 	public function __construct($session = null, $scheme = null, $values = null, ... $args)
 	{
@@ -33,13 +40,301 @@ class Map extends Quant
 		}
 		else if(is_array($values))
 		{
-			$this->importValues($values, null, true);
+			$this->importValues($values, true, true);
 		}
 
 		parent::__construct($session, ... $args);
 	}
 
-	public static function check($values, $scheme = null, $throw = true)
+	private static function loadMetaScheme($force = false, $path = KEKSE_META_SCHEME, $check = true, $throw = true)
+	{
+		if(is_array(self::$metaScheme) && !$force)
+		{
+			return self::$metaScheme;
+		}
+		else if(!is_string($path))
+		{
+			$path = KEKSE_META_SCHEME;
+		}
+		else
+		{
+			$path = realpath($path);
+		}
+		
+		if(!FileSystem::isFile($path, true, false))
+		{
+			if($throw)
+			{
+				throw new \Error('The map\'s meta scheme `.json` is not a valid, readable file.');
+			}
+			
+			return null;
+		}
+		else
+		{
+			self::$metaScheme = null;
+		}
+		
+		$scheme = FileSystem::readFile($path);
+		
+		if(!$scheme)
+		{
+			if($throw)
+			{
+				throw new \Error('Unable to read map\'s meta scheme `.json` file.');
+			}
+			
+			return null;
+		}
+		
+		$scheme = parseJSON($scheme);
+		
+		if(!is_array($scheme))
+		{
+			if($throw)
+			{
+				throw new \Error('Parsing the read map\'s meta scheme `.json` file failed.');
+			}
+			
+			return null;
+		}
+		
+		$result = [];
+		
+		if($check)
+		{
+			foreach($scheme as $key => $value)
+			{
+				if(!in_array($key, KEKSE_META_SCHEME_KEYS))
+				{
+					if($throw)
+					{
+						throw new \Error('In the meta scheme only the keys in `KEKSE_META_SCHEME_KEYS[]` are allowed.');
+					}
+				}
+				else
+				{
+					$result[$key] = $value;
+				}
+			}
+		}
+		else
+		{
+			$result = $scheme;
+		}
+		
+		if(count(array_keys($result)) === 0)
+		{
+			return null;
+		}
+
+		return self::$metaScheme = $result;
+	}
+
+	public static function checkScheme($scheme, $throw = true)
+	{
+		if(!is_array($scheme)) return null;
+		else self::loadMetaScheme();
+
+		$result = [];
+
+		foreach($scheme as $key => $value)
+		{
+			if(is_string($key = Security::checkString($key, true)))
+			{
+				if(!($key = self::decode(str_trim($key))))
+				{
+					continue;
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			foreach($value as $subKey => $subValue)
+			{
+				if(!in_array($subKey, self::$metaScheme['keys']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $subKey . '\' is forbidden (under the scheme key \'' . $key . '\')');
+					}
+
+					unset($value[$subKey]);
+				}
+			}
+
+			if(isset($value['default']) && is_string($value['default']))
+			{
+				if(is_string($value['default'] = Security::checkString($value['default'], true)))
+				{
+					$value['default'] = self::decode(str_trim($value['default']));
+				}
+				else
+				{
+					continue;
+				}
+			}
+			
+			if(isset($value['type']))
+			{
+				if(!is_string($value['type']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' type value is not a string');
+					}
+					
+					continue;
+				}
+				else if(isset($value['default']) && self::getType($value['default']) !== $value['type'])
+				{
+					if($throw)
+					{
+						throw new \Error('Invalid default value within key \'' . $key . '\' (not the same as the type item)');
+					}
+				
+					continue;
+				}
+			}
+
+			$cont = false;
+			
+			if(isset($value['min']))
+			{
+				if(!is_number($value['min']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' defined a non-numeric minimum value');
+					}
+					
+					continue;
+				}
+				else if(!isset($value['type']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' defined a minimum, but no type');
+					}
+					
+					continue;
+				}
+				else if(!in_array($value['type'], self::$metaScheme['limits']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' defined a minimum for the type \'' . $value['type'] . '\', which is not allowed');
+					}
+					
+					continue;
+				}
+				else if(isset($value['default'])) switch($value['type'])
+				{
+					case 'string':
+						if(strlen($value['default']) < $value['min'])
+						{
+							if($throw)
+							{
+								throw new \Error('The key \'' . $key . '\' defines a default string *shorter* than the defined minimum of ' . $value['min']);
+							}
+							
+							$cont = true;
+						}
+						break;
+					case 'integer':
+					case 'double':
+						if($value['default'] < $value['min'])
+						{
+							if($throw)
+							{
+								throw new \Error('The key \'' . $key . '\' defines a default value *below* the defined minimum of ' . $value['min']);
+							}
+							
+							$cont = true;
+						}
+						break;
+				}
+			}
+			
+			if($cont)
+			{
+				continue;
+			}
+
+			if(isset($value['max']))
+			{
+				if(!is_number($value['max']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' defined a non-numeric maximum value');
+					}
+					
+					continue;
+				}
+				else if(!isset($value['type']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' defined a maximum, but no type');
+					}
+					
+					continue;
+				}
+				else if(!in_array($value['type'], self::$metaScheme['limits']))
+				{
+					if($throw)
+					{
+						throw new \Error('The key \'' . $key . '\' defined a maximum for the type \'' . $value['type'] . '\', which is not allowed');
+					}
+					
+					continue;
+				}
+				else if(isset($value['default'])) switch($value['type'])
+				{
+					case 'string':
+						if(strlen($value['default']) > $value['max'])
+						{
+							if($throw)
+							{
+								throw new \Error('The key \'' . $key . '\' defines a default string *longer* than the defined maximum of ' . $value['max']);
+							}
+							
+							$cont = true;
+						}
+						break;
+					case 'integer':
+					case 'double':
+						if($value['default'] > $value['max'])
+						{
+							if($throw)
+							{
+								throw new \Error('The key \'' . $key . '\' defines a default value *above* the defined maximum of ' . $value['max']);
+							}
+							
+							$cont = true;
+						}
+						break;
+				}
+			}
+			
+			if(!$cont)
+			{
+				$result[$key] = $value;
+			}
+		}
+
+		if(count(array_keys($result)) === 0)
+		{
+			return null;
+		}
+
+		return $result;
+	}
+	
+	public static function checkValues($values, $scheme = null, $throw = true)
 	{
 		if(!is_array($values)) return null;
 		if(!is_array($scheme)) $scheme = null;
@@ -82,45 +377,103 @@ class Map extends Quant
 				{
 					continue;
 				}
-				
-				if(is_numeric($value))
-				{
-					$value = (double)$value;
-					
-					if(fmod($value, 1) == 0)
-					{
-						$value = (int)$value;
-					}
-				}
-				else switch(strtolower($value))
-				{
-					case '1':
-					case 'yes':
-					case 'true':
-						$value = true;
-						break;
-					case '0':
-					case 'no':
-					case 'false':
-						$value = false;
-						break;
-				}
 			}
-			
+
 			if($scheme && isset($scheme[$key]['type']))
 			{
-				if($scheme[$key]['type'] !== self::getType($value))
+				$type = self::getType($value);
+
+				if($scheme[$key]['type'] !== $type)
 				{
 					if($throw)
 					{
-						throw new \Exception('Value type doesn\'t match scheme at key \'' . $key . '\'');
+						throw new \Exception('Value type for key \'' . $key . '\' doesn\'t match scheme');
 					}
 					
+					continue;
+				}
+
+				$cont = false;
+				
+				if(isset($scheme[$key]['min']))
+				{
+					switch($scheme[$key]['type'])
+					{
+						case 'string':
+							if(strlen($value) < $scheme[$key]['min'])
+							{
+								if($throw)
+								{
+									throw new \Exception('String length is below the allowed minimum, for key \'' . $key . '\'');
+								}
+								
+								$cont = true;
+							}
+							break;
+						case 'integer':
+						case 'double':
+							$v = ($scheme[$key]['type'] === 'integer' ? self::castToInteger($value) : self::castToDouble($value));
+							if($v < $scheme[$key]['min'])
+							{
+								if($throw)
+								{
+									throw new \Exception('Value is below allowed minimum, for key \'' . $key . '\'');
+								}
+								
+								$cont = true;
+							}
+							break;
+					}
+				}
+				
+				if($cont)
+				{
+					continue;
+				}
+				
+				if(isset($scheme[$key]['max']))
+				{
+					switch($scheme[$key]['type'])
+					{
+						case 'string':
+							if(strlen($value) > $scheme[$key]['max'])
+							{
+								if($throw)
+								{
+									throw new \Exception('String length is above the allowed maximum, for key \'' . $key . '\'');
+								}
+								
+								$cont = true;
+							}
+							break;
+						case 'integer':
+						case 'double':
+							$v = ($scheme[$key]['type'] === 'integer' ? self::castToInteger($value) : self::castToDouble($value));
+							if($v > $scheme[$key]['max'])
+							{
+								if($throw)
+								{
+									throw new \Exception('Value is above allowed maximum, for key \'' . $key . '\'');
+								}
+								
+								$cont = true;
+							}
+							break;
+					}
+				}
+				
+				if($cont)
+				{
 					continue;
 				}
 			}
 
 			$result[$key] = $value;
+		}
+		
+		if(count(array_keys($result)) === 0)
+		{
+			return null;
 		}
 
 		return $result;
@@ -223,8 +576,11 @@ class Map extends Quant
 	{
 		if(!is_string($key = Security::checkString($key, true))) return null;
 		else if(!($key = self::decode(str_trim($key)))) return null;
-		if(isset($this->values[$key])) return true;
-		else if($default && $this->getDefaultValue($key) !== null) return true;
+		$value = (isset($this->values[$key]) ? $this->values[$key] : null);
+		if($value !== null && $value !== '') return true;
+		else if(!$default) return false;
+		else $value = $this->getDefaultValue($key);
+		if($value !== null && $value !== '') return true;
 		return false;
 	}
 	
@@ -678,9 +1034,14 @@ class Map extends Quant
 		return $result;
 	}
 	
-	public function importValues($values, $check = null, $throw = true)
+	public function importValues($values, $check = true, $throw = true)
 	{
 		if(!is_array($values))
+		{
+			return null;
+		}
+		
+		if($check && $this->scheme && !($values = self::checkValues($values, $this->scheme, $throw)))
 		{
 			return null;
 		}
@@ -689,18 +1050,18 @@ class Map extends Quant
 			$this->values = [];
 		}
 		
-		if($check || ($check === null && $this->scheme))
-		{
-			$values = self::check($values, $this->scheme, $throw);
-		}
-		
 		$this->values = array_merge($this->values, $values);
 		return $values;
 	}
 	
-	public function importScheme($scheme, $check = null, $throw = true)
+	public function importScheme($scheme, $check = true, $throw = true)
 	{
 		if(!is_array($scheme))
+		{
+			return null;
+		}
+
+		if($check && !($scheme = self::checkScheme($scheme, $throw)))
 		{
 			return null;
 		}
@@ -710,10 +1071,10 @@ class Map extends Quant
 		}
 
 		$this->scheme = array_merge($this->scheme, $scheme);
-		
-		if($check || $check === null)
+
+		if($check)
 		{
-			$this->values = self::check($this->values, $this->scheme, $throw);
+			$this->values = self::checkValues($this->values, $this->scheme, $throw);
 		}
 		
 		return $scheme;

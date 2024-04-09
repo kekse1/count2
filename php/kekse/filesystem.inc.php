@@ -6,7 +6,7 @@
 namespace kekse;
 
 //
-const DEFAULT_FILESYSTEM_REAL_PATH = false;
+const KEKSE_FILESYSTEM_REAL_PATH = false;
 
 //
 require_once(__DIR__ . '/main.inc.php');
@@ -17,7 +17,7 @@ class FileSystem extends Quant
 {
 	public $root = null;
 
-	public function __construct($session = null, $root = true, $real = DEFAULT_FILESYSTEM_REAL_PATH, $writable = false, $mode = null, ... $args)
+	public function __construct($session = null, $root = true, $real = KEKSE_FILESYSTEM_REAL_PATH, $writable = false, $mode = null, ... $args)
 	{
 		parent::__construct($session, ... $args);
 
@@ -47,7 +47,7 @@ class FileSystem extends Quant
 		return parent::__toString();
 	}
 
-	public function setRoot($path, $real = DEFAULT_FILESYSTEM_REAL_PATH, $writable = false, $mode = null)
+	public function setRoot($path, $real = KEKSE_FILESYSTEM_REAL_PATH, $writable = false, $mode = null)
 	{
 		if(!is_string($path))
 		{
@@ -90,7 +90,7 @@ class FileSystem extends Quant
 		return true;
 	}
 
-	public function path($path, $real = DEFAULT_FILESYSTEM_REAL_PATH, $exists = false)
+	public function path($path, $real = KEKSE_FILESYSTEM_REAL_PATH, $exists = false)
 	{
 		if(!is_string($path))
 		{
@@ -118,7 +118,7 @@ class FileSystem extends Quant
 		return $path;
 	}
 
-	public function check($path, $real = DEFAULT_FILESYSTEM_REAL_PATH, $exists = false)
+	public function check($path, $real = KEKSE_FILESYSTEM_REAL_PATH, $exists = false)
 	{
 		$path = $this->path($path, $real, $exists);
 
@@ -628,7 +628,7 @@ throw new \Error('TODO');
 		return ($f === 0);
 	}
 
-	public static function getRoot($real = DEFAULT_FILESYSTEM_REAL_PATH)
+	public static function getRoot($real = KEKSE_FILESYSTEM_REAL_PATH)
 	{
 		$result;
 

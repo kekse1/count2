@@ -1,0 +1,19 @@
+{
+	"keys": [
+		"type",
+		"default",
+		"min",
+		"max"
+	],
+	"types": [
+		"string",
+		"boolean",
+		"integer",
+		"double"
+	],
+	"limits": [
+		"integer",
+		"double",
+		"string"
+	]
+}
