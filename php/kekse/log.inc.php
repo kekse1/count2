@@ -146,7 +146,7 @@ class Log extends Quant
 			array_push($this->targets, self::makeLogFilePath($this->env->real['file']));
 		}
 
-		if(isset($this->env->file['dir']))
+		if(isset($this->env->file['dir']) && $this->env->file['path'] !== $this->env->real['path'])
 		{
 			array_push($this->targets, self::makeLogFilePath($this->env->file['file']));
 		}
