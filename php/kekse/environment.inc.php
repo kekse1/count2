@@ -10,6 +10,8 @@ require_once(__DIR__ . '/filesystem.inc.php');
 
 class Environment extends Quant
 {
+	public $headers = null;
+
 	public $file;
 	public $real;
 	
@@ -18,6 +20,12 @@ class Environment extends Quant
 		$details = self::getScriptDetails();
 		$this->file = $details[0];
 		$this->real = $details[1];
+
+		if(php_sapi_name() !== 'cli')
+		{
+			require_once(__DIR__ . '/connection.inc.php');
+			$this->headers = Connection::headers();
+		}
 		
 		parent::__construct($session, ... $args);
 	}

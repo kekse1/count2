@@ -5,19 +5,29 @@
 
 namespace kekse\count2;
 
+require_once(__DIR__ . '/../kekse/connection.inc.php');
+
 class Fingerprint extends \kekse\Quant
 {
 	public $fingerprint;
+	private $headers;
 
 	public function __construct($session, $fingerprint, ... $args)
 	{
 		parent::__construct($session, ... $args);
 		$this->fingerprint = $fingerprint;
+		$this->extractHeaderInformation();
 	}
 
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+
+	private function extractHeaderInformation()
+	{
+		var_dump($this->session->environment->headers);
+		die("HDR @ fingerprint.inc.php");
 	}
 }
 

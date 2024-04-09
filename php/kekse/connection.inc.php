@@ -23,6 +23,31 @@ class Connection extends Quant
 		parent::__destruct();
 	}
 
+	public static function headers()
+	{
+		$result = [];
+		$orig;
+
+		foreach($_SERVER as $key => $value)
+		{
+			$orig = $key;
+
+			if(!str_starts_with($key, 'HTTP_'))
+			{
+				continue;
+			}
+
+			$key = strtolower(substr($key, 5));
+			$key = str_replace('_', '-', $key);
+			$key = Security::checkString($key, true);
+			$value = Security::checkString($_SERVER[$orig]);
+
+			$result[$key] = $value;
+		}
+
+		return $result;
+	}
+
 	public function write($data)
 	{
 		if(!is_string($data))
