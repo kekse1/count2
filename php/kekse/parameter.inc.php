@@ -6,34 +6,71 @@
 namespace kekse;
 
 require_once(__DIR__ . '/map.inc.php');
+require_once(__DIR__ . '/string.inc.php');
+require_once(__DIR__ . '/security.inc.php');
 
 class Parameter extends Map
 {
-	public function __construct($session = null, $scheme = null, $values = null, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		if(! (is_string($values) || is_array($values)))
+		parent::__construct($session, ... $args);
+	}
+	
+	public static function hasQuery()
+	{
+		return (isset($_SERVER) && isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] !== '?');
+	}
+	
+	public function import($string = null, $check = true)
+	{
+		$result = self::parseQuery($string);
+
+		if(!$result)
 		{
-			if(isset($_SERVER['QUERY_STRING']))
-			{
-				$values = $_SERVER['QUERY_STRING'];
-			}
-			else
-			{
-				$values = null;
-				//throw new \Exception('Invalid $params argument, and no `$_SERVER[\'QUERY_STRING\']` available.');
-			}
+			return null;
 		}
 
-		if(is_string($values))
+		if(!($result = $this->castValues($result, false)))
 		{
-			$values = self::parse($values);
-		}
-		else if(!is_array($values))
-		{
-			$values = null;
+			return null;
 		}
 
-		parent::__construct($session, $scheme, $values, ... $args);
+		if($check) try
+		{
+			$result = self::checkValues($result, $this->scheme, true);
+		}
+		catch(\Throwable $err)
+		{
+			$this->writeError($err->getMessage());
+			exit(1);
+		}
+			
+		return $this->importValues($result, false);
+	}
+	
+	public static function parseQuery($string = null)
+	{
+		$result;
+		
+		if(is_string($string) && !empty($string) && $string !== '?')
+		{
+			$result = self::parse($string);
+		}
+		else if(self::hasQuery())
+		{
+			$result = self::parse($_SERVER['QUERY_STRING']);
+		}
+		else
+		{
+			return null;
+		}
+
+		if(!is_array($result))
+		{
+			return null;
+		}
+		
+		return $result;
 	}
 	
 	public function __destruct()
@@ -66,14 +103,21 @@ class Parameter extends Map
 
 		foreach($array as $key => $value)
 		{
-			$key = self::encode($key);
-
-			if(!is_string($value))
+			if(!($key = Security::checkString($key, true)))
 			{
-				$value = (string)$value;
+				continue;
 			}
+			else if(!($key = self::decode(str_trim($key))))
+			{
+				continue;
+			}
+		
+			$value = self::castToString($value);
 
-			$result .= $key . '=' . self::encode($value) . '&';
+			$key = self::encode($key);
+			$value = self::encode($value);
+			
+			$result .= $key . '=' . $value . '&';
 		}
 
 		return substr($result, 0, -1);
@@ -97,49 +141,39 @@ class Parameter extends Map
 		
 		$setCurrent = function() use(&$key, &$value, &$result, &$count)
 		{
-			if(strlen($key) > KEKSE_LIMIT_STRING)
+			if(!($key = Security::checkString($key, true)))
 			{
-				return null;
+				return true;
 			}
-			else if(is_string($value) && strlen($value) > KEKSE_LIMIT_STRING)
+			else if(!($key = self::decode(str_trim($key))))
 			{
-				return null;
+				return true;
 			}
 			
-			$exceeding = ($count >= KEKSE_LIMIT_PARAM);
-			$real = self::decode($key);
-			$key = '';
-			
-			if($value === null)
+			if(!($value = Security::checkString($value, true)))
 			{
-				if(isset($result[$real]))
-				{
-					if(is_int($result[$real]))
-					{
-						++$result[$real];
-					}
-					else if(is_bool($result[$real]))
-					{
-						$result[$real] = 2;
-					}
-					else
-					{
-						$result[$real] = 1;
-					}
-				}
-				else
-				{
-					$result[$real] = true;
-					++$count;
-				}
-				
-				return ($exceeding ? null : false);
+				$value = '';
+			}
+			else
+			{
+				$value = self::decode(str_trim($value));
+			}
+			
+			$exceeding = (++$count >= KEKSE_LIMIT_PARAM);
+			
+			if($exceeding)
+			{
+				--$count;
+				return false;
+			}
+			
+			if($value === null || $value === '')
+			{
+				$value = true;
 			}
 
-			$result[$real] = self::decode($value);
-			$value = null;
-
-			return ($exceeding ? null : true);
+			$result[$key] = $value;
+			return true;
 		};
 
 		$result = [];
@@ -157,31 +191,19 @@ class Parameter extends Map
 			}
 			else if($string[$i] === '&')
 			{
-				if(strlen($key) > 0)
+				if(strlen($key) > 0 && !$setCurrent())
 				{
-					if($setCurrent() === null)
-					{
-						break;
-					}
+					return null;
 				}
-				else
-				{
-					$value = null;
-				}
+				
+				$key = '';
+				$value = null;
 			}
 			else if($string[$i] === '=')
 			{
-				if(strlen($key) === 0)
-				{
-					$key = '=';
-				}
-				else if($value === null)
+				if(strlen($key) > 0)
 				{
 					$value = '';
-				}
-				else
-				{
-					$value .= '=';
 				}
 			}
 			else if($value === null)
@@ -198,7 +220,7 @@ class Parameter extends Map
 		{
 			$setCurrent();
 		}
-
+		
 		return $result;
 	}
 }

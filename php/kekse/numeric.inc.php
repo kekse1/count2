@@ -348,15 +348,11 @@ function is_number($value, $radix = null, $double = true)
 	return false;
 }
 
-function is_numeric($value, $radix = 10, $double = true)
+function is_numeric($value, $radix = 10, $double = null)
 {
 	if(!is_string($value))
 	{
 		return is_number($value);
-	}
-	else if(!is_bool($double))
-	{
-		$double = true;
 	}
 
 	$len = strlen($value);
@@ -380,49 +376,17 @@ function is_numeric($value, $radix = 10, $double = true)
 	{
 		return false;
 	}
-	
-	if(str_contains($alpha, '.'))
+
+	if(str_contains($alpha, '.') && $double)
 	{
-		if($double)
-		{
-			return false;
-		}
+		return null;
 	}
-	else if(!$double)
-	{
-		if(str_contains($value, '.'))
-		{
-			return false;
-		}
-	}
-	else
-	{
-		if(!str_contains($value, '.'))
-		{
-			return false;
-		}
-	}
-	
+
+	$hadPoint = ($double === false ? null : false);
 	$radix = strlen($alpha);
 	$len = strlen($value);
-	$hadPoint;
 	$byte;
-	
-	if(str_contains($alpha, '.'))
-	{
-		$hadPoint = null;
-		$double = false;
-	}
-	else if($double && str_contains($value, '.'))
-	{
-		$hadPoint = false;
-	}
-	else
-	{
-		$double = false;
-		$hadPoint = null;
-	}
-	
+
 	for($i = 0; $i < $len; ++$i)
 	{
 		if(!str_contains($alpha, $value[$i]))
@@ -431,8 +395,13 @@ function is_numeric($value, $radix = 10, $double = true)
 			{
 				continue;
 			}
-			else if($value[$i] === '.' && $hadPoint === false)
+			else if($value[$i] === '.')
 			{
+				if($hadPoint !== false)
+				{
+					return false;
+				}
+				
 				$hadPoint = true;
 			}
 			else
@@ -440,6 +409,11 @@ function is_numeric($value, $radix = 10, $double = true)
 				return false;
 			}
 		}
+	}
+	
+	if($double === true && $hadPoint === false)
+	{
+		return false;
 	}
 	
 	return true;

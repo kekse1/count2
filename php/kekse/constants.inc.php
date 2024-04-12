@@ -21,4 +21,11 @@ define('KEKSE_FILE_CHUNK', 4096);
 
 define('KEKSE_NUMERIC_ZERO_LIMIT', 8);
 
+define('KEKSE_STDIO_BINARY', true);
+
+define('KEKSE_INSTANT_HEADER', false);
+define('KEKSE_CONTENT_TEXT', 'text/plain; charset=UTF-8');
+define('KEKSE_CONTENT_HTML', 'text/html; charset=UTF-8');
+define('KEKSE_CONTENT_TYPE', KEKSE_CONTENT_TEXT);
+
 //

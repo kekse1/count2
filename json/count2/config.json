@@ -1,4 +1,8 @@
 {
+	"debug": {
+		"type": "boolean",
+		"default": false
+	},
 	"file": {
 		"type": "integer",
 		"default": 438

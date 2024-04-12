@@ -7,15 +7,19 @@ namespace kekse;
 
 require_once(__DIR__ . '/main.inc.php');
 require_once(__DIR__ . '/security.inc.php');
+require_once(__DIR__ . '/parameter.inc.php');
 
 class Connection extends Quant
 {
+	public $parameter = null;
+
 	private $headers = [];
-	private $sent = false;
+	private $dataSent = false;
 
 	public function __construct($session = null, ... $args)
 	{
 		parent::__construct($session, ... $args);
+		$this->parameter = new Parameter($this->session);
 	}
 
 	public function __destruct()
@@ -48,7 +52,17 @@ class Connection extends Quant
 		return $result;
 	}
 
-	public function write($data)
+	public function writeError($data, $length = null, $type = null, ... $args)
+	{
+		return $this->send($data, $type, $length, true);
+	}
+	
+	public function write($data, $length = null, $type = null, ... $args)
+	{
+		return $this->send($data, $length, $type, false);
+	}
+	
+	protected function send($data, $length = null, $type = null, $error = false)
 	{
 		if(!is_string($data))
 		{
@@ -58,100 +72,106 @@ class Connection extends Quant
 			}
 			else
 			{
-				throw new \Error('Invalid $data argument');
+				$data = print_r($data, true);
 			}
 		}
 
-		$this->sent = true;
-		echo $data;
-		return strlen($data);
+		if($type === true)
+		{
+			$type = KEKSE_CONTENT_TYPE;
+		}
+
+		if(is_string($type) && $type !== '')
+		{
+			$this->setType($type);
+		}
+
+		$result;
+		if($error) $result = parent::writeError($data, $length);
+		else $result = parent::write($data, $length);
+		
+		if($result !== false)
+		{
+			$this->dataSent = true;
+		}
+		
+		return $result;
 	}
 
 	private function checkState($throw = true)
 	{
-		if(!$this.sent) return true;
+		if(!$this->dataSent) return true;
 		else if($throw) throw new \Exception('Can\'t send any header after body data began.');
 		return false;
 	}
 	
-	public function setTypeHeader($type)
+	public function setType($type)
 	{
-		if(!is_string($type)) throw new \Exception('Invalid $type argument');
+		if($this->has('type')) return false;
+		else if(!is_string($type)) throw new \Exception('Invalid $type argument');
 		else if(str_starts_with($type, 'Content-Type:')) $type = substr($type, 13);
-		if(!($type = \kekse\Security::checkString($type, true))) throw new \Exception('Invalid $type argument');
+		if(!($type = Security::checkString($type, true))) throw new \Exception('Invalid $type argument');
 		else if(!($type = str_trim($type))) throw new \Exception('Invalid $type argument');
-		$this->setHeader('Content-Type', $type);
-		$this->typeSent = true;
-		return $type;
+		return $this->set('Content-Type', $type);
 	}
 
-	public function setLengthHeader($length)
+	public function setLength($length)
 	{
-		if(is_int($length)) $length = (string)$length;
+		if($this->has('length')) return false;
+		else if(is_int($length)) $length = (string)$length;
 		else if(!is_string($length)) throw new \Exception('Invalid $length argument');
 		else if(str_starts_with($length, 'Content-Length')) $length = substr($length, 14);
-		if(!($length = \kekse\Security::checkString($length, true))) throw new \Exception('Invalid $length argument');
+		if(!($length = Security::checkString($length, true))) throw new \Exception('Invalid $length argument');
 		else if(!($length = str_trim($length))) throw new \Exception('Invalid $length argument');
-		$this->setHeader('Content-Length', $length);
-		$this->lengthSent = true;
-		return $type;
+		return $this->set('Content-Length', $length);
 	}
 
-	public function setHeader($item, $value = null)
+	public function set($item, $value = null, $throw = false)
 	{
-		if(!$this->checkState())
+		if(!$this->checkState($throw))
 		{
 			return null;
 		}
 		else if(is_array($item))
 		{
 			$result = 0;
-			
+
 			foreach($item as $key => $value)
 			{
-				if(!($key = \kekse\Security::checkString($key, true)))
+				if($this->set($key, $value, $throw))
 				{
-					continue;
+					++$result;
 				}
-				else if(!($key = \kekse\str_trim($key)))
-				{
-					continue;
-				}
-				
-				if(is_number($value))
-				{
-					$value = (string)$value;
-				}
-				else if(!is_string($value))
-				{
-					continue;
-				}
-				
-				$this->header[$key] = $value;
-				header($key . ': ' . $value);
-				++$result;
 			}
-			
+
 			return $result;
 		}
-		else if(!($item = \kekse\Security::checkString($item, true)))
+		else if(!($item = Security::checkString($item, true)))
 		{
 			throw new \Exception('Invalid $item argument');
 		}
-		else if(!($item = \kekse\str_trim($item)))
+		else if(!($item = str_trim($item)))
 		{
 			throw new \Exception('Invalid $item argument');
+		}
+		else
+		{
+			$item = strtolower($item);
 		}
 
-		if(is_number($value))
+		if($this->has($item))
+		{
+			return false;
+		}
+		else if(is_number($value))
 		{
 			$value = (string)$value;
 		}
-		else if(!($value = \kekse\Security::checkString($value, true)))
+		else if(!($value = Security::checkString($value, true)))
 		{
 			$value = null;
 		}
-		else if(!($value = \kekse\str_trim($value)))
+		else if(!($value = str_trim($value)))
 		{
 			$value = null;
 		}
@@ -163,11 +183,11 @@ class Connection extends Quant
 				throw new \Exception('Invalid $item argument');
 			}
 		}
-		else if(!($value = \kekse\Security::checkString($value, true)))
+		else if(!($value = Security::checkString($value, true)))
 		{
 			throw new \Exception('Invalid $value argument');
 		}
-		else if(!($value = \kekse\str_trim($value)))
+		else if(!($value = str_trim($value)))
 		{
 			throw new \Exception('Invalid $value argument');
 		}
@@ -177,9 +197,42 @@ class Connection extends Quant
 		}
 
 		$result = $item[0] . ': ' . $item[1];
-		$this->header[$item[0]] = $item[1];
+		$this->headers[$item[0]] = $item[1];
+
 		header($result);
-		return $result;
+		return true;
+	}
+	
+	public function has($key)
+	{
+		if(!($key = Security::checkString($key, true)))
+		{
+			return null;
+		}
+		else if(!($key = str_trim($key)))
+		{
+			return null;
+		}
+
+		return isset($this->headers[$key]);
+	}
+
+	public function get($key)
+	{
+		if(!($key = Security::checkString($key, true)))
+		{
+			return false;
+		}
+		else if(!($key = str_trim($key)))
+		{
+			return false;
+		}
+		else if(isset($this->headers[$key]))
+		{
+			return $this->headers[$key];
+		}
+
+		return null;
 	}
 }
 

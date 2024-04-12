@@ -27,7 +27,7 @@ class Fingerprint extends \kekse\Quant
 	private function extractHeaderInformation()
 	{
 		var_dump($this->session->environment->headers);
-		die("HDR @ fingerprint.inc.php");
+die("TODO: HDR @ fingerprint.inc.php");
 	}
 }
 

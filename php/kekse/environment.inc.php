@@ -51,14 +51,14 @@ class Environment extends Quant
 			$real['root'] = realpath($file['root']);
 		}
 
-		$file['file'] = FileSystem::join($file['root'], $_SERVER['SCRIPT_NAME']);
-		$real['file'] = realpath($file['file']);
+		$file['path'] = FileSystem::join($file['root'], $_SERVER['SCRIPT_NAME']);
+		$real['path'] = realpath($file['path']);
 		
-		$file['dir'] = dirname($file['file']);
-		$real['dir'] = dirname($real['file']);
+		$file['dir'] = dirname($file['path']);
+		$real['dir'] = dirname($real['path']);
 
-		$file['name'] = basename($file['file']);
-		$real['name'] = basename($real['file']);
+		$file['name'] = basename($file['path']);
+		$real['name'] = basename($real['path']);
 
 		$file['base'] = basename($file['name'], '.php');
 		$real['base'] = basename($real['name'], '.php');

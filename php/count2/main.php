@@ -8,11 +8,11 @@ namespace kekse\count2;
 
 //
 require_once(__DIR__ . '/controller.inc.php');
-//try{
-$controller = $GLOBALS['count2'] = new Controller();
-//}catch(\Throwable $err) { var_dump($err); }
+
+$controller = $GLOBALS[2] = new Controller();
+
 //
-var_dump($controller);
+//var_dump($controller);
 
 //
 

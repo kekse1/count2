@@ -17,9 +17,9 @@ class Console extends Terminal
 		global $argv;
 		global $argc;
 
-		if(!parent::isTTY())
+		if(!parent::isCLI())
 		{
-			throw new \Exception('Not allowed since PHP doesn\'t run in TTY mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
 		$this->session = $session;
@@ -45,8 +45,7 @@ class Console extends Terminal
 			$this->argv = [];
 		}
 
-		parent::__construct($session, $this, ... $args);
-
+		parent::__construct($session, ... $args);
 		$this->getOptions();
 	}
 
@@ -65,6 +64,60 @@ class Console extends Terminal
 		{
 			require_once(__DIR__ . '/getopt.inc.php');
 		}
+	}
+	
+	public function prompt(... $args)
+	{
+		$result = sprintf($format, ... $args);
+		$pad = str_pad('', strlen($result), ' ');
+
+		$confirm = function() use(&$result, &$s)
+		{
+			$this->writeError($result);
+			$res = readline($s);
+
+			if($res === '')
+			{
+				return null;
+			}
+			
+			switch(strtolower($res[0]))
+			{
+				case 'y': case '1': case '+': return true;
+				case 'n': case '0': case '-': return false;
+			}
+
+			return null;
+		};
+
+		$result = null;
+
+		while($result === null)
+		{
+			$result = $confirm();
+		}
+
+		return $result;
+	}
+
+	public function log(... $args)
+	{
+	}
+
+	public function info(... $args)
+	{
+	}
+
+	public function warn(... $args)
+	{
+	}
+
+	public function error(... $args)
+	{
+	}
+
+	public function debug(... $args)
+	{
 	}
 }
 

@@ -15,7 +15,7 @@ class Controller extends \kekse\Quant
 
 	public function __construct(... $args)
 	{
-		if(parent::isTTY())
+		if(parent::isCLI())
 		{
 			throw new \Error('This is not a CLI script [yet]');
 		}

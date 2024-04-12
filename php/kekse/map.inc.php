@@ -23,26 +23,8 @@ class Map extends Quant
 	
 	private static $metaScheme = null;
 	
-	public function __construct($session = null, $scheme = null, $values = null, ... $args)
+	public function __construct($session = null, ... $args)
 	{
-		if(is_string($scheme))
-		{
-			$this->importSchemeFromJSON($scheme, false, true);
-		}
-		else if(is_array($scheme))
-		{
-			$this->importScheme($scheme, false, true);
-		}
-
-		if(is_string($values))
-		{
-			$this->importValuesFromJSON($values, null, true);
-		}
-		else if(is_array($values))
-		{
-			$this->importValues($values, true, true);
-		}
-
 		parent::__construct($session, ... $args);
 	}
 
@@ -339,7 +321,7 @@ class Map extends Quant
 		if(!is_array($values)) return null;
 		if(!is_array($scheme)) $scheme = null;
 		$result = [];
-		
+
 		foreach($values as $key => $value)
 		{
 			if(is_string($key = Security::checkString($key, true)))
@@ -353,7 +335,7 @@ class Map extends Quant
 			{
 				continue;
 			}
-			
+
 			if($scheme)
 			{
 				if(!array_key_exists($key, $scheme))
@@ -366,14 +348,17 @@ class Map extends Quant
 					continue;
 				}
 			}
-			
-			if(is_string($value = Security::checkString($value, true)))
+
+			if(is_string($value))
 			{
-				$value = self::decode(str_trim($value));
-			}
-			else
-			{
-				continue;
+				if($value = Security::checkString($value, true))
+				{
+					$value = self::decode(str_trim($value));
+				}
+				else
+				{
+					continue;
+				}
 			}
 
 			if($scheme && isset($scheme[$key]['type']))
@@ -467,7 +452,7 @@ class Map extends Quant
 
 			$result[$key] = $value;
 		}
-		
+
 		if(count(array_keys($result)) === 0)
 		{
 			return null;
@@ -599,6 +584,83 @@ class Map extends Quant
 		return true;
 	}
 	
+	public static function castValue($value)
+	{
+		if(!is_string($value))
+		{
+			return $value;
+		}
+		
+		switch(strtolower($value))
+		{
+			case '+': case 'n': case 'no': case 'false': return false;
+			case '-': case 'y': case 'yes': case 'true': return true;
+		}
+		
+		if(is_numeric($value, 10, null))
+		{
+			$value = (double)$value;
+			
+			if(fmod($value, 1) == 0)
+			{
+				$value = (int)$value;
+			}
+			
+			return $value;
+		}
+		
+		return $value;
+	}
+	
+	public function castValues($values, $scheme = true)
+	{
+		if(!is_array($values))
+		{
+			return null;
+		}
+		else if(!is_array($this->scheme))
+		{
+			$scheme = false;
+		}
+
+		$result = [];
+		$target;
+		$type;
+
+		foreach($values as $key => $value)
+		{
+			$type = self::getType($value);
+			$target = ($scheme ? $this->getSchemeType($key) : '');
+
+			switch($target)
+			{
+				case 'string':
+					$value = self::castToString($value);
+					break;
+				case 'boolean':
+					$value = self::castToBoolean($value);
+					break;
+				case 'integer':
+					$value = self::castToInteger($value);
+					break;
+				case 'double':
+					$value = self::castToDouble($value);
+					break;
+				case 'number':
+					$value = self::castToNumber($value);
+					break;
+				case '':
+				default:
+					$value = self::castValue($value);
+					break;
+			}
+
+			$result[$key] = $value;
+		}
+
+		return $result;
+	}
+	
 	public function getDefaultValue($key, $type = '')
 	{
 		if(!is_string($key = Security::checkString($key, true))) return null;
@@ -698,38 +760,29 @@ class Map extends Quant
 		else if(!($key = self::decode(str_trim($key)))) return null;
 		if(!isset($this->values[$key])) return $this->getDefaultValue($key, '');
 		$result = $this->values[$key];
-		$type = ($scheme ? $this->getSchemeType($key) : null);
-		if($type === null) $type = self::getType($result);
-		
-		switch($type)
+		if($scheme)
 		{
-			case '':
-				$result = null;
-				break;
-			case 'string':
-				$result = Security::checkString($result, true);
+			$type = $this->getSchemeType($key);
 
-				if(is_numeric($result))
-				{
-					$result = (double)$result;
-					if(fmod($result, 1) == 0) $result = (int)$result;
-				}
-				else switch(strtolower($result))
-				{
-					case '1':
-					case 'yes':
-					case 'true':
-						$result = true;
-						break;
-					case '0':
-					case 'no':
-					case 'false':
-						$result = false;
-						break;
-				}
-				break;
+			switch($type)
+			{
+				case 'string':
+					$result = self::castToString($result);
+					break;
+				case 'boolean':
+					$result = self::castToBoolean($result);
+					break;
+				case 'integer':
+					$result = self::castToInteger($result);
+					break;
+				case 'double':
+					$result = self::castToDouble($result);
+					break;
+				case 'number':
+					$result = self::castToNumber($result);
+					break;
+			}
 		}
-
 		return $result;
 	}
 	
@@ -743,7 +796,7 @@ class Map extends Quant
 				$value = Security::checkString($value, true);
 				break;
 			case 'boolean':
-				$value = ($value ? 'yes' : 'no');
+				$value = ($value ? '1' : '0');
 				break;
 			case 'integer':
 			case 'double':
@@ -771,11 +824,8 @@ class Map extends Quant
 					case '0': case 'no': case 'false':
 						$value = false;
 						break;
-					case '1': case 'yes': case 'true':
-						$value = false;
-						break;
 					default:
-						$value = (strlen($value) > 0);
+						$value = true;
 						break;
 				}
 				break;
@@ -1037,8 +1087,16 @@ class Map extends Quant
 		{
 			return null;
 		}
-		
-		if($check && $this->scheme && !($values = self::checkValues($values, $this->scheme, $throw)))
+		else if(!$this->scheme)
+		{
+			$check = false;
+		}
+		else if(!is_bool($check))
+		{
+			$check = true;
+		}
+
+		if($check && !($values = self::checkValues($values, $this->scheme, $throw)))
 		{
 			return null;
 		}
@@ -1046,7 +1104,7 @@ class Map extends Quant
 		{
 			$this->values = [];
 		}
-		
+
 		$this->values = array_merge($this->values, $values);
 		return $values;
 	}

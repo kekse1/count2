@@ -15,7 +15,7 @@ class Controller extends \kekse\Quant
 	public function __construct(... $args)
 	{
 		parent::__construct(new Session($this), ... $args);
-		$this->initialize();
+		$this->start();
 	}
 
 	public function __destruct()
@@ -23,11 +23,11 @@ class Controller extends \kekse\Quant
 		parent::__destruct();
 	}
 	
-	private function initialize()
+	private function start()
 	{
-		if(parent::isTTY())
+		if(parent::isCLI())
 		{
-			$this->tty();
+			$this->cli();
 		}
 		else
 		{
@@ -35,24 +35,14 @@ class Controller extends \kekse\Quant
 		}
 	}
 	
-	private function tty()
+	private function cli()
 	{
 		//
-		require_once(__DIR__ . '/../kekse/console.inc.php');
-		
-		//
-		$this->session->console = new \kekse\Console($this->session);
 	}
 	
 	private function web()
 	{
 		//
-		require_once(__DIR__ . '/../kekse/connection.inc.php');
-		require_once(__DIR__ . '/../kekse/parameter.inc.php');
-		
-		//
-		$this->session->connection = new \kekse\Connection($this->session);
-		$this->session->parameter = new \kekse\Parameter($this->session, KEKSE_COUNT2_JSON_PARAM);
 	}
 }
 

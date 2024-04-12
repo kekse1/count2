@@ -128,7 +128,7 @@ throw new \Error('TODO');
 		//
 	}
 	
-	public function setImageHeader()
+	public function sentImageHeader()
 	{
 		if(!$this->session)
 		{
@@ -138,15 +138,15 @@ throw new \Error('TODO');
 		
 		switch($this->type)
 		{
-			case 'png': $this->session->connection->setTypeHeader('image/png'); return true;
-			case 'jpg': $this->session->connection->setTypeHeader('image/jpeg'); return true;
+			case 'png': $this->session->connection->setType('image/png'); return true;
+			case 'jpg': $this->session->connection->setType('image/jpeg'); return true;
 		}
 
 		return false;
 		//throw new \Error('Invalid [type] member, can\'t send valid image header');
 	}
 	
-	public function setTextHeader()
+	public function sendTextHeader()
 	{
 		if(!$this->session)
 		{
@@ -155,7 +155,7 @@ throw new \Error('TODO');
 		}
 
 		$type = $this->session->parameter->getString('type');
-		$this->session->connection->setTypeHeader($type);
+		$this->session->connection->setType($type);
 
 		return true;
 	}

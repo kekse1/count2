@@ -17,7 +17,13 @@ class Session extends \kekse\Session
 
 	public function __construct($controller, ... $args)
 	{
-		parent::__construct($this->controller = $controller, ... $args);
+		parent::__construct($controller, ... $args);
+		$this->init();
+	}
+
+	private function init()
+	{
+		$this->mapImports();
 		$this->setPath();
 	}
 
@@ -42,11 +48,16 @@ class Session extends \kekse\Session
 	{
 		parent::__destruct();
 	}
-	
-	protected function create()
+
+	private function mapImports()
 	{
-		parent::create();
-		$this->configuration->importSchemeFromJSON(KEKSE_COUNT2_JSON_CONFIG);
+		$this->configuration->importSchemeFromJSON(KEKSE_COUNT2_JSON_CONFIG, true, true);
+
+		if(isset($this->parameter))
+		{
+			$this->parameter->importSchemeFromJSON(KEKSE_COUNT2_JSON_PARAM, true, true);
+			$this->parameter->import();
+		}
 	}
 }
 

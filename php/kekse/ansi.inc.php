@@ -11,9 +11,9 @@ class ANSI extends Quant
 {
 	public function __construct($session = null, ... $args)
 	{
-		if(!self::isTTY())
+		if(!self::isCLI())
 		{
-			throw new \Exception('Not allowed since PHP doesn\'t run in TTY mode!');
+			throw new \Exception('Not allowed since PHP doesn\'t run in CLI mode!');
 		}
 
 		parent::__construct($session, ... $args);

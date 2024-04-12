@@ -1,0 +1,11 @@
+1712929324011 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> Undefined constant "kekse\Quant"
+1712929340393 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> Undefined constant "kekse\Quant"
+1712929342600 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> Undefined constant "kekse\Quant"
+1712929432774 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> Undefined constant "kekse\Quant"
+1712929626851 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> printf(): Argument #1 ($format) must be of type string, resource given
+1712929678454 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> fopen() expects at least 2 arguments, 1 given
+1712929686793 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> fopen() expects at least 2 arguments, 1 given
+1712929688202 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> fopen() expects at least 2 arguments, 1 given
+1712929880245 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> fopen() expects at least 2 arguments, 1 given
+1712929885594 /home/kuchen/github/count2/php/kekse/parameter.inc.php:44 <Exception/0> fopen() expects at least 2 arguments, 1 given
+1712932545877 /home/kuchen/github/count2/php/test/test.php:3 <Exception/0> Call to a member function text() on null
