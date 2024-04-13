@@ -45,6 +45,8 @@ Currently there are, beneath the main `kekse` extensions (and the `test` part), 
 under development, and even more planned yet):
 
 * [**`count2`**](md/count2.md)
+* [**`news2`**](md/news2.md)
+* [**`blog2`**](md/blog2.md)
 * [**`index`**](md/index.md)
 * [**`ip`**](md/ip.md)
 
