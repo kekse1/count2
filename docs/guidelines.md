@@ -6,6 +6,11 @@ to give a rough outline of how to implement "correctly"[tm]..
 
 //TODO/
 
+## End-of-File (**EOF**)
+Please make sure every `*.php` starts with `<?php` in the **FIRST** line,
+and ends with `?>` in the **LAST** line. It's important to never got
+empty lines there.
+
 ## Namespace
 Most general abstractions are implemented in my own `kekse` namespace.
 Most counter related things should be defined below `kekse\count2`.

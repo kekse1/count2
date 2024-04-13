@@ -28,4 +28,4 @@ define('KEKSE_CONTENT_TEXT', 'text/plain; charset=UTF-8');
 define('KEKSE_CONTENT_HTML', 'text/html; charset=UTF-8');
 define('KEKSE_CONTENT_TYPE', KEKSE_CONTENT_TEXT);
 
-//
+?>

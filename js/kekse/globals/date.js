@@ -5,12 +5,12 @@
 export default Date;
 
 //
-Reflect.defineProperty(window, 'timestamp', { value: (_diff) => {
+Reflect.defineProperty(window, 'timestamp', { value: (diff) => {
 	var result = Date.now();
 
-	if(Number.isInt(_diff))
+	if(Number.isInt(diff))
 	{
-		result -= _diff;
+		result -= diff;
 	}
 	
 	return result;

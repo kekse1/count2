@@ -15,7 +15,7 @@ Using the [Extensions](kekse.md), residing in the `count2` directory, using the 
 * [ip](count2/ip.md)
 * [mail](count2/mail.md)
 * [main](count2/main.md)
-* [notification](count2/notification.md)
+* [notify](count2/notify.md)
 * [panel](count2/panel.md)
 * [session](count2/session.md)
 * [statistics](count2/statistics.md)

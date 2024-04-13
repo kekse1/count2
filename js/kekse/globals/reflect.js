@@ -6,9 +6,9 @@
 export default Reflect;
 
 //
-Reflect.defineProperty(Reflect, 'getPrototypesOf', { value: (_object) => {
+Reflect.defineProperty(Reflect, 'getPrototypesOf', { value: (object) => {
 	const result = [];
-	var proto = _object;
+	var proto = object;
 	try
 	{
 		do
@@ -19,7 +19,7 @@ Reflect.defineProperty(Reflect, 'getPrototypesOf', { value: (_object) => {
 				break;
 		} while(true);
 	}
-	catch(_err) {}
+	catch(err) {}
 	return result;
 }});
 
@@ -29,9 +29,9 @@ Reflect.defineProperty(Reflect, 'is', { value: (object, ... compare) => {
 		else if(!String.isString(compare[i], false)) compare.splice(i--, 1); }
 	if(compare.length > 0) compare = compare.unique();
 	const tryConstructorName = () => {
-		try { return object.constructor.name; } catch(_err) { return ''; }};
+		try { return object.constructor.name; } catch(err) { return ''; }};
 	const tryClassName = () => {
-		try { return object.name; } catch(_err) { return ''; }};
+		try { return object.name; } catch(err) { return ''; }};
 	var result;
 	if(typeof object === 'undefined') result = 'undefined';
 	else if(object === null) result = 'null';

@@ -8,4 +8,3 @@ define('KEKSE_DEBUG', null);
 
 //
 ?>
-

@@ -7,7 +7,7 @@
 
 namespace kekse\count2;
 
-class Notification extends \kekse\Quant
+class Notify extends \kekse\Quant
 {
 	public function __construct($session, ... $args)
 	{
@@ -17,11 +17,6 @@ class Notification extends \kekse\Quant
 	public function __destruct()
 	{
 		parent::__destruct();
-	}
-
-	public static function sendMail(... $args)
-	{
-		//TODO/
 	}
 }
 
