@@ -44,7 +44,7 @@ class Connection extends Quant
 			$key = strtolower(substr($key, 5));
 			$key = str_replace('_', '-', $key);
 			$key = Security::checkString($key, true);
-			$value = Security::checkString($_SERVER[$orig]);
+			$value = Security::checkString($_SERVER[$orig], false);
 
 			$result[$key] = $value;
 		}
