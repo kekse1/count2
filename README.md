@@ -44,11 +44,11 @@ See also the [Modules section](#modules) below.
 Currently there are, beneath the main `kekse` extensions (and the `test` part), the following modules/apps (all
 under development, and even more planned yet):
 
-* [**`count2`**](md/count2.md)
-* [**`news2`**](md/news2.md)
-* [**`blog2`**](md/blog2.md)
-* [**`index`**](md/index.md)
-* [**`ip`**](md/ip.md)
+* [**`count2`**](docs/count2.md)
+* [**`news2`**](docs/news2.md)
+* [**`blog2`**](docs/blog2.md)
+* [`index`](docs/index.md)
+* [`ip`](docs/ip.md)
 
 The plans for bigger (sub) projects do already exist, but I'm keeping 'em (more/less) secret for now, since it's
 the most important thing to begin with the main `count2` part!
