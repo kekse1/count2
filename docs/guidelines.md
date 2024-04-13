@@ -19,9 +19,17 @@ including the `kekse` base).
 They all get logged (but not Warnings), and are shown to the client, too.
 Of course, in my own form (not the whole output). //TODO/
 
-## Output
+## Output and Headers
 Please use the functions in the `Quant` instances, as they're 'managed' some way.
 Please do **not** use regular `echo`, etc..
+
+And if you want to send headers to your HTTP clients, please also do **not** use
+regular `header()` function, there's the `set()` (and `get()` or `has()`) functions
+in the `Connection` class.
+
+## `Connection`
+BTW: I designed this `Connection` **not** to be used statically or so, since my
+objections is: some day we could use **many** connections...
 
 ## Strings and more Security
 There are some functions available at `kekse/security.inc.php`. Also used to
