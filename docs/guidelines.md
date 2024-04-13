@@ -9,30 +9,26 @@ to give a rough outline of how to implement "correctly"[tm]..
 ## Namespace
 Most general abstractions are implemented in my own `kekse` namespace.
 Most counter related things should be defined below `kekse\count2`.
+Every other module should also be below the `kekse\*` namespace.
 
-## **Error** vs. **Exception**
+## Constants
+All need their own `constants.inc.php` files (in all sub-project directories,
+including the `kekse` base).
 
-* `Error` if a programming error occures (so e.g. unexpected parameter type)
-* `Exception` if a user error like wrong `$_GET[]` params occures
+## `Throwable`
+They all get logged (but not Warnings), and are shown to the client, too.
+Of course, in my own form (not the whole output). //TODO/
 
-I wrote it this way: if it's an instance of **`\Error`**, the whole process
-will be stopped (return code `255`).
-
-> [!IMPORTANT]
-> I think you'd like to write `\Exception` etc. (so with the backslash `\`),
-> since most times we're working in the `namespace \kekse`.
-
-I'm handling those ones via the [`logger`](kekse/logger.md) module, which will,
-one the one hand, write anything into log files, but is also going to create
-nice outputs, both in console and browser.
+## Output
+Please use the functions in the `Quant` instances, as they're 'managed' some way.
+Please do **not** use regular `echo`, etc..
 
 ## String security
 There are some functions available at `kekse/security.inc.php`. Also used to
 secure up fs paths. And more is yet to come.
 
-Therefore there's also the constant `KEKSE_LIMIT_STRING = 255`, which is heavily
-used e.g. to avoid too long `$_GET[]` parameters, and more.
+BTW: There's also the `kekse/string.inc.php`, e.g. with `str_trim()` to also
+remove all binary data (beneath `str_remove_binary()`, etc.).
 
 ## TODO
 //TODO/
-
