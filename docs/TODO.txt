@@ -1,0 +1,82 @@
+
+	# if necessary, use 'php://memory' and 'php://temp'!!!
+
+	# neben '?radix' noch '?alphabet', bitte!!!!!!
+
+		# und zwar wird das zuletzt definierte bevorzugt...
+
+			# guck dir dazu noch 'Parameter' und evtl. 'Map' an...
+
+				# .. dass bestenfalls das assoziative [values]-array auch [i]-ndex erhalten, je nach erscheinung im QUERY_STRING!! :-D
+
+	# die path-funktionen in `FileSystem` bitte in `Path` auslagern..!!!!
+
+	# string.inc.php-funktionen bitte in 'String'-klasse!
+
+		# evtl. alle anderen, losen funktionen ebenso passend irgendwo?!
+
+		# und dazu gleich den autoloader!! siehe: < https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60/ >
+
+	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
+
+	# Connection: bitte einen modus, wo alles nicht direkt gesendet wird.. fuer spaeteres 'flush{,Headers,Body}()`!!!! :-D
+
+		# und bitte *alle* (echo, print{,f}, .. etc.) selbst unter \kekse neu, damit diese die Quant-funktionen oder direkt `fwrite()` evtl. nutzen..
+
+	@ 'kekse/constants.inc.php': weitere content types, und dazu noch @ 'Quant' dazu..
+
+	# evtl. sogar quant als ableitung einer noch hoeheren 'IO'-klasse oder so!!!
+
+	# 'php://input': returns all the raw data of the http request (after the header)
+
+			< https://stackoverflow.com/questions/8893574/php-php-input-vs-post >
+
+		# so... ich wuerde mal gucken, ob ich ads in 'Parameter' nutzen kann, ..
+
+			# .. also evtl. genauso wie (GET-)query-string w/ .parse() dieses 1:1?!? :-D
+
+		# PS: ist evtl. auch durch POST immer 'STDIN' gegegen!?!?!?
+
+	# guck ob 'config[debug]' geht (atm nur in 'tmp/testing.json', und aktuell noch als 'const KEKSE_DEBUG' auf true.. unset, etc.!);
+
+		# und ueberpruefe, ob (beide) log-files korrekt arbeiten jetzt..
+
+		# und guck, dass (schonmal) parameter-fehler-ausgabe NUR im browser, ohne file-loggin!!!@
+
+			# das gilt auch spaeter teils umzusetzen wohl.
+
+	# map: set() mit $scheme!?
+
+		# und values mit strings und cast oder direkt weitere types??
+
+		# bisschen noch ueberdenken alles besser..
+
+		@ scheme: ist 'number' als type erlaubt?!? SOLLTE EIG.!!! ;-D
+
+	# https://www.google.com/search?q=php+flock
+ 
+ 	# alle (string) zu (int) sowie (double) casts EVTL.(!!) eher durch 'parse()', etc.. @ numeric.inc.php..?!?
+
+		# kann ein cast-operator ueberladen werden?
+
+		# ABER: eher nicht.. cast sollte effizienter sein!!
+
+			# gucke nur bei strings, ob der radix 10 ist!!
+
+	@ 'count2/counting.inc.php': STORE BINARY VALUES!!!
+
+		# brauchen ja kein '-', gar '+' oder '.'... somit optimale storage @ radix = 256! :-D
+
+	# ganz allgemein bissarl mehr noch zum wdh. lesen: < https://serverfault.com/questions/345833/what-are-perfect-unix-permissions-for-usual-web-project-directories >
+
+	@ FINGERPRINT: alle BOOKMARKS dazu sowie 'canvas.pdf' etc. zu rate heran ziehen noch.. ^_^
+
+	# read my .php bookmarks.. and more! e.g. < https://stackoverflow.com/questions/11710099/what-is-the-difference-between-selfbar-and-staticbar-in-php >
+
+	# bitte denke an kekse/ w/ library-styles.. paar nette funktionen, aber nicht zu sehr aufblaehen.. thx. ^_^
+
+	# ueberlege weitere features/module/apps; eine community wg. bulletin board, etc... blog2, news2, ...
+
+	# VOR ALLEM!!!! "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
+
+		# so von wegen 'page.js' und automatische <a>-erweiterung um die zahlen.. :-D
