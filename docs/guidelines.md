@@ -23,6 +23,10 @@ Of course, in my own form (not the whole output). //TODO/
 Please use the functions in the `Quant` instances, as they're 'managed' some way.
 Please do **not** use regular `echo`, etc..
 
+Even using `STDOUT` etc. is 'bad' HERE: I defined the three [ `INPUT`, `OUTPUT`, `ERROR` ]
+file descriptors for it. It works great in the browser, but also in CLI mode they are the
+three [ `stdin`, `stdout`, `stderr` ]!
+
 And if you want to send headers to your HTTP clients, please also do **not** use
 regular `header()` function, there's the `set()` (and `get()` or `has()`) functions
 in the `Connection` class.
