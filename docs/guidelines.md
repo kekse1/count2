@@ -23,7 +23,7 @@ Of course, in my own form (not the whole output). //TODO/
 Please use the functions in the `Quant` instances, as they're 'managed' some way.
 Please do **not** use regular `echo`, etc..
 
-## String security
+## Strings and more Security
 There are some functions available at `kekse/security.inc.php`. Also used to
 secure up fs paths. And more is yet to come.
 
