@@ -3,9 +3,9 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
-namespace kekse\count2;
+namespace kekse;
 
-class Raycast extends \kekse\Quant
+class Mail extends Quant
 {
 	public function __construct($session, ... $args)
 	{

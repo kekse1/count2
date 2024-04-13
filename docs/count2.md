@@ -10,20 +10,18 @@ Using the [Extensions](kekse.md), residing in the `count2` directory, using the 
 * [cookies](count2/cookies.md)
 * [counting](count2/counting.md)
 * [drawing](count2/drawing.md)
-* [event](count2/event.md)
 * [fingerprint](count2/fingerprint.md)
 * [geo](count2/geo.md)
 * [ip](count2/ip.md)
+* [mail](count2/mail.md)
 * [main](count2/main.md)
 * [notification](count2/notification.md)
 * [panel](count2/panel.md)
-* [raycast](count2/raycast.md)
 * [session](count2/session.md)
 * [statistics](count2/statistics.md)
 * [summary](count2/summary.md)
-* [template](count2/template.md)
-* [text](count2/text.md)
 * [user](count2/user.md)
+* [visit](count2/visit.md)
 
 It's one of more (planned) modules/apps, but was the beginning of this whole project.
 

@@ -248,6 +248,7 @@ throw new \Exception('TODO');
 	}
 }
 
+//
 function parseJSON($value)
 {
 	return json_decode($value, true, KEKSE_LIMIT_JSON);
@@ -256,6 +257,29 @@ function parseJSON($value)
 function renderJSON($string)
 {
 	return json_encode($string, 0, KEKSE_LIMIT_JSON);
+}
+
+function timestamp($diff = null)
+{
+	if(PHP_INT_SIZE < 8)
+	{
+		if(is_int($diff))
+		{
+			return (time() - $diff);
+		}
+		
+		return time();
+	}
+	
+	$result = explode(' ', microtime());
+	$result = (intval($result[1] * 1E3) + intval(round($result[0] * 1E3)));
+	
+	if(is_int($diff))
+	{
+		return ($result - $diff);
+	}
+	
+	return $result;
 }
 
 //
@@ -273,7 +297,6 @@ require_once(__DIR__ . '/numeric.inc.php');
 require_once(__DIR__ . '/string.inc.php');
 require_once(__DIR__ . '/environment.inc.php');
 require_once(__DIR__ . '/security.inc.php');
-require_once(__DIR__ . '/timing.inc.php');
 
 //
 if(!Quant::isCLI() && KEKSE_INSTANT_HEADER) try
@@ -286,4 +309,3 @@ catch(\Throwable $err)
 
 //
 ?>
-
