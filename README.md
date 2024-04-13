@@ -32,6 +32,9 @@ markdown document, since my first [`count.php`](https://github.com/kekse1/count.
 * [**Coding Guidelines**](docs/guidelines.md)
 * [**JSON vectors**](docs/json.md)
 
+### Writing the `.md` documentation
+* [**Markdown** (hints, etc.)](docs/markdown.md)
+
 ### Base structure
 I planned this whole repository/fs for more than just the **`count2`** project. Considering this and more, like the
 namespace hierarchy, I structured the PHP parts in the `php/` directory this way: everything's below the `kekse`
@@ -44,9 +47,10 @@ See also the [Modules section](#modules) below.
 Currently there are, beneath the main `kekse` extensions (and the `test` part), the following modules/apps (all
 under development, and even more planned yet):
 
-* [**`count2`**](docs/count2.md)
-* [**`news2`**](docs/news2.md)
 * [**`blog2`**](docs/blog2.md)
+* [**`count2`**](docs/count2.md)
+* [**`kekse`**](docs/kekse.md)
+* [**`news2`**](docs/news2.md)
 * [`index`](docs/index.md)
 * [`ip`](docs/ip.md)
 
@@ -56,11 +60,12 @@ the most important thing to begin with the main `count2` part!
 See also the [base structure](#base-structure) section above. And they all need to fulfill some requirements,
 mainly in their structure and the way they use the [`kekse` extensions](docs/kekse.md).
 
+> [!CAUTION]
+> The **`kekse`** 'module' is my [base PHP extension](#for-developers-and-enthusiasts). Most 'real' modules
+> rely on it! .. `kekse` should implement all general (most abstract) things that could be used by many modules.
+
 ### Directory structure
 Most important parts can be found in the `src/` directory (only symlinks).
-
-### Writing the `.md` documentation
-* [**Markdown** (hints, etc.)](docs/markdown.md)
 
 # Copyright and License
 The Copyright is [(c) Sebastian Kucharczyk](COPYRIGHT.txt),
