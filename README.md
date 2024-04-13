@@ -67,6 +67,13 @@ mainly in their structure and the way they use the [`kekse` extensions](docs/kek
 ### Directory structure
 Most important parts can be found in the `src/` directory (only symlinks).
 
+### JavaScript
+I started the [`js/`](js) part for the `count2`, since it'll be necessary for things like the **fingerprint**s,
+or the **RayCast** thing will (partially) happen at the browser/client..
+
+But maybe this will be replaced by my [**`v4`** library](https://github.com/kekse1/v4/) part. Or maybe some
+things from there will be integrated here.. *we will see*!
+
 # Copyright and License
 The Copyright is [(c) Sebastian Kucharczyk](COPYRIGHT.txt),
 and it's licensed under the [MIT](LICENSE.txt) (also known as 'X' or 'X11' license).
