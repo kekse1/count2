@@ -9,6 +9,8 @@
 
 				# .. dass bestenfalls das assoziative [values]-array auch [i]-ndex erhalten, je nach erscheinung im QUERY_STRING!! :-D
 
+	# '?replace'...
+
 	# die path-funktionen in `FileSystem` bitte in `Path` auslagern..!!!!
 
 	# string.inc.php-funktionen bitte in 'String'-klasse!
