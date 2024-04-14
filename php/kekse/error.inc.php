@@ -120,11 +120,6 @@ class ERROR extends Quant
 
 	public static function handler($type, $no, $msg, $file, $line)
 	{
-		$stop = function($code = KEKSE_EXIT_CODE)
-		{
-			return exit($code);
-		};
-
 		switch($type)
 		{
 			case 'Error':
@@ -151,11 +146,11 @@ class ERROR extends Quant
 				'line' => $line ];
 			$string = print_r($obj, true);
 		}
-		
+
 		if(isset($GLOBALS['ERROR']))
 		{
 			$GLOBALS['ERROR']->put($string);
-			return $stop();
+			exit(KEKSE_EXIT_CODE);
 		}
 		
 		if(!parent::isCLI())
@@ -168,7 +163,7 @@ class ERROR extends Quant
 		}
 
 		parent::swrite(2, $string);
-		return $stop();
+		exit(KEKSE_EXIT_CODE);
 	}
 
 	private static function makeLogFilePath($path)

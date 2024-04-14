@@ -28,6 +28,16 @@ class Map extends Quant
 		parent::__construct($session, ... $args);
 	}
 
+	public function getValues()
+	{
+		return $this->values;
+	}
+
+	public function getScheme()
+	{
+		return $this->scheme;
+	}
+
 	private static function loadMetaScheme($force = false, $path = KEKSE_META_SCHEME, $check = true, $throw = true)
 	{
 		if(is_array(self::$metaScheme) && !$force)
@@ -590,11 +600,11 @@ class Map extends Quant
 		{
 			return $value;
 		}
-		
+
 		switch(strtolower($value))
 		{
-			case '+': case 'n': case 'no': case 'false': return false;
-			case '-': case 'y': case 'yes': case 'true': return true;
+			case '-': case 'n': case 'no': case 'false': return false;
+			case '+': case 'y': case 'yes': case 'true': return true;
 		}
 		
 		if(is_numeric($value, 10, null))

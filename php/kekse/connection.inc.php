@@ -54,7 +54,7 @@ class Connection extends Quant
 
 	public function writeError($data, $length = null, $type = null, ... $args)
 	{
-		return $this->send($data, $type, $length, true);
+		return $this->send($data, $length, $type, true);
 	}
 	
 	public function write($data, $length = null, $type = null, ... $args)
@@ -89,7 +89,7 @@ class Connection extends Quant
 		$result;
 		if($error) $result = parent::writeError($data, $length);
 		else $result = parent::write($data, $length);
-		
+
 		if($result !== false)
 		{
 			$this->dataSent = true;

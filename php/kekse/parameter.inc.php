@@ -44,7 +44,7 @@ class Parameter extends Map
 			$this->writeError($err->getMessage());
 			exit(1);
 		}
-			
+
 		return $this->importValues($result, false);
 	}
 	
@@ -139,15 +139,40 @@ class Parameter extends Map
 			$string = substr($string, 1);
 		}
 		
-		$setCurrent = function() use(&$key, &$value, &$result, &$count)
+		$clear = function($ret) use(&$key, &$value)
+		{
+			$key = '';
+			$value = null;
+			return $ret;
+		};
+		
+		$setCurrent = function() use(&$clear, &$key, &$value, &$result, &$count)
 		{
 			if(!($key = Security::checkString($key, true)))
 			{
-				return true;
+				return $clear(true);
 			}
 			else if(!($key = self::decode(str_trim($key))))
 			{
-				return true;
+				return $clear(true);
+			}
+			
+			$false;
+			
+			if($key[0] === '!')
+			{
+				$key = substr($key, 1);
+
+				if($key === '')
+				{
+					return $clear(true);
+				}
+				
+				$false = true;
+			}
+			else
+			{
+				$false = false;
 			}
 			
 			if(!($value = Security::checkString($value, true)))
@@ -164,16 +189,16 @@ class Parameter extends Map
 			if($exceeding)
 			{
 				--$count;
-				return false;
+				return $clear(false);
 			}
 			
 			if($value === null || $value === '')
 			{
-				$value = true;
+				$value = !$false;
 			}
 
 			$result[$key] = $value;
-			return true;
+			return $clear(true);
 		};
 
 		$result = [];
@@ -195,9 +220,6 @@ class Parameter extends Map
 				{
 					return null;
 				}
-				
-				$key = '';
-				$value = null;
 			}
 			else if($string[$i] === '=')
 			{

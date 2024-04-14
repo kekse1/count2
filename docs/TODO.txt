@@ -9,7 +9,11 @@
 
 				# .. dass bestenfalls das assoziative [values]-array auch [i]-ndex erhalten, je nach erscheinung im QUERY_STRING!! :-D
 
-	# '?replace'...
+	# nach '!'-prefix des parameter-parsers bitte noch eine codierung, um keys "im nachhinein" gaenzlich raus zu loeschen..
+
+	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
+
+	# bitte alle *.inc.php => *.php...!?
 
 	# die path-funktionen in `FileSystem` bitte in `Path` auslagern..!!!!
 
@@ -20,6 +24,8 @@
 		# und dazu gleich den autoloader!! siehe: < https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60/ >
 
 	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
+
+		# u.v.a.. meiszte fs-zugriffe nur mit `FileSystem`-INSTANZ [wg. chroot ;-] ...
 
 	# Connection: bitte einen modus, wo alles nicht direkt gesendet wird.. fuer spaeteres 'flush{,Headers,Body}()`!!!! :-D
 

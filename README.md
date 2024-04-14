@@ -26,11 +26,13 @@ markdown document, since my first [`count.php`](https://github.com/kekse1/count.
 * [**Configuration**](docs/configuration.md)
 
 ### For developers and enthusiasts
+* [**Debug**](docs/debug.md)
 * [**Technical details**](docs/internals.md)
 * [**Modules**](docs/count2.md)
 * [**Extensions**](docs/kekse.md)
 * [**Coding Guidelines**](docs/guidelines.md)
 * [**JSON vectors**](docs/json.md)
+* [**TODO**.txt](docs/TODO.txt)
 
 ### Writing the `.md` documentation
 * [**Markdown** (hints, etc.)](docs/markdown.md)

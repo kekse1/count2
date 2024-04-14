@@ -1,4 +1,5 @@
 <?php
 require_once(__DIR__ . '/count2/main.php');
-$GLOBALS[2]->text('test');
+var_dump($GLOBALS[2]->session->parameter->getValues());
+//$GLOBALS[2]->text('hello world!');
 ?>
