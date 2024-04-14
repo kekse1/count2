@@ -26,7 +26,7 @@ markdown document, since my first [`count.php`](https://github.com/kekse1/count.
 * [**Configuration**](docs/configuration.md)
 
 ### For developers and enthusiasts
-* [**Debug**](docs/debug.md)
+* [**Debug mode**](docs/debug.md)
 * [**Technical details**](docs/internals.md)
 * [**Modules**](docs/count2.md)
 * [**Extensions**](docs/kekse.md)

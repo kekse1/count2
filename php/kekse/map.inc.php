@@ -603,8 +603,8 @@ class Map extends Quant
 
 		switch(strtolower($value))
 		{
-			case '-': case 'n': case 'no': case 'false': return false;
-			case '+': case 'y': case 'yes': case 'true': return true;
+			case '-': case '(-)': case '(no)': case '(false)': return false;
+			case '+': case '(+)': case '(yes)': case '(true)': return true;
 		}
 		
 		if(is_numeric($value, 10, null))
@@ -831,7 +831,7 @@ class Map extends Quant
 			case 'string':
 				switch(strtolower($value))
 				{
-					case '0': case 'no': case 'false':
+					case '-': case '(-)': case 'n': case '(n)': case 'no': case '(no)': case 'false': case '(false)':
 						$value = false;
 						break;
 					default:
