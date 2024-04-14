@@ -11,6 +11,8 @@
 
 	# nach '!'-prefix des parameter-parsers bitte noch eine codierung, um keys "im nachhinein" gaenzlich raus zu loeschen..
 
+		@ bool: test `encodeURIComponent('('))`.. wg. '(no)' etc.
+
 	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
 
 	# bitte alle *.inc.php => *.php...!?
