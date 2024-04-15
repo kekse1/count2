@@ -15,9 +15,9 @@
 
 	# bitte alle *.inc.php => *.php...!?
 
-	# die path-funktionen in `FileSystem` bitte in `Path` auslagern..!!!!
+!!!!!!	# die path-funktionen in `FileSystem` bitte in `Path` auslagern..!!!!
 
-	# string.inc.php-funktionen bitte in 'String'-klasse!
+!!!!!!	# string.inc.php-funktionen bitte in 'String'-klasse!
 
 		# evtl. alle anderen, losen funktionen ebenso passend irgendwo?!
 
