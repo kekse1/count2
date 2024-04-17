@@ -13,6 +13,8 @@
 
 		@ bool: test `encodeURIComponent('('))`.. wg. '(no)' etc.
 
+	# bitte fehlermeldungen bei falschen parametern @ map.js "besser", also mit angabe, welcher typ erwartet wird!
+
 	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
 
 	# bitte alle *.inc.php => *.php...!?
