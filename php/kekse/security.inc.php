@@ -3,12 +3,15 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
-//require_once(__DIR__ . '/main.inc.php');
-require_once(__DIR__ . '/constants.inc.php');
-require_once(__DIR__ . '/text.inc.php');
+//
+require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/constants.inc.php');
+//require_once(__DIR__ . '/text.inc.php');
 
+//
 class Security extends Quant
 {
 	public static function secure($string, $type)

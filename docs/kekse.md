@@ -22,6 +22,7 @@ and are under my namespace `kekse`.
 * [math](kekse/math.md)
 * [numeric](kekse/numeric.md)
 * [parameter](kekse/parameter.md)
+* [path](kekse/path.md)
 * [raycast](kekse/raycast.md)
 * [security](kekse/security.md)
 * [session](kekse/session.md)

@@ -6,6 +6,7 @@
 namespace kekse;
 
 require_once(__DIR__ . '/filesystem.inc.php');
+//require_once(__DIR__ . '/path.inc.php');
 require_once(__DIR__ . '/map.inc.php');
 
 class Configuration extends Map
@@ -33,9 +34,9 @@ class Configuration extends Map
 				'base'	=> $this->session->environment->real['base'] ];
 		$file = [	'dir'	=> $this->session->environment->file['dir'],
 				'base'	=> $this->session->environment->file['base'] ];
-		$real['full'] = FileSystem::join($real['dir'], $real['base']);
+		$real['full'] = Path::join($real['dir'], $real['base']);
 		$real['json'] = $real['full'] . '.json';
-		$file['full'] = FileSystem::join($file['dir'], $file['base']);
+		$file['full'] = Path::join($file['dir'], $file['base']);
 		$file['json'] = $file['full'] . '.json';
 
 		$result = [];

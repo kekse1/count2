@@ -33,4 +33,9 @@ define('KEKSE_UNIT_PRECISION', 2);
 define('KEKSE_UNIT_1024', [ 'Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB' ]);
 define('KEKSE_UNIT_1000', [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ]);
 
+// path.inc.php
+define('KEKSE_PATH_EXT', 1);
+// path.inc.php && filesystem.inc.php
+define('KEKSE_PATH_REAL', false);
+
 ?>

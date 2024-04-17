@@ -3,12 +3,16 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
-require_once(__DIR__ . '/error.inc.php');
-require_once(__DIR__ . '/environment.inc.php');
+//
+require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/error.inc.php');
+//require_once(__DIR__ . '/environment.inc.php');
 require_once(__DIR__ . '/configuration.inc.php');
 
+//
 class Session extends Quant
 {
 	public $controller = null;

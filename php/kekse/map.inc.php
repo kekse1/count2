@@ -11,9 +11,9 @@ const KEKSE_META_SCHEME = (__DIR__ . '/../../json/kekse/map.json');
 const KEKSE_META_SCHEME_KEYS = [ 'keys', 'types', 'limits' ];
 
 //
-//require_once(__DIR__ . '/main.inc.php');
-require_once(__DIR__ . '/text.inc.php');
-require_once(__DIR__ . '/security.inc.php');
+require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/text.inc.php');
+//require_once(__DIR__ . '/security.inc.php');
 require_once(__DIR__ . '/filesystem.inc.php');
 
 //

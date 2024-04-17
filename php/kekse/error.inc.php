@@ -173,7 +173,7 @@ class ERROR extends Quant
 			return null;
 		}
 
-		$ext = FileSystem::extname($path, 1);
+		$ext = Path::extname($path, 1);
 
 		if($ext === '.php')
 		{
