@@ -21,6 +21,10 @@
 
 !!!!!!	# die path-funktionen in `FileSystem` bitte in `Path` auslagern..!!!!
 
+	# funktionen in 'math.inc.php' in eine 'Math'-klasse..
+
+		# .. sowie *alle* so freistehenden funktionen in extra eigene klassen!!
+
 	# gleich einen autoloader!! siehe: < https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60/ >
 
 	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!

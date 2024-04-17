@@ -26,4 +26,11 @@ define('KEKSE_CONTENT_TEXT', 'text/plain; charset=UTF-8');
 define('KEKSE_CONTENT_HTML', 'text/html; charset=UTF-8');
 define('KEKSE_CONTENT_TYPE', KEKSE_CONTENT_TEXT);
 
+// math.inc.php
+define('KEKSE_UNIT_STRING', true);
+define('KEKSE_UNIT_BASE', 1024);
+define('KEKSE_UNIT_PRECISION', 2);
+define('KEKSE_UNIT_1024', [ 'Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB' ]);
+define('KEKSE_UNIT_1000', [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ]);
+
 ?>

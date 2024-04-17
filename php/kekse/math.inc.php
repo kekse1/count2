@@ -3,212 +3,191 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
-const SIZE_UNITS_1024 = [ 'Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB' ];
-const SIZE_UNITS_1000 = [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ];
+//
+const KEKSE_UNIT_THROW = true;
 
-function renderSize($bytes, $precision = 2, $base = 1024)
+//
+require_once(__DIR__ . '/constants.inc.php');
+
+//
+class Math
 {
-	$max = count(SIZE_UNITS_1024);
-	$rest = $bytes;
-	$index = 0;
-
-	while($rest >= $base)
+	public static function bytes($bytes, $unitOrBase = KEKSE_UNIT_BASE, $precision = KEKSE_UNIT_PRECISION, $string = KEKSE_UNIT_STRING)
 	{
-		$rest /= $base;
-		if(++$index >= ($max - 1)) break;
-	}
-
-	$result = round($rest, $precision);
-	return ($result . ' ' . ($base === 1024 ? SIZE_UNITS_1024[$index] : SIZE_UNITS_1000[$index]));
-}
-
-function unit($string, $double = null, $unit = null, $fix = true)
-{
-	$result = [
-		'value' => '',
-		'unit' => '',
-		'originalValue' => null,
-		'originalUnit' => null
-	];
-	
-	$fin = function(&$return, $already = true) use(&$result)
-	{
-		if(!$already)
+		if(!is_bool($string))
 		{
-			$cast();
+			throw new \Exception('Invalid $string argument (not a Boolean type)');
 		}
 		
-		if($fix && $result['value'] == 0)
+		$max = null;
+		$unit = null;
+		$base = KEKSE_UNIT_BASE;
+		
+		if(!is_int($precision) || $precision < 0)
 		{
-			$result['unit'] = '';
+			$precision = null;
 		}
 		
-		array_push($result, $result['value'], $result['unit'], $result['originalValue'], $result['originalUnit']);
-		return $return;
-	};
-	
-	$cast = function() use(&$result, $double)
-	{
-		if(!is_string($result['value']))
+		if(is_int($unitOrBase))
 		{
-			return $result;
-		}
-		
-		$result['value'] = (double)$result['value'];
-		
-		if($double === false)
-		{
-			$result['value'] = (int)$result['value'];
-		}
-		else if($double === null && fmod($result['value'], 1) == 0)
-		{
-			$result['value'] = (int)$result['value'];
-		}
-		
-		return $result;
-	};
-
-	$len = strlen($string);
-
-	if($len === 0)
-	{
-		return $fin($result, false);
-	}
-
-	$gotPoint = false;
-	$gotUnit = false;
-	$byte;
-	
-	for($i = 0; $i < $len; ++$i)
-	{
-		$byte = ord($string[$i]);
-
-		if($byte >= 48 && $byte <= 57)
-		{
-			if(!$gotUnit && $gotPoint !== null)
+			switch($base = $unitOrBase)
 			{
-				$result['value'] .= chr($byte);
+				case 1024:
+					$max = (count(KEKSE_UNIT_1024) - 1);
+					break;
+				case 1000:
+					$max = (count(KEKSE_UNIT_1000) - 1);
+					break;
+				default:
+					if(KEKSE_UNIT_THROW)
+					{
+						throw new \Error('Invalid $base argument [ 1024, 1000 ]');
+					}
+					break;
 			}
 		}
-		else if($byte >= 97 && $byte <= 122)
+		else if(is_string($unitOrBase))
 		{
-			$result['unit'] .= chr($byte);
-			$gotUnit = true;
-		}
-		else if($byte >= 65 && $byte <= 90)
-		{
-			$result['unit'] .= chr($byte + 32);
-			$gotUnit = true;
-		}
-		else if($byte === 46 && !$gotUnit)
-		{
-			if($double === false || $gotPoint)
+			$findUnit = function($u) use(&$base)
 			{
-				$gotPoint = null;
-			}
-			else
-			{
-				$gotPoint = true;
-				$result['value'] .= '.';
-			}
-		}
-	}
-
-	$cast();
-	
-	if(is_string($unit) && $result['unit'] !== $unit)
-	{
-		switch($unit)
-		{
-			case 'px':
-				switch($result['unit'])
+				$u = strtolower($u);
+				
+				switch($u)
 				{
-					case 'px': break;
-					case 'pt':
-						$res;
-						$result['originalValue'] = $result['value'];
-						$result['originalUnit'] = $result['unit'];
-						
-						if($double === null)
-						{
-							$res = pt2px((double)$result['value']);
-							if(fmod($res, 1) == 0) $res = (int)$res;
-						}
-						else
-						{
-							$res = pt2px($result['value']);
-						}
-						
-						$result['value'] = $res;
-						$result['unit'] = $unit;
-						break;
-					default:
-						return null;
-						//throw new \Exception('Given unit is not convertable [ `px`, `pt` ]');
+					case 'b':
+					case 'byte':
+					case 'bytes':
+						return [ 0, $base ];
 				}
+				
+				$len = count(KEKSE_UNIT_1024);
+
+				for($i = 0; $i < $len; ++$i)
+				{
+					if(strtolower(KEKSE_UNIT_1024[$i]) === $u)
+					{
+						return [ $i, 1024, $len - 1 ];
+					}
+				}
+				
+				$len = count(KEKSE_UNIT_1000);
+				
+				for($i = 0; $i < $len; ++$i)
+				{
+					if(strtolower(KEKSE_UNIT_1000[$i]) === $u)
+					{
+						return [ $i, 1000, $len - 1 ];
+					}
+				}
+				
+				return false;
+			};
+			
+			$r = $findUnit($unitOrBase);
+			
+			if($r === false)
+			{
+				throw new \Error('Unable to find unit \'' . $unitOrBase . '\'');
+			}
+			
+			[ $unit, $base, $max ] = $r;
+		}
+		else switch($base)
+		{
+			case 1024:
+				$max = count(KEKSE_UNIT_1024) - 1;
 				break;
-			case 'pt':
-				switch($result['unit'])
-				{
-					case 'pt': break;
-					case 'px':
-						$res;
-						$result['originalValue'] = $result['value'];
-						$result['originalUnit'] = $result['unit'];
-						
-						if($double === null)
-						{
-							$res = px2pt((double)$result['value']);
-							if(fmod($res, 1) == 0) $res = (int)$res;
-						}
-						else
-						{
-							$res = px2pt($result['value']);
-						}
-						
-						$result['value'] = $res;
-						$result['unit'] = $unit;
-						break;
-					default:
-						return null;
-						//throw new \Exception('Given unit is not convertable [ `px`, `pt` ]');
-				}
+			case 1000:
+				$max = count(KEKSE_UNIT_1000) - 1;
+				break;
+		}
+
+		$index = 0;
+		$rest = (double)$bytes;
+		
+		while($rest >= $base)
+		{
+			if($max !== null && $index >= $max)
+			{
+				break;
+			}
+			else if($unit !== null && $index === $unit)
+			{
+				break;
+			}
+			
+			$rest /= $base;
+			++$index;
+		}
+
+		switch($base)
+		{
+			case 1024:
+				$unit = KEKSE_UNIT_1024[$index];
+				break;
+			case 1000:
+				$unit = KEKSE_UNIT_1000[$index];
 				break;
 			default:
-				return null;
-				//throw new \Exception('Invalid $unit defined [ `px`, `pt` ]');
+				$unit = '';
 				break;
 		}
+
+		$orig = $rest;
+
+		if($precision !== null)
+		{
+			$rest = round($rest, $precision);
+		}
+		
+		if(fmod($rest, 1) == 0)
+		{
+			$rest = (int)$rest;
+		}
+		
+		if($string)
+		{
+			return ((string)$rest . ' ' . $unit);
+		}
+
+		$result = [ $rest, $index, $base, $unit, $orig ];
+		$result['value'] = $rest;
+		$result['index'] = $index;
+		$result['base'] = $base;
+		$result['unit'] = $unit;
+		$result['orig'] = $orig;
+
+		return $result;
 	}
 	
-	return $fin($result, true);
-}
-
-function px2pt($value)
-{
-	return ($value * 0.75);
-}
-
-function pt2px($value)
-{
-	return ($value / 0.75);
-}
-
-function getIndex($index, $length)
-{
-	if($length < 1)
+	public static function px2pt($value)
 	{
-		return null;
+		return ($value * 0.75);
 	}
-
-	if(($index = ((int)$index % ($length = (int)$length))) < 0)
+	
+	public static function pt2px($value)
 	{
-		$index = (($length + $index) % $length);
+		return ($value / 0.75);
 	}
+	
+	public static function getIndex($index, $length)
+	{
+		if($length < 1)
+		{
+			return null;
+		}
 
-	return $index;
+		if(($index = ((int)$index % ($length = (int)$length))) < 0)
+		{
+			$index = (($length + $index) % $length);
+		}
+
+		return $index;
+	}
 }
 
+//
 ?>

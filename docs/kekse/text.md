@@ -18,4 +18,6 @@ in the future..
 * **`Text::startsWith($haystack, $needle, $caseSensitive = true)`**
 * **`Text::endsWith($haystack, $needle, $caseSensitive = true)`**
 * **`Text::contains($haystack, $needle, $caseSensitive = true)`**
+* **`Text::at($string, $index, $needle = null, $caseSensitive = true)`**
+* **`Text::unit($string, $double = null, $unit = null, $fix = true)`**
 

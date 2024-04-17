@@ -7,9 +7,11 @@
 namespace kekse;
 
 //
+require_once(__DIR__ . '/math.inc.php');
+
+//
 class Text
 {
-	//original: `str_unique()`
 	public static function unique($string)
 	{
 		if(!is_string($string))
@@ -37,7 +39,6 @@ class Text
 		return $result;
 	}
 	
-	//original: `str_trim()`
 	public static function trim($string)
 	{
 		if(!is_string($string))
@@ -86,13 +87,11 @@ class Text
 		return $string;
 	}
 	
-	//original: `str_remove_spaces()`
 	public static function removeWhiteSpaces($string)
 	{
 		return self::removeBinary($string, true);
 	}
 	
-	//original: `str_remove_binary()`
 	public static function removeBinary($string, $whiteSpaces = false)
 	{
 		if(!is_string($string))
@@ -127,7 +126,6 @@ class Text
 		return $result;
 	}
 	
-	//original: `str_contains_binary()`
 	public static function containsBinary($string)
 	{
 		if(!is_string($string))
@@ -157,7 +155,6 @@ class Text
 		return false;
 	}
 	
-	//original: `str_is_lower()`
 	public static function isLowerCase($string)
 	{
 		if(!is_string($string))
@@ -168,7 +165,6 @@ class Text
 		return (strtolower($string) === $string);
 	}
 	
-	//original: `str_is_upper()`
 	public static function isUpperCase($string)
 	{
 		if(!is_string($string))
@@ -222,6 +218,215 @@ class Text
 		}
 	
 		return str_contains($haystack, $needle);
+	}
+
+	public static function unit($string, $double = null, $unit = null, $fix = true)
+	{
+		$result = [
+			'value' => '',
+			'unit' => '',
+			'originalValue' => null,
+			'originalUnit' => null
+		];
+		
+		$fin = function(&$return, $already = true) use(&$result)
+		{
+			if(!$already)
+			{
+				$cast();
+			}
+			
+			if($fix && $result['value'] == 0)
+			{
+				$result['unit'] = '';
+			}
+			
+			array_push($result, $result['value'], $result['unit'], $result['originalValue'], $result['originalUnit']);
+			return $return;
+		};
+		
+		$cast = function() use(&$result, $double)
+		{
+			if(!is_string($result['value']))
+			{
+				return $result;
+			}
+			
+			$result['value'] = (double)$result['value'];
+			
+			if($double === false)
+			{
+				$result['value'] = (int)$result['value'];
+			}
+			else if($double === null && fmod($result['value'], 1) == 0)
+			{
+				$result['value'] = (int)$result['value'];
+			}
+			
+			return $result;
+		};
+
+		$len = strlen($string);
+
+		if($len === 0)
+		{
+			return $fin($result, false);
+		}
+
+		$gotPoint = false;
+		$gotUnit = false;
+		$byte;
+		
+		for($i = 0; $i < $len; ++$i)
+		{
+			$byte = ord($string[$i]);
+
+			if($byte >= 48 && $byte <= 57)
+			{
+				if(!$gotUnit && $gotPoint !== null)
+				{
+					$result['value'] .= chr($byte);
+				}
+			}
+			else if($byte >= 97 && $byte <= 122)
+			{
+				$result['unit'] .= chr($byte);
+				$gotUnit = true;
+			}
+			else if($byte >= 65 && $byte <= 90)
+			{
+				$result['unit'] .= chr($byte + 32);
+				$gotUnit = true;
+			}
+			else if($byte === 46 && !$gotUnit)
+			{
+				if($double === false || $gotPoint)
+				{
+					$gotPoint = null;
+				}
+				else
+				{
+					$gotPoint = true;
+					$result['value'] .= '.';
+				}
+			}
+		}
+
+		$cast();
+		
+		if(is_string($unit) && $result['unit'] !== $unit)
+		{
+			switch($unit)
+			{
+				case 'px':
+					switch($result['unit'])
+					{
+						case 'px': break;
+						case 'pt':
+							$res;
+							$result['originalValue'] = $result['value'];
+							$result['originalUnit'] = $result['unit'];
+							
+							if($double === null)
+							{
+								$res = Math::pt2px((double)$result['value']);
+								if(fmod($res, 1) == 0) $res = (int)$res;
+							}
+							else
+							{
+								$res = Math::pt2px($result['value']);
+							}
+							
+							$result['value'] = $res;
+							$result['unit'] = $unit;
+							break;
+						default:
+							return null;
+							//throw new \Exception('Given unit is not convertable [ `px`, `pt` ]');
+					}
+					break;
+				case 'pt':
+					switch($result['unit'])
+					{
+						case 'pt': break;
+						case 'px':
+							$res;
+							$result['originalValue'] = $result['value'];
+							$result['originalUnit'] = $result['unit'];
+							
+							if($double === null)
+							{
+								$res = Math::px2pt((double)$result['value']);
+								if(fmod($res, 1) == 0) $res = (int)$res;
+							}
+							else
+							{
+								$res = Math::px2pt($result['value']);
+							}
+							
+							$result['value'] = $res;
+							$result['unit'] = $unit;
+							break;
+						default:
+							return null;
+							//throw new \Exception('Given unit is not convertable [ `px`, `pt` ]');
+					}
+					break;
+				default:
+					return null;
+					//throw new \Exception('Invalid $unit defined [ `px`, `pt` ]');
+					break;
+			}
+		}
+		
+		return $fin($result, true);
+	}
+	
+	public static function at($string, $index, $needle = null, $caseSensitive = true)
+	{
+		$lenString;
+
+		if(!is_string($string))
+		{
+			throw new \Exception('Invalid $string argument (not a String)');
+		}
+		else if($string === '')
+		{
+			return null;
+		}
+		else if(is_int($index))
+		{
+			if(($index = Math::getIndex($index, ($lenString = strlen($string)))) === null)
+			{
+				return null;
+			}
+		}
+		else
+		{
+			throw new \Exception('Invalid $index argument (no Integer)');
+		}
+
+		if(!(is_string($needle) && $needle !== ''))
+		{
+			return $string[$index];
+		}
+
+		$lenNeedle = strlen($needle);
+
+		if(($lenNeedle + $index) > $lenString)
+		{
+			return false;
+		}
+
+		$cmp = substr($string, $index, $lenNeedle);
+
+		if(!$caseSensitive)
+		{
+			$needle = strtolower($needle);
+			$cmp = strtolower($cmp);
+		}
+
+		return ($needle === $cmp);
 	}
 }
 
