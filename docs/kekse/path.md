@@ -1,7 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
 # `Path`
-Often used by the [`FileSystem`](../../php/kekse/filesystem.inc.php).
+Often used by the [`FileSystem`](filesystem.md).
 
 ## Functions
 * **`Path::secure($path)`**
