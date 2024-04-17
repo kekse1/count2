@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../kekse.md)
+
 # `Parameter`
 Most documentation in this sub directories will be added l8rs..
 

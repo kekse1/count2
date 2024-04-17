@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../kekse.md)
+
 # `Text`
 Some extensions for better String handling. **To be continued**.. surely.
 
