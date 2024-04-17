@@ -8,6 +8,7 @@ namespace kekse;
 
 //
 const KEKSE_NUMERIC_THROW = false;
+const KEKSE_NUMERIC_ZERO_LIMIT = 8;
 
 //
 const KEKSE_ALPHABET_DECIMAL = '0123456789';
