@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # **`count2`**
 Using the [Extensions](kekse.md), residing in the `count2` directory, using the namespace `kekse\count2`.
 

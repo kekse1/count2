@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # Extensions
 They reside in the `kekse` directory, used by the [Modules](modules.md),
 and are under my namespace `kekse`.

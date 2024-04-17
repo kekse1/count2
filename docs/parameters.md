@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # Index
 Here are all the possible parameters or configuration items for all these three elements:
 

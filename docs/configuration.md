@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # Differences
 All configurations are pure differences.
 

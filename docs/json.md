@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # Definitions
 Hard coded stuff is bad.. so this is it. Intended for _automatic_ checking of all
 [**`Map`**](../php/kekse/map.inc.php) related stuff (e.g. [`Configuration`](../php/kekse/configuration.inc.php),

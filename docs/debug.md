@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # **Debug** mode
 If you're developing here, and want to really get thrown `\Throwable`
 (with preventing log file entries), please either `define('KEKSE_DEBUG', true)`

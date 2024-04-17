@@ -1,5 +1,7 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2">
 
+[**Back to Index**](../README.md)
+
 # Usage
 Here I'll describe how to easily start with everything (so for regular users).
 //TODO//
