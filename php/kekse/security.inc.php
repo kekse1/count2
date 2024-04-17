@@ -5,7 +5,9 @@
 
 namespace kekse;
 
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/constants.inc.php');
+require_once(__DIR__ . '/text.inc.php');
 
 class Security extends Quant
 {
@@ -133,7 +135,7 @@ class Security extends Quant
 		
 		if($removeBinary)
 		{
-			$string = str_remove_binary($string, false);
+			$string = Text::removeBinary($string, false);
 		}
 		
 		return $string;

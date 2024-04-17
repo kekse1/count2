@@ -20,7 +20,7 @@ const KEKSE_ALPHABET_ALPHA = KEKSE_ALPHABET_LOWER . KEKSE_ALPHABET_UPPER;
 
 //
 require_once(__DIR__ . '/constants.inc.php');
-require_once(__DIR__ . '/string.inc.php');
+require_once(__DIR__ . '/text.inc.php');
 
 //
 function parseInt($string, $radix = 10, $throw = KEKSE_NUMERIC_THROW)
@@ -65,7 +65,7 @@ function parse($string, $radix = 10, $double = null, $throw = KEKSE_NUMERIC_THRO
 	$byteRadix = (positiveRadix($radix) === 256);
 	$negativeRadix = (is_int($radix) && $radix < 0);
 	
-	if($byteRadix || str_contains($alpha, '.'))
+	if($byteRadix || Text::contains($alpha, '.', true))
 	{
 		$double = false;
 	}
@@ -315,7 +315,7 @@ function render($value, $radix = 10, $double = null, $throw = KEKSE_NUMERIC_THRO
 	
 	if($double === true)
 	{
-		if(!str_contains($result, '.'))
+		if(!Text::contains($result, '.', true))
 		{
 			$result .= '.0';
 		}
@@ -378,7 +378,7 @@ function is_numeric($value, $radix = 10, $double = null)
 		return false;
 	}
 
-	if(str_contains($alpha, '.') && $double)
+	if(Text::contains($alpha, '.', true) && $double)
 	{
 		return null;
 	}
@@ -390,7 +390,7 @@ function is_numeric($value, $radix = 10, $double = null)
 
 	for($i = 0; $i < $len; ++$i)
 	{
-		if(!str_contains($alpha, $value[$i]))
+		if(!Text::contains($alpha, $value[$i], true))
 		{
 			if($value[$i] === '-')
 			{
@@ -494,23 +494,23 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 		$radix = strlen($alpha);
 	}
 	
-	if(str_contains($alpha, '.'))
+	if(Text::contains($alpha, '.', true))
 	{
 		$double = false;
 	}
 
-	if(str_is_lower($alpha))
+	if(Text::isLowerCase($alpha))
 	{
 		$string = strtolower($string);
 	}
-	else if(str_is_upper($alpha))
+	else if(Text::isUpperCase($alpha))
 	{
 		$string = strtoupper($string);
 	}
 
 	$negative;
-	$noMinusInAlpha = !str_contains($alpha, '-');
-	$noPlusInAlpha = !str_contains($alpha, '+');
+	$noMinusInAlpha = !Text::contains($alpha, '-', true);
+	$noPlusInAlpha = !Text::contains($alpha, '+', true);
 
 	if(!$filter)
 	{
@@ -530,7 +530,7 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 
 	for(; $pos < $len; ++$pos)
 	{
-		if(str_contains($alpha, $string[$pos]))
+		if(Text::contains($alpha, $string[$pos], true))
 		{
 			break;
 		}
@@ -552,7 +552,7 @@ function str_prepare_numeric($string, $radix, $double = null, $filter = true)
 
 	for($pos = $len - 1; $pos >= 0; --$pos)
 	{
-		if(str_contains($alpha, $string[$pos]))
+		if(Text::contains($alpha, $string[$pos], true))
 		{
 			break;
 		}
@@ -636,7 +636,7 @@ function isRadix($radix)
 {
 	if(is_string($radix))
 	{
-		$radix = str_unique($radix);
+		$radix = Text::unique($radix);
 
 		if(strlen($radix) >= 2)
 		{
@@ -799,7 +799,7 @@ function alphabet($radix = 10)
 	}
 	else if(is_string($radix))
 	{
-		$radix = str_unique($radix);
+		$radix = Text::unique($radix);
 
 		if(strlen($radix) < 2)
 		{

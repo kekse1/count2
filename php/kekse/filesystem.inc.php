@@ -9,7 +9,8 @@ namespace kekse;
 const KEKSE_FILESYSTEM_REAL_PATH = false;
 
 //
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/constants.inc.php');
 require_once(__DIR__ . '/security.inc.php');
 
 //
@@ -135,7 +136,7 @@ class FileSystem extends Quant
 			return true;
 		}
 
-		return str_starts_with($path, $this->root);
+		return Text::startsWith($path, $this->root, true);
 	}
 
 	public static function secure($path)
@@ -841,7 +842,7 @@ class FileSystem extends Quant
 				$originWith = substr($origin, 0, -1);
 			}
 
-			if(str_starts_with($argWith, $originWith) || str_starts_with($originWith, $argWith))
+			if(Text::startsWith($argWith, $originWith, true) || Text::startsWith($originWith, $argWith, true))
 			{
 				array_unshift($args, $origin);
 			}

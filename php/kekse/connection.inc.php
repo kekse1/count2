@@ -3,9 +3,11 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/text.inc.php');
 require_once(__DIR__ . '/security.inc.php');
 require_once(__DIR__ . '/parameter.inc.php');
 
@@ -36,7 +38,7 @@ class Connection extends Quant
 		{
 			$orig = $key;
 
-			if(!str_starts_with($key, 'HTTP_'))
+			if(!Text::startsWith($key, 'HTTP_', true))
 			{
 				continue;
 			}
@@ -109,9 +111,9 @@ class Connection extends Quant
 	{
 		if($this->has('type')) return false;
 		else if(!is_string($type)) throw new \Exception('Invalid $type argument');
-		else if(str_starts_with($type, 'Content-Type:')) $type = substr($type, 13);
+		else if(Text::startsWith($type, 'Content-Type:', false)) $type = substr($type, 13);
 		if(!($type = Security::checkString($type, true))) throw new \Exception('Invalid $type argument');
-		else if(!($type = str_trim($type))) throw new \Exception('Invalid $type argument');
+		else if(!($type = Text::trim($type))) throw new \Exception('Invalid $type argument');
 		return $this->set('Content-Type', $type);
 	}
 
@@ -120,9 +122,9 @@ class Connection extends Quant
 		if($this->has('length')) return false;
 		else if(is_int($length)) $length = (string)$length;
 		else if(!is_string($length)) throw new \Exception('Invalid $length argument');
-		else if(str_starts_with($length, 'Content-Length')) $length = substr($length, 14);
+		else if(Text::startsWith($length, 'Content-Length', false)) $length = substr($length, 14);
 		if(!($length = Security::checkString($length, true))) throw new \Exception('Invalid $length argument');
-		else if(!($length = str_trim($length))) throw new \Exception('Invalid $length argument');
+		else if(!($length = Text::trim($length))) throw new \Exception('Invalid $length argument');
 		return $this->set('Content-Length', $length);
 	}
 
@@ -150,7 +152,7 @@ class Connection extends Quant
 		{
 			throw new \Exception('Invalid $item argument');
 		}
-		else if(!($item = str_trim($item)))
+		else if(!($item = Text::trim($item)))
 		{
 			throw new \Exception('Invalid $item argument');
 		}
@@ -171,7 +173,7 @@ class Connection extends Quant
 		{
 			$value = null;
 		}
-		else if(!($value = str_trim($value)))
+		else if(!($value = Text::trim($value)))
 		{
 			$value = null;
 		}
@@ -187,7 +189,7 @@ class Connection extends Quant
 		{
 			throw new \Exception('Invalid $value argument');
 		}
-		else if(!($value = str_trim($value)))
+		else if(!($value = Text::trim($value)))
 		{
 			throw new \Exception('Invalid $value argument');
 		}
@@ -209,7 +211,7 @@ class Connection extends Quant
 		{
 			return null;
 		}
-		else if(!($key = str_trim($key)))
+		else if(!($key = Text::trim($key)))
 		{
 			return null;
 		}
@@ -223,7 +225,7 @@ class Connection extends Quant
 		{
 			return false;
 		}
-		else if(!($key = str_trim($key)))
+		else if(!($key = Text::trim($key)))
 		{
 			return false;
 		}

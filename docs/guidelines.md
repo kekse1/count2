@@ -40,12 +40,13 @@ in the `Connection` class.
 BTW: I designed this `Connection` **not** to be used statically or so, since my
 objections is: some day we could use **many** connections...
 
-## Strings and more Security
+## Security (and Strings)
 There are some functions available at `kekse/security.inc.php`. Also used to
 secure up fs paths. And more is yet to come.
 
-BTW: There's also the `kekse/string.inc.php`, e.g. with `str_trim()` to also
-remove all binary data (beneath `str_remove_binary()`, etc.).
+Additionally there are some ['Text' extensions](kekse/text.md) at `kekse/text.inc.php` (which
+should be a `class String`, but this isn't allowed by PHP).
 
 ## TODO
 //TODO/
+

@@ -3,8 +3,13 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse\count2;
 
+//
+require_once(__DIR__ . '/../kekse/text.inc.php');
+
+//
 class Drawing extends \kekse\Quant
 {
 	private $image = null;
@@ -166,7 +171,7 @@ throw new \Error('TODO');
 		{
 			return null;
 		}
-		else if(! str_ends_with($name, '..ttf'))
+		else if(! Text::endsWith($name, '.ttf', false))
 		{
 			$name .= '.ttf';
 		}

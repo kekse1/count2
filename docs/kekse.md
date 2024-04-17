@@ -25,7 +25,7 @@ and are under my namespace `kekse`.
 * [raycast](kekse/raycast.md)
 * [security](kekse/security.md)
 * [session](kekse/session.md)
-* [string](kekse/string.md)
 * [template](kekse/template.md)
 * [terminal](kekse/terminal.md)
+* [text](kekse/text.md)
 

@@ -3,10 +3,11 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
 require_once(__DIR__ . '/map.inc.php');
-require_once(__DIR__ . '/string.inc.php');
+require_once(__DIR__ . '/text.inc.php');
 require_once(__DIR__ . '/security.inc.php');
 
 class Parameter extends Map
@@ -107,7 +108,7 @@ class Parameter extends Map
 			{
 				continue;
 			}
-			else if(!($key = self::decode(str_trim($key))))
+			else if(!($key = self::decode(Text::trim($key))))
 			{
 				continue;
 			}
@@ -152,7 +153,7 @@ class Parameter extends Map
 			{
 				return $clear(true);
 			}
-			else if(!($key = self::decode(str_trim($key))))
+			else if(!($key = self::decode(Text::trim($key))))
 			{
 				return $clear(true);
 			}
@@ -181,7 +182,7 @@ class Parameter extends Map
 			}
 			else
 			{
-				$value = self::decode(str_trim($value));
+				$value = self::decode(Text::trim($value));
 			}
 			
 			$exceeding = (++$count >= KEKSE_LIMIT_PARAM);

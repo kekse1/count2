@@ -3,10 +3,14 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
+require_once(__DIR__ . '/text.inc.php');
+require_once(__DIR__ . '/security.inc.php');
 
+//
 class Color extends Quant
 {
 	public function __construct($session = null, ... $args)
@@ -152,11 +156,11 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else if(str_contains($value, '#'))
+		else if(Text::contains($value, '#', true))
 		{
 			return false;
 		}
-		else if(!str_contains($value, ','))
+		else if(!Text::contains($value, ',', true))
 		{
 			return false;
 		}
@@ -164,9 +168,9 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else
+		else if(!($value = Text::trim($value)))
 		{
-			$value = str_trim($value);
+			return false;
 		}
 		
 		$len = strlen($value);
@@ -204,7 +208,7 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else if(str_contains($value, ','))
+		else if(Text::contains($value, ',', true))
 		{
 			return false;
 		}
@@ -212,9 +216,9 @@ class Color extends Quant
 		{
 			return false;
 		}
-		else
+		else if(!($value = Text::trim($value)))
 		{
-			$value = str_trim($value);
+			return false;
 		}
 		
 		if($value[0] === '#')
@@ -345,9 +349,9 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else
+		else if(!($value = Text::trim($value)))
 		{
-			$value = str_trim($value);
+			return null;
 		}
 		
 		if(substr($value, 0, 5) === 'rgba(')
@@ -405,7 +409,7 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(str_contains($string, ','))
+		else if(Text::contains($string, ',', true))
 		{
 			return null;
 		}
@@ -413,9 +417,9 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else
+		else if(!($string = Text::trim($string)))
 		{
-			$string = str_trim($string);
+			return null;
 		}
 		
 		if($string[0] === '#')
@@ -497,7 +501,7 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else if(!str_contains($string, ','))
+		else if(!Text::contains($string, ',', true))
 		{
 			return null;
 		}
@@ -505,9 +509,9 @@ class Color extends Quant
 		{
 			return null;
 		}
-		else
+		else if(!($string = Text::trim($string)))
 		{
-			$string = str_trim($string);
+			return null;
 		}
 		
 		$split = explode(',', $string);

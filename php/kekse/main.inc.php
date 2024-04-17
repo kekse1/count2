@@ -294,7 +294,7 @@ require_once(__DIR__ . '/error.inc.php');
 require_once(__DIR__ . '/session.inc.php');
 require_once(__DIR__ . '/math.inc.php');
 require_once(__DIR__ . '/numeric.inc.php');
-require_once(__DIR__ . '/string.inc.php');
+require_once(__DIR__ . '/text.inc.php');
 require_once(__DIR__ . '/environment.inc.php');
 require_once(__DIR__ . '/security.inc.php');
 
