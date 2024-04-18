@@ -73,7 +73,7 @@ class Drawing extends \kekse\Quant
 				$blue = $green = $red = null;
 			}
 		}
-		else if(!is_number($alpha))
+		else if(!Number::isNumber($alpha))
 		{
 			$alpha = null;
 		}

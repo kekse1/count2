@@ -160,7 +160,7 @@ class Map extends Quant
 
 			if(isset($value['default']) && is_string($value['default']))
 			{
-				if(is_string($value['default'] = Security::checkString($value['default'], true)))
+				if(is_string($value['default'] = Security::checkString($value['default'], false)))
 				{
 					$value['default'] = self::decode(Text::trim($value['default']));
 				}
@@ -196,7 +196,7 @@ class Map extends Quant
 			
 			if(isset($value['min']))
 			{
-				if(!is_number($value['min']))
+				if(!Number::isNumber($value['min']))
 				{
 					if($throw)
 					{
@@ -258,7 +258,7 @@ class Map extends Quant
 
 			if(isset($value['max']))
 			{
-				if(!is_number($value['max']))
+				if(!Number::isNumber($value['max']))
 				{
 					if($throw)
 					{
@@ -376,7 +376,7 @@ class Map extends Quant
 
 			if(is_string($value))
 			{
-				if($value = Security::checkString($value, true))
+				if($value = Security::checkString($value, false))
 				{
 					$value = self::decode(Text::trim($value));
 				}
@@ -394,7 +394,7 @@ class Map extends Quant
 				{
 					if($throw)
 					{
-						throw new \Exception('Value type for key \'' . $key . '\' doesn\'t match scheme');
+						throw new \Exception('Value type for key \'' . $key . '\' doesn\'t match scheme (is \'' . $type . '\', but should be \'' . $scheme[$key]['type'] . '\')');
 					}
 					
 					continue;
@@ -407,11 +407,13 @@ class Map extends Quant
 					switch($scheme[$key]['type'])
 					{
 						case 'string':
-							if(strlen($value) < $scheme[$key]['min'])
+							$strLen = strlen($value);
+							
+							if($strLen < $scheme[$key]['min'])
 							{
 								if($throw)
 								{
-									throw new \Exception('String length is below the allowed minimum, for key \'' . $key . '\'');
+									throw new \Exception('String length is below the allowed minimum, for key \'' . $key . '\' (is ' . $strLen . ', but should be at least ' . $scheme[$key]['min'] . ')');
 								}
 								
 								$cont = true;
@@ -424,7 +426,7 @@ class Map extends Quant
 							{
 								if($throw)
 								{
-									throw new \Exception('Value is below allowed minimum, for key \'' . $key . '\'');
+									throw new \Exception('Value is below allowed minimum, for key \'' . $key . '\' (is ' . $v . ', but should be at least ' . $scheme[$key]['min'] . ')');
 								}
 								
 								$cont = true;
@@ -443,11 +445,13 @@ class Map extends Quant
 					switch($scheme[$key]['type'])
 					{
 						case 'string':
-							if(strlen($value) > $scheme[$key]['max'])
+							$strLen = strlen($value);
+							
+							if($strLen > $scheme[$key]['max'])
 							{
 								if($throw)
 								{
-									throw new \Exception('String length is above the allowed maximum, for key \'' . $key . '\'');
+									throw new \Exception('String length is above the allowed maximum, for key \'' . $key . '\' (is ' . $strLen . ', but should not be above ' . $scheme[$key]['max'] . ')');
 								}
 								
 								$cont = true;
@@ -460,7 +464,7 @@ class Map extends Quant
 							{
 								if($throw)
 								{
-									throw new \Exception('Value is above allowed maximum, for key \'' . $key . '\'');
+									throw new \Exception('Value is above allowed maximum, for key \'' . $key . '\' (is ' . $v . ', but should not be above ' . $scheme[$key]['max'] . ')');
 								}
 								
 								$cont = true;
@@ -622,7 +626,7 @@ class Map extends Quant
 			case '(1)': case '+': case '(+)': case '(y)': case '(yes)': case '(true)': return true;
 		}
 		
-		if(is_numeric($value, 10, null))
+		if(Number::isNumeric($value, 10, null))
 		{
 			$value = (double)$value;
 			
@@ -818,7 +822,7 @@ class Map extends Quant
 		switch($type)
 		{
 			case 'string':
-				$value = Security::checkString($value, true);
+				$value = Security::checkString($value, false);
 				break;
 			case 'boolean':
 				$value = ($value ? '1' : '0');
@@ -890,7 +894,7 @@ class Map extends Quant
 		switch($type)
 		{
 		case 'string':
-				if(is_numeric($value))
+				if(Number::isNumeric($value))
 				{
 					$value = (int)$value;
 				}
@@ -924,7 +928,7 @@ class Map extends Quant
 		switch($type)
 		{
 			case 'string':
-				if(is_numeric($value))
+				if(Number::isNumeric($value))
 				{
 					$value = (double)$value;
 				}
@@ -958,7 +962,7 @@ class Map extends Quant
 		switch($type)
 		{
 			case 'string':
-				if(is_numeric($value))
+				if(Number::isNumeric($value))
 				{
 					$value = (double)$value;
 					if(fmod($value, 1) == 0) $value = (int)$value;

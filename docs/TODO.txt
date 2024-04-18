@@ -1,25 +1,11 @@
 
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
-	# '?alphabet' => darf NICHT binary-filtered sein, so gesehen.. oder?!?
+	# ?parameter duerfen NICHT binary-filtered sein.. @ Security::checkString(); ...!
 
-		# theor. geht ja jedes (binary) byte in einem $_GET[], oder? wg. url-escape?
+		# u.a. wg. neuem '?alphabet'...
 
-	# neben '?radix' noch '?alphabet', bitte!!!!!!
-
-		# gucke, dass minimum 2 zeichen @ Text::unique() und 'alphabet()' vor allem (statt unique());
-
-			# aber nur, falls der string nicht leer ist - dann KEIN $alphabet!
-
-		# priorisierung: dazu gibt's jetzt die numerischen array-indices bei den parametern bzw. @ Map!
-
-			# somit die reihenfolge.. aber erstes oder letztes(!?!) vorkommnis zaehlt!???
-
-	# nach '!'-prefix des parameter-parsers bitte noch eine codierung, um keys "im nachhinein" gaenzlich raus zu loeschen..
-
-!!!		# bestenfalls JA: einfach '?key=' ohne wert, aber MIT '=' zeichen.. :-D
-
-	# bitte fehlermeldungen bei falschen parametern @ map.js "besser", also mit angabe, welcher typ erwartet wird!
+			# das uebrigens checken, ob empty or not.. falls ned, muss length MIN. 2 sein!!
 
 	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
 
@@ -32,6 +18,8 @@
 	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
 
 		# u.v.a.. meiszte fs-zugriffe nur mit `FileSystem`-INSTANZ [wg. chroot ;-] ...
+
+		# ueberlege auch wg. 'Security::secure()', u.a. mit 'Path::secure()'... wg. filesystem-chroot sowieso....
 
 	# Connection: bitte einen modus, wo alles nicht direkt gesendet wird.. fuer spaeteres 'flush{,Headers,Body}()`!!!! :-D
 
@@ -51,14 +39,6 @@
 
 		# PS: ist evtl. auch durch POST immer 'STDIN' gegegen!?!?!?
 
-	# guck ob 'config[debug]' geht (atm nur in 'tmp/testing.json', und aktuell noch als 'const KEKSE_DEBUG' auf true.. unset, etc.!);
-
-		# und ueberpruefe, ob (beide) log-files korrekt arbeiten jetzt..
-
-		# und guck, dass (schonmal) parameter-fehler-ausgabe NUR im browser, ohne file-loggin!!!@
-
-			# das gilt auch spaeter teils umzusetzen wohl.
-
 	# map: set() mit $scheme!?
 
 		# und values mit strings und cast oder direkt weitere types??
@@ -67,7 +47,7 @@
 
 		@ scheme: ist 'number' als type erlaubt?!? SOLLTE EIG.!!! ;-D
 
-	# https://www.google.com/search?q=php+flock
+	# `FileSystem`: https://www.google.com/search?q=php+flock
  
  	# alle (string) zu (int) sowie (double) casts EVTL.(!!) eher durch 'parse()', etc.. @ numeric.inc.php..?!?
 
@@ -77,7 +57,7 @@
 
 			# gucke nur bei strings, ob der radix 10 ist!!
 
-	@ 'count2/counting.inc.php': STORE BINARY VALUES!!!
+	@ 'count2/counting.inc.php': STORE BINARY VALUES!
 
 		# brauchen ja kein '-', gar '+' oder '.'... somit optimale storage @ radix = 256! :-D
 
@@ -88,8 +68,6 @@
 	# read my .php bookmarks.. and more! e.g. < https://stackoverflow.com/questions/11710099/what-is-the-difference-between-selfbar-and-staticbar-in-php >
 
 	# bitte denke an kekse/ w/ library-styles.. paar nette funktionen, aber nicht zu sehr aufblaehen.. thx. ^_^
-
-	# ueberlege weitere features/module/apps; eine community wg. bulletin board, etc... neben neuem 'post2'!
 
 	# VOR ALLEM!!!! "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 

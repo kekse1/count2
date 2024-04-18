@@ -531,7 +531,7 @@ class Color extends Quant
 		
 		for($i = 0; $i < 3; ++$i)
 		{
-			if(is_number($split[$i]))
+			if(Number::isNumber($split[$i]))
 			{
 				$result[$i] = (int)str_replace('.', '', $split[$i]);
 			}

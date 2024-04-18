@@ -68,7 +68,7 @@ class Connection extends Quant
 	{
 		if(!is_string($data))
 		{
-			if(is_number($data))
+			if(Number::isNumber($data))
 			{
 				$data = (string)$data;
 			}
@@ -165,7 +165,7 @@ class Connection extends Quant
 		{
 			return false;
 		}
-		else if(is_number($value))
+		else if(Number::isNumber($value))
 		{
 			$value = (string)$value;
 		}

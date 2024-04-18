@@ -49,6 +49,7 @@ Currently there are, beneath the main `kekse` extensions (and the `test` part), 
 under development, and even more planned yet):
 
 * [**`count2`**](docs/count2.md)
+* [**`group2`**](docs/group2.md)
 * [**`kekse`**](docs/kekse.md)
 * [**`post2`**](docs/post2.md)
 * [`index`](docs/index.md)

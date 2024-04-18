@@ -29,6 +29,10 @@
 		"type": "boolean",
 		"default": false
 	},
+	"replace": {
+		"type": "string",
+		"default": ""
+	},
 	"type": {
 		"type": "string",
 		"default": "text/plain;charset=UTF-8",
