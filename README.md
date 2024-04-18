@@ -29,7 +29,6 @@ markdown document, since my first [`count.php`](https://github.com/kekse1/count.
 * [**Debug mode**](docs/debug.md)
 * [**Technical details**](docs/internals.md)
 * [**Extensions**](docs/kekse.md)
-* [**count2/**](docs/count2.md)
 * [**Coding Guidelines**](docs/guidelines.md)
 * [**JSON vectors**](docs/json.md)
 * [**TODO**.txt](docs/TODO.txt)
