@@ -6,7 +6,7 @@
 Some functions are maybe of interest..
 
 ## Radix/base conversion
-Here I think about the encoding of counting values (@ [`count2`](../count2.md) in the file system:
+Here I think about the encoding of counting values (@ [`count2`](../count2.md)) in the file system:
 instead of storing 20 characters in a file, encoding the values in binary radix (256) we need only
 8 full bytes.
 
