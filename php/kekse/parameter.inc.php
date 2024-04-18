@@ -35,7 +35,7 @@ class Parameter extends Map
 		{
 			return null;
 		}
-
+		
 		if($check) try
 		{
 			$result = self::checkValues($result, $this->scheme, true);
@@ -146,8 +146,8 @@ class Parameter extends Map
 			$value = null;
 			return $ret;
 		};
-		
-		$setCurrent = function() use(&$clear, &$key, &$value, &$result, &$count)
+
+		$setCurrent = function() use(&$clear, &$map, &$count, &$key, &$value)
 		{
 			if(!($key = Security::checkString($key, true)))
 			{
@@ -176,33 +176,42 @@ class Parameter extends Map
 				$false = false;
 			}
 			
-			if(!($value = Security::checkString($value, true)))
-			{
-				$value = '';
-			}
-			else
-			{
-				$value = self::decode(Text::trim($value));
-			}
-			
-			$exceeding = (++$count >= KEKSE_LIMIT_PARAM);
-			
-			if($exceeding)
-			{
-				--$count;
-				return $clear(false);
-			}
-			
-			if($value === null || $value === '')
+			if($value === null)
 			{
 				$value = !$false;
 			}
+			else if($value === '')
+			{
+				if(isset($map[$key]))
+				{
+					unset($map[$key]);
+					--$count;
+				}
+				
+				return $clear(true);
+			}
+			else if(!($value = Security::checkString($value, true)))
+			{
+				return $clear(true);
+			}
+			else if(!($value = self::decode(Text::trim($value))))
+			{
+				return $clear(true);
+			}
+			else if($exceeding = ($count >= KEKSE_LIMIT_PARAM))
+			{
+				return $clear(false);
+			}
+			else if(!isset($map[$key]))
+			{
+				++$count;
+			}
 
-			$result[$key] = $value;
+			$map[$key] = $value;
 			return $clear(true);
 		};
 
-		$result = [];
+		$map = [];
 		$count = 0;
 		$len = strlen($string);
 		$key = '';
@@ -244,6 +253,15 @@ class Parameter extends Map
 			$setCurrent();
 		}
 		
+		$result = [];
+		$index = 0;
+		
+		foreach($map as $key => $value)
+		{
+			$result[$index++] = $key;
+			$result[$key] = $value;
+		}
+
 		return $result;
 	}
 }

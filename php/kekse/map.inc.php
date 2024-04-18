@@ -332,9 +332,17 @@ class Map extends Quant
 		if(!is_array($values)) return null;
 		if(!is_array($scheme)) $scheme = null;
 		$result = [];
+		$numeric;
 
 		foreach($values as $key => $value)
 		{
+			$orig = $key;
+			
+			if($numeric = is_int($key))
+			{
+				$key = $values[$key];
+			}
+			
 			if(is_string($key = Security::checkString($key, true)))
 			{
 				if(!($key = self::decode(Text::trim($key))))
@@ -358,6 +366,12 @@ class Map extends Quant
 					
 					continue;
 				}
+			}
+			
+			if($numeric)
+			{
+				$result[$orig] = $value;
+				continue;
 			}
 
 			if(is_string($value))

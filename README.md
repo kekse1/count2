@@ -49,10 +49,9 @@ See also the [Modules section](#modules) below.
 Currently there are, beneath the main `kekse` extensions (and the `test` part), the following modules/apps (all
 under development, and even more planned yet):
 
-* [**`blog2`**](docs/blog2.md)
 * [**`count2`**](docs/count2.md)
 * [**`kekse`**](docs/kekse.md)
-* [**`news2`**](docs/news2.md)
+* [**`post2`**](docs/post2.md)
 * [`index`](docs/index.md)
 * [`ip`](docs/ip.md)
 

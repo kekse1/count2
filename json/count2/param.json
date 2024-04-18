@@ -40,6 +40,12 @@
 		"min": -257,
 		"max": 256
 	},
+	"alphabet": {
+		"type": "string",
+		"default": "",
+		"min": 0,
+		"max": 256
+	},
 	"font": {
 		"type": "string",
 		"default": "Candara",

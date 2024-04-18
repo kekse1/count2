@@ -4,7 +4,7 @@
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
 //
-define('KEKSE_LIMIT_STRING', 255);
+define('KEKSE_LIMIT_STRING', 256);
 define('KEKSE_LIMIT_JSON', 8);
 define('KEKSE_LIMIT_PARAM', 32);
 

@@ -4,7 +4,7 @@
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
 //
-namespace kekse\news2;
+namespace kekse\post2;
 
 //
 ?>

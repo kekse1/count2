@@ -1,17 +1,23 @@
 
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
+	# '?alphabet' => darf NICHT binary-filtered sein, so gesehen.. oder?!?
+
+		# theor. geht ja jedes (binary) byte in einem $_GET[], oder? wg. url-escape?
+
 	# neben '?radix' noch '?alphabet', bitte!!!!!!
 
-		# und zwar wird das zuletzt definierte bevorzugt...
+		# gucke, dass minimum 2 zeichen @ Text::unique() und 'alphabet()' vor allem (statt unique());
 
-			# guck dir dazu noch 'Parameter' und evtl. 'Map' an...
+			# aber nur, falls der string nicht leer ist - dann KEIN $alphabet!
 
-				# .. dass bestenfalls das assoziative [values]-array auch [i]-ndex erhalten, je nach erscheinung im QUERY_STRING!! :-D
+		# priorisierung: dazu gibt's jetzt die numerischen array-indices bei den parametern bzw. @ Map!
+
+			# somit die reihenfolge.. aber erstes oder letztes(!?!) vorkommnis zaehlt!???
 
 	# nach '!'-prefix des parameter-parsers bitte noch eine codierung, um keys "im nachhinein" gaenzlich raus zu loeschen..
 
-		@ bool: test `encodeURIComponent('('))`.. wg. '(no)' etc.
+!!!		# bestenfalls JA: einfach '?key=' ohne wert, aber MIT '=' zeichen.. :-D
 
 	# bitte fehlermeldungen bei falschen parametern @ map.js "besser", also mit angabe, welcher typ erwartet wird!
 
@@ -83,7 +89,7 @@
 
 	# bitte denke an kekse/ w/ library-styles.. paar nette funktionen, aber nicht zu sehr aufblaehen.. thx. ^_^
 
-	# ueberlege weitere features/module/apps; eine community wg. bulletin board, etc... blog2, news2, ...
+	# ueberlege weitere features/module/apps; eine community wg. bulletin board, etc... neben neuem 'post2'!
 
 	# VOR ALLEM!!!! "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 
