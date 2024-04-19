@@ -11,6 +11,8 @@
 
 		# das allg. design (w/ import(), etc.) bisschen besser machen (und automatisch alles, falls moeglich)
 
+		@ parameter:parse(): *direkt* WAEHREND einlesen schon 'KEKSE_LIMIT_STRING' gegentesten!!1
+
 	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
 
 	# bitte alle *.inc.php => *.php...!?
