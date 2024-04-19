@@ -34,7 +34,7 @@ markdown document, since my first [`count.php`](https://github.com/kekse1/count.
 * [**TODO**.txt](docs/TODO.txt)
 
 ### Writing the `.md` documentation
-* [**Markdown** (hints, etc.)](docs/markdown.md)
+* [**Markdown** 'cheat sheet'](docs/markdown.md)
 
 ### Base structure
 I planned this whole repository/fs for more than just the **`count2`** project. Considering this and more, like the

@@ -5,8 +5,9 @@
 
 namespace kekse;
 
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
 require_once(__DIR__ . '/filesystem.inc.php');
+require_once(__DIR__ . '/map.inc.php');
 
 class Environment extends Quant
 {
@@ -64,6 +65,34 @@ class Environment extends Quant
 		$real['base'] = basename($real['name'], '.php');
 		
 		return [ $file, $real ];
+	}
+
+	public static function get($key = null, $cast = KEKSE_CAST)
+	{
+		$result = getenv($key);
+
+		if($result === false)
+		{
+			$result = null;
+		}
+		else if($cast)
+		{
+			if(is_array($result)) foreach($result as $key => $value)
+			{
+				$result[$key] = Map::castValue($value);
+			}
+			else
+			{
+				$result = Map::castValue($result);
+			}
+		}
+
+		else if($cast && is_string($result))
+		{
+			$result = Map::castValue($result);
+		}
+
+		return $result;
 	}
 }
 

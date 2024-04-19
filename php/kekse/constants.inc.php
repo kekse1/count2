@@ -38,4 +38,8 @@ define('KEKSE_PATH_EXT', 1);
 // path.inc.php && filesystem.inc.php
 define('KEKSE_PATH_REAL', false);
 
+// parameter.inc.php
+// environment.inc.php
+define('KEKSE_CAST', true);
+
 ?>

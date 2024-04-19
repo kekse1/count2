@@ -124,7 +124,7 @@ class Parameter extends Map
 		return substr($result, 0, -1);
 	}
 
-	public static function parse($string)
+	public static function parse($string, $cast = KEKSE_CAST)
 	{
 		if(is_array($string))
 		{
@@ -147,7 +147,7 @@ class Parameter extends Map
 			return $ret;
 		};
 
-		$setCurrent = function() use(&$clear, &$result, &$count, &$key, &$value)
+		$setCurrent = function() use(&$clear, &$result, &$count, &$key, &$value, &$cast)
 		{
 			if(!($key = Security::checkString($key, true)))
 			{
@@ -185,15 +185,9 @@ class Parameter extends Map
 				$value = Security::checkString($value, false);
 				$value = self::decode($value);
 				
-				if($value === '')
+				if($cast)
 				{
-					if(isset($result[$key]))
-					{
-						unset($result[$key]);
-						--$count;
-					}
-					
-					return $clear(true);
+					$value = parent::castValue($value);
 				}
 			}
 			

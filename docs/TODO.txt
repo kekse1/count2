@@ -1,11 +1,15 @@
 
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
-	# ?parameter duerfen NICHT binary-filtered sein.. @ Security::checkString(); ...!
+	# ?-parameter:
 
-		# u.a. wg. neuem '?alphabet'...
+		# duerfen NICHT binary-filtered sein.. @ Security::checkString(); ...!
 
-			# das uebrigens checken, ob empty or not.. falls ned, muss length MIN. 2 sein!!
+			# u.a. wg. neuem '?alphabet'...
+
+				# das uebrigens checken, ob empty or not.. falls ned, muss length MIN. 2 sein!!
+
+		# das allg. design (w/ import(), etc.) bisschen besser machen (und automatisch alles, falls moeglich)
 
 	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
 
@@ -18,6 +22,8 @@
 	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
 
 		# u.v.a.. meiszte fs-zugriffe nur mit `FileSystem`-INSTANZ [wg. chroot ;-] ...
+
+			# force root path (nicht nur check if)
 
 		# ueberlege auch wg. 'Security::secure()', u.a. mit 'Path::secure()'... wg. filesystem-chroot sowieso....
 
@@ -72,4 +78,6 @@
 	# VOR ALLEM!!!! "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 
 		# so von wegen 'page.js' und automatische <a>-erweiterung um die zahlen.. :-D
+
+	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 

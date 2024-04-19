@@ -7,8 +7,9 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/main.inc.php');
+//require_once(__DIR__ . '/main.inc.php');
 require_once(__DIR__ . '/ansi.inc.php');
+require_once(__DIR__ . '/environment.inc.php');
 
 //
 class Terminal extends Quant
@@ -26,6 +27,31 @@ class Terminal extends Quant
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+
+	public static function width()
+	{
+		$result = Environment::get('COLUMNS', true);
+
+		if($result === null)
+		{
+			return 0;
+			return (int)@exec('tput cols 2>/dev/null');
+		}
+
+		return $result;
+	}
+
+	public static function height()
+	{
+		$result = Environment::get('LINES', true);
+
+		if($result === null)
+		{
+			return (int)@exec('tput lines 2>/dev/null');
+		}
+
+		return $result;
 	}
 }
 

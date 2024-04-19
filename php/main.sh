@@ -6,6 +6,10 @@
 #
 # Important: this file *needs* to reside directly in the
 # 'php/' directory!
+#
+
+#
+export COLUMNS LINES
 
 #
 php="`which php 2>/dev/null`"
