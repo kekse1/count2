@@ -118,7 +118,7 @@ class Path
 		return self::normalize(implode(DIRECTORY_SEPARATOR, $args));
 	}
 	
-	public static function normalize($path)
+	public static function normalize($path, $preserve = true)
 	{
 		if(!is_string($path))
 		{
@@ -179,7 +179,7 @@ class Path
 		{
 			array_unshift($result, '');
 		}
-		else while(--$minus >= 0)
+		else if($preserve) while(--$minus >= 0)
 		{
 			array_unshift($result, '..');
 		}

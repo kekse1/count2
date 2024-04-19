@@ -25,7 +25,7 @@
 
 		# u.v.a.. meiszte fs-zugriffe nur mit `FileSystem`-INSTANZ [wg. chroot ;-] ...
 
-			# force root path (nicht nur check if)
+			# force root path (nicht nur check if); also use 'Path::normalize(..., $preserve = false)';
 
 		# ueberlege auch wg. 'Security::secure()', u.a. mit 'Path::secure()'... wg. filesystem-chroot sowieso....
 
