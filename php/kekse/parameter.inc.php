@@ -24,7 +24,7 @@ class Parameter extends Map
 	
 	public function import($string = null, $check = true)
 	{
-		$result = self::parseQuery($string);
+		$result = self::parseQuery($string, false);
 
 		if(!$result)
 		{
@@ -49,17 +49,17 @@ class Parameter extends Map
 		return $this->importValues($result, false);
 	}
 	
-	public static function parseQuery($string = null)
+	public static function parseQuery($string = null, $cast = KEKSE_CAST)
 	{
 		$result;
 		
 		if(is_string($string) && !empty($string) && $string !== '?')
 		{
-			$result = self::parse($string);
+			$result = self::parse($string, $cast);
 		}
 		else if(self::hasQuery())
 		{
-			$result = self::parse($_SERVER['QUERY_STRING']);
+			$result = self::parse($_SERVER['QUERY_STRING'], $cast);
 		}
 		else
 		{
