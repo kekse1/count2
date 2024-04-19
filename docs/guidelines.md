@@ -23,8 +23,8 @@ All need their own `constants.inc.php` files (in all sub-project directories,
 including the `kekse` base).
 
 ## `Throwable`
-They all get logged (but not Warnings), and are shown to the client, too.
-Of course, in my own form (not the whole output). //TODO/
+They all get logged, and are shown to the client, too.
+Of course, in my own form (not the whole output).
 
 ## Output and Headers
 Please use the functions in the `Quant` instances, as they're 'managed' some way.
