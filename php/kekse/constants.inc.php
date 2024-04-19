@@ -6,7 +6,7 @@
 //
 define('KEKSE_LIMIT_STRING', 256);
 define('KEKSE_LIMIT_JSON', 8);
-define('KEKSE_LIMIT_PARAM', 32);
+define('KEKSE_LIMIT_PARAM', 64);
 
 //filesystem.inc.php
 define('KEKSE_KEEP', true);

@@ -88,7 +88,7 @@ class Parameter extends Map
 	{
 		if(is_string($array))
 		{
-			$array = self::parse($array);
+			$array = self::parse($array, false);
 		}
 		else if(!is_array($array))
 		{
@@ -140,10 +140,12 @@ class Parameter extends Map
 			$string = substr($string, 1);
 		}
 		
-		$clear = function($ret) use(&$key, &$value)
+		$clear = function($ret) use(&$key, &$value, &$keyLen, &$valueLen)
 		{
 			$key = '';
+			$keyLen = 0;
 			$value = null;
+			$valueLen = -1;
 			return $ret;
 		};
 
@@ -195,6 +197,7 @@ class Parameter extends Map
 			{
 				if($exceeding = (++$count >= KEKSE_LIMIT_PARAM))
 				{
+					throw new \Error('Too many parameters');
 					return $clear(false);
 				}
 			}
@@ -209,6 +212,8 @@ class Parameter extends Map
 		$key = '';
 		$value = null;
 		$byte;
+		$keyLen = 0;
+		$valueLen = 0;
 
 		for($i = 0; $i < $len; ++$i)
 		{
@@ -218,25 +223,38 @@ class Parameter extends Map
 			}
 			else if($string[$i] === '&')
 			{
-				if(strlen($key) > 0 && !$setCurrent())
+				if($keyLen > 0 && !$setCurrent())
 				{
 					return null;
 				}
 			}
 			else if($string[$i] === '=')
 			{
-				if(strlen($key) > 0)
+				if($keyLen > 0)
 				{
 					$value = '';
+					$valueLen = 0;
 				}
 			}
 			else if($value === null)
 			{
 				$key .= $string[$i];
+
+				if(++$keyLen > KEKSE_LIMIT_STRING)
+				{
+					throw new \Error('Key string was too long');
+					return null;
+				}
 			}
 			else
 			{
 				$value .= $string[$i];
+
+				if(++$valueLen > KEKSE_LIMIT_STRING)
+				{
+					throw new \Error('Value length was too long');
+					return null;
+				}
 			}
 		}
 

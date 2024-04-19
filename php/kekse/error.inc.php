@@ -68,7 +68,7 @@ class ERROR extends Quant
 
 	public static function errorHandler($no, ... $args)
 	{
-		$error = $GLOBALS['ERROR'];
+		$error = (isset($GLOBALS['ERROR']) ? $GLOBALS['ERROR'] : null);
 
 		if($error && $error->kekseDebug())
 		{
@@ -89,7 +89,7 @@ class ERROR extends Quant
 
 	public static function exceptionHandler($throw, ... $args)
 	{
-		$error = $GLOBALS['ERROR'];
+		$error = (isset($GLOBALS['ERROR']) ? $GLOBALS['ERROR'] : null);
 
 		if($error && $error->kekseDebug())
 		{

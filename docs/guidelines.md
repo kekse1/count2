@@ -26,7 +26,7 @@ including the `kekse` base).
 They all get logged, and are shown to the client, too.
 Of course, in my own form (not the whole output).
 
-## Output and Headers
+## Input, Output and Headers
 Please use the functions in the `Quant` instances, as they're 'managed' some way.
 Please do **not** use regular `echo`, etc..
 
@@ -48,6 +48,9 @@ secure up fs paths. And more is yet to come.
 
 Additionally there are some ['Text' extensions](kekse/text.md) at `kekse/text.inc.php` (which
 should be a `class String`, but this isn't allowed by PHP).
+
+## File system
+If not already done by the `FileSystem` class, please `flock()` all files you open!
 
 ## TODO
 //TODO/

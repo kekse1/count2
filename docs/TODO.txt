@@ -11,10 +11,6 @@
 
 		# das allg. design (w/ import(), etc.) bisschen besser machen (und automatisch alles, falls moeglich)
 
-		@ parameter:parse(): *direkt* WAEHREND einlesen schon 'KEKSE_LIMIT_STRING' gegentesten!!1
-
-	# '?replace'... wenn drawing, statt zaehl-wert zeichnen ein ersatz-bild ausgeben...
-
 	# bitte alle *.inc.php => *.php...!?
 
 	# *moeglichst alle* so freistehenden funktionen in extra eigene klassen!!
@@ -30,8 +26,6 @@
 		# ueberlege auch wg. 'Security::secure()', u.a. mit 'Path::secure()'... wg. filesystem-chroot sowieso....
 
 	# Connection: bitte einen modus, wo alles nicht direkt gesendet wird.. fuer spaeteres 'flush{,Headers,Body}()`!!!! :-D
-
-		# und bitte *alle* (echo, print{,f}, .. etc.) selbst unter \kekse neu, damit diese die Quant-funktionen oder direkt `fwrite()` evtl. nutzen..
 
 	@ 'kekse/constants.inc.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
@@ -55,8 +49,6 @@
 
 		@ scheme: ist 'number' als type erlaubt?!? SOLLTE EIG.!!! ;-D
 
-	# `FileSystem`: https://www.google.com/search?q=php+flock
- 
  	# alle (string) zu (int) sowie (double) casts EVTL.(!!) eher durch 'parse()', etc.. @ numeric.inc.php..?!?
 
 		# kann ein cast-operator ueberladen werden?
