@@ -11,6 +11,14 @@
 
 		# das allg. design (w/ import(), etc.) bisschen besser machen (und automatisch alles, falls moeglich)
 
+		# 'php://input': returns all the raw data of the http request (after the header)
+
+				< https://stackoverflow.com/questions/8893574/php-php-input-vs-post >
+
+			# so... ich wuerde mal gucken, ob ich ads in 'Parameter' nutzen kann, ..
+
+				# .. also evtl. genauso wie (GET-)query-string w/ .parse() dieses 1:1?!? :-D
+
 	# bitte alle *.inc.php => *.php...!?
 
 	# *moeglichst alle* so freistehenden funktionen in extra eigene klassen!!
@@ -27,19 +35,11 @@
 
 	# Connection: bitte einen modus, wo alles nicht direkt gesendet wird.. fuer spaeteres 'flush{,Headers,Body}()`!!!! :-D
 
+		# evtl. sogar ein 'lock', dass nicht geschrieben wird, bevor alles zu diesem lock-kontext fertig ist...
+
 	@ 'kekse/constants.inc.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
 	# evtl. sogar quant als ableitung einer noch hoeheren 'IO'-klasse oder so!!!
-
-	# 'php://input': returns all the raw data of the http request (after the header)
-
-			< https://stackoverflow.com/questions/8893574/php-php-input-vs-post >
-
-		# so... ich wuerde mal gucken, ob ich ads in 'Parameter' nutzen kann, ..
-
-			# .. also evtl. genauso wie (GET-)query-string w/ .parse() dieses 1:1?!? :-D
-
-		# PS: ist evtl. auch durch POST immer 'STDIN' gegegen!?!?!?
 
 	# map: set() mit $scheme!?
 
@@ -57,21 +57,17 @@
 
 			# gucke nur bei strings, ob der radix 10 ist!!
 
-	@ 'count2/counting.inc.php': STORE BINARY VALUES!
-
-		# brauchen ja kein '-', gar '+' oder '.'... somit optimale storage @ radix = 256! :-D
-
-	# ganz allgemein bissarl mehr noch zum wdh. lesen: < https://serverfault.com/questions/345833/what-are-perfect-unix-permissions-for-usual-web-project-directories >
+	@ 'count2/counting.inc.php': STORE BINARY VALUES [brauchen ja kein '-'/'+'/'.'... somit optimaler bytecode-radix ;-]
 
 	@ FINGERPRINT: alle BOOKMARKS dazu sowie 'canvas.pdf' etc. zu rate heran ziehen noch.. ^_^
 
-	# read my .php bookmarks.. and more! e.g. < https://stackoverflow.com/questions/11710099/what-is-the-difference-between-selfbar-and-staticbar-in-php >
-
 	# bitte denke an kekse/ w/ library-styles.. paar nette funktionen, aber nicht zu sehr aufblaehen.. thx. ^_^
+
+		# gucke, was alles noetig ist fuer alle module.. moeglichst nur wirklich verwendetes..
 
 	# VOR ALLEM!!!! "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 
-		# so von wegen 'page.js' und automatische <a>-erweiterung um die zahlen.. :-D
+		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
 
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
