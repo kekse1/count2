@@ -1,6 +1,8 @@
 
 	@ *.md: bitte links zu den php-klassen/-dateien anpassen zu den 'docs/*/*.md', und dort jew. am anfang link zu den *.php files itself!
 
+		# die file-links direkt unter dem (neuen) 'Back to Index'-link! falls der noch fehlt somewhere, bitte zusaetzlich nachruesten! thx.
+
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
 	# 'php://input': returns all the raw data of the http request (after the header)
