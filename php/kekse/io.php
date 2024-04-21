@@ -199,6 +199,19 @@ throw new \Exception('TODO');
 		return $this->session->connection;
 	}
 
+	public function buffered()
+	{
+		if(!$this->hasConnection())
+		{
+			//
+			//TODO/buffer outside a connection!?
+			//
+			return false;
+		}
+
+		return $this->session->connection->buffered();
+	}
+
 	public function clear()
 	{
 throw new \Exception('TODO');

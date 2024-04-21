@@ -281,8 +281,10 @@ class ERROR extends Quant
 	public function put2file($data)
 	{
 		if(!$this->targets) return false;
-		if(isset($this->targets[0])) self::appendToFile($this->targets[0], $this->make(true, $data) . PHP_EOL);
-		if(isset($this->targets[1])) self::appendToFile($this->targets[1], $this->make(false, $data) . PHP_EOL);
+		if(isset($this->targets[0]))
+			self::appendToFile($this->targets[0], $this->make(true, $data) . PHP_EOL);
+		if(isset($this->targets[1]))
+		       	self::appendToFile($this->targets[1], $this->make(false, $data) . PHP_EOL);
 		return true;
 	}
 

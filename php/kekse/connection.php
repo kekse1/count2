@@ -57,6 +57,11 @@ class Connection extends Quant
 		parent::__destruct();
 	}
 
+	public function buffered()
+	{
+		return ($this->flushed !== null);
+	}
+
 	public function shutdownHandler()
 	{
 		return $this->flush(true);
@@ -64,7 +69,7 @@ class Connection extends Quant
 
 	public function flush($reset = KEKSE_RESET, $throw = KEKSE_THROW)
 	{
-		if($this->flushed === null)
+		if(!$this->buffered())
 		{
 			if($throw)
 			{
@@ -146,7 +151,7 @@ class Connection extends Quant
 	
 	public function clearHeaders()
 	{
-		if($this->flushed === null || $this->dataSent)
+		if(!$this->buffered() || $this->dataSent)
 		{
 			return null;
 		}
@@ -164,7 +169,7 @@ class Connection extends Quant
 	
 	public function clearBuffer()
 	{
-		if($this->flushed === null)
+		if(!$this->buffered())
 		{
 			return null;
 		}
@@ -225,7 +230,7 @@ class Connection extends Quant
 			$this->setType($type);
 		}
 
-		if($this->flushed !== null)
+		if($this->buffered())
 		{
 			$this->buffer .= $data;
 			$this->bufferLength += strlen($data);
@@ -377,7 +382,7 @@ class Connection extends Quant
 		$item[0] = self::fixHeaderKey($item[0]);
 		$this->headers[$item[0]] = $item[1];
 
-		if($this->flushed !== null)
+		if($this->buffered())
 		{
 			return false;
 		}
@@ -411,7 +416,7 @@ class Connection extends Quant
 	
 	public function unset($key)
 	{
-		if($this->flushed === null)
+		if(!$this->buffered())
 		{
 			//
 			//TODO/$throw argument?!??
