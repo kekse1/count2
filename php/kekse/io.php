@@ -13,6 +13,21 @@ require_once(__DIR__ . '/debug.php');
 //
 class IO
 {
+	private $input = 0;//TODO/!
+	private $output = 0;
+	private $error = 0;
+
+	public function getBytes()
+	{
+		return [
+			'in' => $this->input,
+			'out' => ($this->output + $this->error),
+			'input' => $this->input,
+			'output' => $this->output,
+			'error' => $this->error
+		];
+	}
+
 	public function kekseDebug()
 	{
 		$error = null;
@@ -119,69 +134,87 @@ throw new \Exception('TODO');
 		return fgets(IN);
 	}
 
-	private function tryType($type)
+	public function text($data, $length = null)
 	{
-		if(!is_string($type) || $type === '')
-		{
-			return false;
-		}
-		else if(! (isset($this->session) && isset($this->session->connection)))
-		{
-			return false;
-		}
-
-		return $this->session->connection->setType($type);
+		return $this->write($data, $length, KEKSE_CONTENT_TEXT);
 	}
 
-	public function text($data, $length = null, ... $args)
+	public function html($data, $length = null)
 	{
-		return $this->write($data, $length, KEKSE_CONTENT_TEXT, ... $args);
+		return $this->write($data, $length, KEKSE_CONTENT_HTML);
 	}
 
-	public function html($data, $length = null, ... $args)
+	public function hasConnection()
 	{
-		return $this->write($data, $length, KEKSE_CONTENT_HTML, ... $args);
+		return (isset($this->session) && isset($this->session->connection));
 	}
 
 	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE)
 	{
-		$this->tryType($type);
-		return self::swrite(1, $data, $length);
+		if($this->hasConnection())
+		{
+			return $this->session->connection->write($data, $length, $type);
+		}
+
+		return self::swrite(1, $data, $length, $this);
 	}
 
 	public function writeError($data, $length = null, $type = KEKSE_CONTENT_TYPE)
 	{
-		$this->tryType($type);
-		return self::swrite(2, $data, $length);
+		if($this->hasConnection())
+		{
+			return $this->session->connection->write($data, $length, $type);
+		}
+
+		return self::swrite(2, $data, $length, $this);
 	}
 	
-	public static function swrite($stream, $data, $length = null, $throw = true)
+	public static function swrite($stream, $data, $length = null, $quant = null)
 	{
+		if(!is_int($length) || $length < 0)
+		{
+			$length = strlen($data);
+		}
+
+		$result = null;
+
 		switch($stream)
 		{
 			case 0:
 			case 'stdin':
 			case 'input':
 			case 'in':
-				return false;
+				$stream = 'input';
+				$result = false;
+				break;
 			case 1:
 			case 'stdout':
 			case 'output':
 			case 'out':
-				return fwrite(OUTPUT, $data, $length);
+				$stream = 'output';
+				$result = fwrite(OUTPUT, $data, $length);
+				if($result !== false && $quant !== null)
+				{
+					$quant->output += $result;
+				}
+				break;
 			case 2:
 			case 'stderr':
 			case 'error':
 			case 'err':
-				return fwrite(ERROR, $data, $length);
+				$stream = 'error';
+				$result = fwrite(ERROR, $data, $length);
+				if($result !== false && $quant !== null)
+				{
+					$quant->error += $result;
+				}
+				break;
+			default:
+				$result = false;
+				break;
 		}
 
-		if($throw)
-		{
-			throw new \Exception('Invalid $stream chosen');
-		}
-
-		return null;
+		return $result;
 	}
 
 	public static function defineStreams($binary = KEKSE_STDIO_BINARY)

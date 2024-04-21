@@ -23,9 +23,9 @@
 	
 	@ 'Connection'/'terminal'/...:
 
-		# Connection::flush() etc. is ready (can be enabled via 2nd constructor argument, or 'KEKSE_CONNECTION_BUFFER' @ constants.php);
-
-			# but completely *untested*!
+		# Connection::flush() etc. is ready, but merely *untested*..
+	
+	 		# and don't know if true/false as default, see 'KEKSE_CONNECTION_BUFFER' @ constants.inc.php
 
 		# eine art 'context'-buffer evtl..? auch fuer meine js-lib, etc.. evtl.?
 

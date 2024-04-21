@@ -38,6 +38,8 @@ class Connection extends Quant
 			$this->flushed = 0;
 			$this->buffer = '';
 			$this->bufferLength = 0;
+
+			register_shutdown_function(\Closure::fromCallable([ $this, 'shutdownHandler' ]));
 		}
 		else
 		{
@@ -52,6 +54,11 @@ class Connection extends Quant
 	public function __destruct()
 	{
 		parent::__destruct();
+	}
+
+	public function shutdownHandler()
+	{
+		return $this->flush(true);
 	}
 
 	public function flush($reset = KEKSE_RESET)
@@ -78,7 +85,7 @@ class Connection extends Quant
 				$result .= self::$EOL;
 			}
 		}
-		
+
 		if($this->bufferLength > 0)
 		{
 			$this->realSend($this->buffer, $this->bufferLength);
@@ -181,7 +188,7 @@ class Connection extends Quant
 	
 	protected function realSend($data, $length = null)
 	{
-		$result = parent::writeError($data, $length);
+		$result = $this->swrite(1, $data, $length);
 		
 		if($result !== false)
 		{
