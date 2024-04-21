@@ -140,8 +140,8 @@ class Connection extends Quant
 
 	public function clear()
 	{
-		$this->clearHeaders();
-		$this->clearBuffer();
+		return [	'headers' => $this->clearHeaders(),
+				'buffer' => $this->clearBuffer() ];
 	}
 	
 	public function clearHeaders()
@@ -168,15 +168,18 @@ class Connection extends Quant
 		{
 			return null;
 		}
-		else if($this->bufferLength === 0)
+
+		$result = $this->bufferLength;
+
+		if($result === 0)
 		{
-			return false;
+			return 0;
 		}
-		
+
 		$this->buffer = '';
 		$this->bufferLength = 0;
 		
-		return true;
+		return $result;
 	}
 	
 	public function writeError($data, $length = null, $type = null, $force = false)
@@ -250,13 +253,6 @@ class Connection extends Quant
 		return $result;
 	}
 
-	private function checkState($throw = KEKSE_THROW)
-	{
-		if(!$this->dataSent) return true;
-		else if($throw) throw new \Exception('Can\'t send any header after body data began.');
-		return false;
-	}
-	
 	public function setType($type, $force = false, $throw = KEKSE_THROW)
 	{
 		if($this->has('type')) return false;
@@ -280,8 +276,13 @@ class Connection extends Quant
 
 	public function set($item, $value = null, $force = false, $throw = KEKSE_THROW)
 	{
-		if(!$this->checkState($throw))
+		if($this->dataSent)
 		{
+			if($throw)
+			{
+				throw new \Error('Can\'t set new header variables, some data has already been sent');
+			}
+
 			return null;
 		}
 		else if(is_array($item))
