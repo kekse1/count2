@@ -1,4 +1,0 @@
-count2/counting.inc.php:29:				else if($this->session->parameter->getString('carrier'))
-count2/counting.inc.php:42:				else if(!$this->session->parameter->getString('carrier'))
-count2/counting.inc.php:52:				else if(!$this->session->parameter->getString('carrier'))
-count2/drawing.inc.php:157:		$type = $this->session->parameter->getString('type');
