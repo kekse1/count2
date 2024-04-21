@@ -3,21 +3,15 @@
 
 	# ?-parameter:
 
-		# duerfen NICHT binary-filtered sein.. @ Security::checkString(); ...!
-
-			# u.a. wg. neuem '?alphabet'...
-
-				# das uebrigens checken, ob empty or not.. falls ned, muss length MIN. 2 sein!!
-
 		# das allg. design (w/ import(), etc.) bisschen besser machen (und automatisch alles, falls moeglich)
+
+			# beachte v.a., dass $_GET @ tryCast(), und dann scheme-check!! *NICHT* direkt zum scheme passend casten!!
 
 		# 'php://input': returns all the raw data of the http request (after the header)
 
 				< https://stackoverflow.com/questions/8893574/php-php-input-vs-post >
 
-			# so... ich wuerde mal gucken, ob ich ads in 'Parameter' nutzen kann, ..
-
-				# .. also evtl. genauso wie (GET-)query-string w/ .parse() dieses 1:1?!? :-D
+			# guck mal, ob das speziell parsen @ 'Parameter', also $_POST dazu statt $_GET?!??
 
 	# bitte alle *.inc.php => *.php...!?
 
