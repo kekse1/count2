@@ -15,6 +15,8 @@
 
 	# bitte alle *.inc.php => *.php...!?
 
+		# see 'sh/rename.sh' (set _test=0 and run from/inside the dirs w/ the .inc.php files);
+
 	# *moeglichst alle* freistehenden funktionen in extra klassen!!
 
 		# und dazu den autoloader..?! aber beachte die syntax.. evtl. alles w/ namespace dann!?
