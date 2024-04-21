@@ -113,7 +113,7 @@ class Connection extends Quant
 		return strlen($result);
 	}
 	
-	public static function responseHeaders()
+	public static function requestHeaders()
 	{
 		$result = [];
 		$orig;
@@ -138,6 +138,47 @@ class Connection extends Quant
 		return $result;
 	}
 
+	public function clear()
+	{
+		$this->clearHeaders();
+		$this->clearBuffer();
+	}
+	
+	public function clearHeaders()
+	{
+		if($this->flushed === null || $this->dataSent)
+		{
+			return null;
+		}
+		
+		$result = count($this->headers);
+		
+		if($result === 0)
+		{
+			return 0;
+		}
+		
+		$this->headers = [];
+		return $result;
+	}
+	
+	public function clearBuffer()
+	{
+		if($this->flushed === null)
+		{
+			return null;
+		}
+		else if($this->bufferLength === 0)
+		{
+			return false;
+		}
+		
+		$this->buffer = '';
+		$this->bufferLength = 0;
+		
+		return true;
+	}
+	
 	public function writeError($data, $length = null, $type = null, $force = false)
 	{
 		return $this->send($data, $length, $type, $force);
@@ -365,6 +406,33 @@ class Connection extends Quant
 		}
 
 		return isset($this->headers[$key]);
+	}
+	
+	public function unset($key)
+	{
+		if($this->flushed === null)
+		{
+			//
+			//TODO/$throw argument?!??
+			//
+			return false;
+		}
+		else if(!($key = Security::checkString($key, true)))
+		{
+			return false;
+		}
+		else if(!($key = Text::trim($key)))
+		{
+			return false;
+		}
+		else if(!isset($this->headers[$key]))
+		{
+			return null;
+		}
+		
+		$result = $this->headers[$key];
+		unset($this->headers[$key]);
+		return $result;
 	}
 
 	public function get($key)

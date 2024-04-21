@@ -43,6 +43,8 @@
 
 			# evtl. extra 'Context'-klasse? @ stdio w/ [INPUT,OUTPUT,ERROR];
 
+		# neben/statt(?) 'Context' evtl. den BUFFER auch @ CLI mode, nicht nur @ COnnection!??!
+
 	@ 'kekse/constants.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
 		# evtl. dynamischer kosntruiert? dass quasi 'addContentType()' o.ae., etc..!?!
@@ -75,7 +77,7 @@
 
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
-		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
+!!!!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
 
 		# dazu noch 'Text::bold()' und alle weiteren.. je nach modus entweder ansi escape seq. oder html.. falls nicht type=='text'!
 
@@ -88,6 +90,10 @@
 			# bevorzugt, btw: gruener ton auf hell-graeulichem bg.. o.ae. ^_^
 
 				# e.g. [ [ 0, 240, 40 ], [ 90, 110, 130 ] ]; .. ;-)
+
+		# siehe auch noch 'format.php' sowie 'html.php'(!!!!);
+
+			@ 'Text::text()' o.ae., allg. also!???!
 
 	# VOR ALLEM @ "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 

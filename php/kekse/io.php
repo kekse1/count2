@@ -144,11 +144,6 @@ throw new \Exception('TODO');
 		return $this->write($data, $length, KEKSE_CONTENT_HTML, $force);
 	}
 
-	public function hasConnection()
-	{
-		return (isset($this->session) && isset($this->session->connection));
-	}
-
 	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE, $force = false)
 	{
 		if($this->hasConnection())
@@ -187,6 +182,36 @@ throw new \Exception('TODO');
 		}
 		
 		return $this->session->connection->setLength($length, $force);
+	}
+
+	public function hasConnection()
+	{
+		return (isset($this->session) && isset($this->session->connection));
+	}
+
+	public function getConnection()
+	{
+		if(!$this->hasConnection())
+		{
+			return null;
+		}
+		
+		return $this->session->connection;
+	}
+
+	public function clear()
+	{
+throw new \Exception('TODO');
+	}
+	
+	public function clearHeaders()
+	{
+throw new \Exception('TODO');
+	}
+	
+	public function clearBuffer()
+	{
+throw new \Exception('TODO');
 	}
 	
 	public static function swrite($stream, $data, $length = null, $quant = null)
