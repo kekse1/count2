@@ -4,11 +4,11 @@
 
 # Definitions
 Hard coded stuff is bad.. so this is it. Intended for _automatic_ checking of all
-[**`Map`**](../php/kekse/map.inc.php) related stuff (e.g. [`Configuration`](../php/kekse/configuration.inc.php),
-[`Parameter`](../php/kekse/parameter.inc.php), .. maybe more).
+[**`Map`**](../php/kekse/map.php) related stuff (e.g. [`Configuration`](../php/kekse/configuration.php),
+[`Parameter`](../php/kekse/parameter.php), .. maybe more).
 
 ## `kekse`
-There's the 'meta' scheme defining any [`Map`](../php/kekse/map.inc.php) **scheme** itself:
+There's the 'meta' scheme defining any [`Map`](../php/kekse/map.php) **scheme** itself:
 
 * [`map.json`](../json/kekse/map.json)
 

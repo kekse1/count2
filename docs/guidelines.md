@@ -19,7 +19,7 @@ Most counter related things should be defined below `kekse\count2`.
 Every other module should also be below the `kekse\*` namespace.
 
 ## Constants
-All need their own `constants.inc.php` files (in all sub-project directories,
+All need their own `constants.php` files (in all sub-project directories,
 including the `kekse` base).
 
 ## `Throwable`
@@ -43,10 +43,10 @@ BTW: I designed this `Connection` **not** to be used statically or so, since my
 objections is: some day we could use **many** connections...
 
 ## Security (and Strings)
-There are some functions available at `kekse/security.inc.php`. Also used to
+There are some functions available at `kekse/security.php`. Also used to
 secure up fs paths. And more is yet to come.
 
-Additionally there are some ['Text' extensions](kekse/text.md) at `kekse/text.inc.php` (which
+Additionally there are some ['Text' extensions](kekse/text.md) at `kekse/text.php` (which
 should be a `class String`, but this isn't allowed by PHP).
 
 ## File system

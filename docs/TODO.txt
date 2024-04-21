@@ -1,4 +1,6 @@
 
+	@ *.md: bitte links zu den php-klassen/-dateien anpassen zu den 'docs/*/*.md', und dort jew. am anfang link zu den *.php files itself!
+
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
 	# ?-parameter:
@@ -13,17 +15,11 @@
 
 			# guck mal, ob das speziell parsen @ 'Parameter', also $_POST dazu statt $_GET?!??
 
-	# bitte alle *.inc.php => *.php...!?
-
-		# use 'sh/rename.sh' (set _test=0 and run from/inside the dirs w/ the .inc.php files);
-
-			# and 'sh/replace.sh' after this (w/ 'rename.log' as help, maybe..);
-
 	# *moeglichst alle* freistehenden funktionen in extra klassen!!
 
 		# und dazu den autoloader..?! aber beachte die syntax.. evtl. alles w/ namespace dann!?
 
-	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
+	# `Security`(.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
 
 		# u.v.a.. meiszte fs-zugriffe nur mit `FileSystem`-INSTANZ [wg. chroot ;-] ...
 
@@ -37,9 +33,9 @@
 
 			# sprich, brauch ich auch einen context dazu, sei's eine zufaellige id?!?
 
-				# ja, ps: TODO is auch '[uu]id.inc.php'..
+				# ja, ps: TODO is auch '[uu]id.php'..
 
-	@ 'kekse/constants.inc.php': weitere content types, und dazu noch @ 'Quant' dazu..
+	@ 'kekse/constants.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
 		# evtl. dynamischer kosntruiert? dass quasi 'addContentType()', etc..!?!
 
@@ -51,7 +47,7 @@
 
 		@ scheme: ist 'number' als type erlaubt?!? SOLLTE EIG.!!! ;-D
 
- 	# alle (string) zu (int) sowie (double) casts EVTL.(!!) eher durch 'parse()', etc.. @ numeric.inc.php..?!?
+ 	# alle (string) zu (int) sowie (double) casts EVTL.(!!) eher durch 'parse()', etc.. @ numeric.php..?!?
 
 		# kann ein cast-operator ueberladen werden?
 
@@ -59,7 +55,7 @@
 
 			# gucke nur bei strings, ob der radix 10 ist!!
 
-	@ 'count2/counting.inc.php': STORE BINARY VALUES [brauchen ja kein '-'/'+'/'.'... somit optimaler bytecode-radix ;-]
+	@ 'count2/counting.php': STORE BINARY VALUES [brauchen ja kein '-'/'+'/'.'... somit optimaler bytecode-radix ;-]
 
 	@ FINGERPRINT: alle BOOKMARKS dazu sowie 'canvas.pdf' etc. zu rate heran ziehen noch.. ^_^
 

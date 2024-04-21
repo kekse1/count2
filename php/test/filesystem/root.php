@@ -2,8 +2,8 @@
 
 namespace kekse;
 
-require_once(__DIR__ . '/../kekse/main.inc.php');
-require_once(__DIR__ . '/../kekse/filesystem.inc.php');
+require_once(__DIR__ . '/../kekse/main.php');
+require_once(__DIR__ . '/../kekse/filesystem.php');
 
 header('Content-Type: text/plain; charset=UTF-8');
 

@@ -1,6 +1,6 @@
 <?php
 namespace kekse;
-require_once(__DIR__ . '/../kekse/text.inc.php');
+require_once(__DIR__ . '/../kekse/text.php');
 header('Content-Type: text/plain;charset=UTF-8');
 $a = '  12.34  ';
 $b = ' 7    ';

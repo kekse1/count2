@@ -5,6 +5,6 @@
 
 //
 namespace kekse\index;
-require_once(__DIR__ . '/controller.inc.php');
+require_once(__DIR__ . '/controller.php');
 $index = $GLOBALS['index'] = new Controller();
 ?>

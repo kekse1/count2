@@ -3,7 +3,7 @@
 [**Back to Index**](../kekse.md)
 
 # `Math`
-See also the [`kekse/constants.inc.php`](../../php/kekse/constants.inc.php), e.g. for the
+See also the [`kekse/constants.php`](../../php/kekse/constants.php), e.g. for the
 array of sizes (in base 1024 and 1000).
 
 ## Functions

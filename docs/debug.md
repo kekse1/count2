@@ -5,6 +5,6 @@
 # **Debug** mode
 If you're developing here, and want to really get thrown `\Throwable`
 (with preventing log file entries), please either `define('KEKSE_DEBUG', true)`
-in the `kekse/debug.inc.php`, or configure it within the `count2` configuration
+in the `kekse/debug.php`, or configure it within the `count2` configuration
 file (or it's scheme.. but this isn't good).
 
