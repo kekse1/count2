@@ -27,6 +27,8 @@
 	
 	 		# and don't know if true/false as default, see 'KEKSE_CONNECTION_BUFFER' @ constants.inc.php
 
+				# but can't be too bad (in most environments!!), since .flush() @ 'register_shutdown_function()'! ;-)
+
 		# eine art 'context'-buffer evtl..? auch fuer meine js-lib, etc.. evtl.?
 
 			# sprich, sammeln von ausgabe-daten in context(s), ..
