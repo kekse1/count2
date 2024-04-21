@@ -122,7 +122,7 @@ class Console extends Terminal
 
 	public function table()
 	{
-throw new \Exception('TODO(!!)');
+throw new \Exception('TODO(!!) (w/ {format,ansi,html}.php!!!);');
 	}
 }
 
