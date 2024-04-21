@@ -8,6 +8,7 @@ namespace kekse;
 
 //
 const KEKSE_RESET = true;
+const KEKSE_THROW = true;
 
 //
 require_once(__DIR__ . '/main.php');
@@ -61,12 +62,16 @@ class Connection extends Quant
 		return $this->flush(true);
 	}
 
-	public function flush($reset = KEKSE_RESET)
+	public function flush($reset = KEKSE_RESET, $throw = KEKSE_THROW)
 	{
 		if($this->flushed === null)
 		{
-			throw new \Error('Can\'t flush, since no buffer was used (as defined)');
-			//return false;
+			if($throw)
+			{
+				throw new \Error('Can\'t flush, since no buffer was used (as defined)');
+			}
+
+			return false;
 		}
 
 		$result = '';
@@ -133,17 +138,17 @@ class Connection extends Quant
 		return $result;
 	}
 
-	public function writeError($data, $length = null, $type = null)
+	public function writeError($data, $length = null, $type = null, $force = false)
 	{
-		return $this->write($data, $length, $type);
+		return $this->send($data, $length, $type, $force);
 	}
 	
-	public function write($data, $length = null, $type = null)
+	public function write($data, $length = null, $type = null, $force = false)
 	{
-		return $this->send($data, $length, $type);
+		return $this->send($data, $length, $type, $force);
 	}
 	
-	protected function send($data, $length = null, $type = null)
+	protected function send($data, $length = null, $type = null, $force = false)
 	{
 		if(!is_string($data))
 		{
@@ -180,15 +185,21 @@ class Connection extends Quant
 		{
 			$this->buffer .= $data;
 			$this->bufferLength += strlen($data);
+
+			if($force)
+			{
+				return $this->flush();
+			}
+
 			return true;
 		}
 		
 		return $this->realSend($data, $length);
 	}
 	
-	protected function realSend($data, $length = null)
+	protected function realSend($data, $length = null, $force = null)
 	{
-		$result = $this->swrite(1, $data, $length);
+		$result = $this->swrite(1, $data, $length, $this);
 		
 		if($result !== false)
 		{
@@ -198,35 +209,35 @@ class Connection extends Quant
 		return $result;
 	}
 
-	private function checkState($throw = true)
+	private function checkState($throw = KEKSE_THROW)
 	{
 		if(!$this->dataSent) return true;
 		else if($throw) throw new \Exception('Can\'t send any header after body data began.');
 		return false;
 	}
 	
-	public function setType($type)
+	public function setType($type, $force = false, $throw = KEKSE_THROW)
 	{
 		if($this->has('type')) return false;
-		else if(!is_string($type)) throw new \Exception('Invalid $type argument');
+		else if(!is_string($type)) { if($throw) throw new \Exception('Invalid $type argument'); return null; }
 		else if(Text::startsWith($type, 'Content-Type:', false)) $type = substr($type, 13);
-		if(!($type = Security::checkString($type, true))) throw new \Exception('Invalid $type argument');
-		else if(!($type = Text::trim($type))) throw new \Exception('Invalid $type argument');
-		return $this->set('Content-Type', $type);
+		if(!($type = Security::checkString($type, true))) { if($throw) throw new \Exception('Invalid $type argument'); return null; }
+		else if(!($type = Text::trim($type))) { if($throw) throw new \Exception('Invalid $type argument'); return null; }
+		return $this->set('Content-Type', $type, $force, $throw);
 	}
 
-	public function setLength($length)
+	public function setLength($length, $force = false, $throw = KEKSE_THROW)
 	{
 		if($this->has('length')) return false;
 		else if(is_int($length)) $length = (string)$length;
-		else if(!is_string($length)) throw new \Exception('Invalid $length argument');
+		else if(!is_string($length)) { if($throw) throw new \Exception('Invalid $length argument'); return null; }
 		else if(Text::startsWith($length, 'Content-Length', false)) $length = substr($length, 14);
-		if(!($length = Security::checkString($length, true))) throw new \Exception('Invalid $length argument');
-		else if(!($length = Text::trim($length))) throw new \Exception('Invalid $length argument');
-		return $this->set('Content-Length', $length);
+		if(!($length = Security::checkString($length, true))) { if($throw) throw new \Exception('Invalid $length argument'); return null; }
+		else if(!($length = Text::trim($length))) { if($throw) throw new \Exception('Invalid $length argument'); return null; }
+		return $this->set('Content-Length', $length, $force, $throw);
 	}
 
-	public function set($item, $value = null, $throw = false)
+	public function set($item, $value = null, $force = false, $throw = KEKSE_THROW)
 	{
 		if(!$this->checkState($throw))
 		{
@@ -238,7 +249,7 @@ class Connection extends Quant
 
 			foreach($item as $key => $value)
 			{
-				if($this->set($key, $value, $throw))
+				if($this->set($key, $value, $force, $throw))
 				{
 					++$result;
 				}
@@ -248,11 +259,21 @@ class Connection extends Quant
 		}
 		else if(!($item = Security::checkString($item, true)))
 		{
-			throw new \Exception('Invalid $item argument');
+			if($throw)
+			{
+				throw new \Exception('Invalid $item argument');
+			}
+
+			return null;
 		}
 		else if(!($item = Text::trim($item)))
 		{
-			throw new \Exception('Invalid $item argument');
+			if($throw)
+			{
+				throw new \Exception('Invalid $item argument');
+			}
+
+			return null;
 		}
 		else
 		{
@@ -280,16 +301,31 @@ class Connection extends Quant
 		{
 			if(count($item = explode(':', $item, 2)) !== 2)
 			{
-				throw new \Exception('Invalid $item argument');
+				if($throw)
+				{
+					throw new \Exception('Invalid $item argument');
+				}
+
+				return null;
 			}
 		}
 		else if(!($value = Security::checkString($value, true)))
 		{
-			throw new \Exception('Invalid $value argument');
+			if($throw)
+			{
+				throw new \Exception('Invalid $value argument');
+			}
+
+			return null;
 		}
 		else if(!($value = Text::trim($value)))
 		{
-			throw new \Exception('Invalid $value argument');
+			if($throw)
+			{
+				throw new \Exception('Invalid $value argument');
+			}
+
+			return null;
 		}
 		else
 		{
@@ -300,11 +336,16 @@ class Connection extends Quant
 
 		if($this->flushed !== null)
 		{
-			return null;
+			return false;
 		}
 		else if($this->dataSent)
 		{
-			throw new \Error('Data was already sent, so you can\'t send new headers');
+			if($throw)
+			{
+				throw new \Error('Data was already sent, so you can\'t send new headers');
+			}
+
+			return false;
 		}
 
 		header($item[0] . ': ' . $item[1]);

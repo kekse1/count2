@@ -17,7 +17,7 @@ class IO
 	private $output = 0;
 	private $error = 0;
 
-	public function getBytes()
+	public function bytes()
 	{
 		return [
 			'in' => $this->input,
@@ -134,14 +134,14 @@ throw new \Exception('TODO');
 		return fgets(IN);
 	}
 
-	public function text($data, $length = null)
+	public function text($data, $length = null, $force = false)
 	{
-		return $this->write($data, $length, KEKSE_CONTENT_TEXT);
+		return $this->write($data, $length, KEKSE_CONTENT_TEXT, $force);
 	}
 
-	public function html($data, $length = null)
+	public function html($data, $length = null, $force = false)
 	{
-		return $this->write($data, $length, KEKSE_CONTENT_HTML);
+		return $this->write($data, $length, KEKSE_CONTENT_HTML, $force);
 	}
 
 	public function hasConnection()
@@ -149,24 +149,44 @@ throw new \Exception('TODO');
 		return (isset($this->session) && isset($this->session->connection));
 	}
 
-	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE)
+	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE, $force = false)
 	{
 		if($this->hasConnection())
 		{
-			return $this->session->connection->write($data, $length, $type);
+			return $this->session->connection->write($data, $length, $type, $force);
 		}
 
 		return self::swrite(1, $data, $length, $this);
 	}
 
-	public function writeError($data, $length = null, $type = KEKSE_CONTENT_TYPE)
+	public function writeError($data, $length = null, $type = KEKSE_CONTENT_TYPE, $force = false)
 	{
 		if($this->hasConnection())
 		{
-			return $this->session->connection->write($data, $length, $type);
+			return $this->session->connection->write($data, $length, $type, $force);
 		}
 
 		return self::swrite(2, $data, $length, $this);
+	}
+
+	public function type($type, $force = false)
+	{
+		if(!$this->hasConnection())
+		{
+			return false;
+		}
+		
+		return $this->session->connection->setType($type, $force);
+	}
+	
+	public function length($length, $force = false)
+	{
+		if(!$this->hasConnection())
+		{
+			return false;
+		}
+		
+		return $this->session->connection->setLength($length, $force);
 	}
 	
 	public static function swrite($stream, $data, $length = null, $quant = null)
@@ -216,7 +236,7 @@ throw new \Exception('TODO');
 
 		return $result;
 	}
-
+	
 	public static function defineStreams($binary = KEKSE_STDIO_BINARY)
 	{
 		$input; $output; $error;
