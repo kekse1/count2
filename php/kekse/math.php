@@ -15,7 +15,7 @@ require_once(__DIR__ . '/constants.php');
 //
 class Math
 {
-	public static function bytes($bytes, $unitOrBase = KEKSE_UNIT_BASE, $precision = KEKSE_UNIT_PRECISION, $string = KEKSE_UNIT_STRING)
+	public static function size($bytes, $unitOrBase = KEKSE_UNIT_BASE, $precision = KEKSE_UNIT_PRECISION, $string = KEKSE_UNIT_STRING)
 	{
 		if(!is_bool($string))
 		{

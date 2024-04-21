@@ -22,4 +22,6 @@ in the future..
 * **`Text::contains($haystack, $needle, $caseSensitive = true)`**
 * **`Text::at($string, $index, $needle = null, $caseSensitive = true)`**
 * **`Text::unit($string, $double = null, $unit = null, $fix = true)`**
+* **`Text::strlen($string, $filter = true)`**
+* **`Text::less($string)`**
 

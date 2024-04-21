@@ -7,6 +7,7 @@ They reside in the `kekse` directory, used by the [Modules](modules.md),
 and are under my namespace `kekse`.
 
 * [ansi](kekse/ansi.md)
+* [camel](kekse/camel.md)
 * [color](kekse/color.md)
 * [configuration](kekse/configuration.md)
 * [connection](kekse/connection.md)
@@ -18,6 +19,7 @@ and are under my namespace `kekse`.
 * [event](kekse/event.md)
 * [filesystem](kekse/filesystem.md)
 * [getopt](kekse/getopt.md)
+* [id](kekse/id.md)
 * [mail](kekse/mail.md)
 * [main](kekse/main.md)
 * [map](kekse/map.md)

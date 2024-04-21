@@ -7,7 +7,7 @@ See also the [`kekse/constants.php`](../../php/kekse/constants.php), e.g. for th
 array of sizes (in base 1024 and 1000).
 
 ## Functions
-* **`Math::bytes($bytes, $baseOrUnit = KEKSE_UNIT_BASE, $precision = KEKSE_UNIT_PRECISION, $string = KEKSE_UNIT_STRING)`**
+* **`Math::size($bytes, $baseOrUnit = KEKSE_UNIT_BASE, $precision = KEKSE_UNIT_PRECISION, $string = KEKSE_UNIT_STRING)`**
 * **`Math::getIndex($index, $length)`**
 * **`Math::px2pt($value)`**
 * **`Math::pt2px($value)`**
