@@ -22,8 +22,13 @@ fi
 target="$(basename "$0" .sh)"
 
 if [[ ! -L "$0" || "$target" == "main" ]]; then
-	echo " >> Please don't call this script directly.. use the symlinks." >&2
-	exit 2
+	if [[ $# -gt 0 ]]; then
+		target="$1"
+		shift
+	else
+		echo " >> Please don't call this script directly.. use the symlinks." >&2
+		exit 2
+	fi
 fi
 
 real="$(realpath "$0")"
