@@ -15,7 +15,9 @@
 
 	# bitte alle *.inc.php => *.php...!?
 
-		# see 'sh/rename.sh' (set _test=0 and run from/inside the dirs w/ the .inc.php files);
+		# use 'sh/rename.sh' (set _test=0 and run from/inside the dirs w/ the .inc.php files);
+
+			# and 'sh/replace.sh' after this (w/ 'rename.log' as help, maybe..);
 
 	# *moeglichst alle* freistehenden funktionen in extra klassen!!
 
