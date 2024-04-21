@@ -1,1 +1,1 @@
-id.inc.php
+id.php

@@ -8,6 +8,9 @@ define('KEKSE_LIMIT_STRING', 256);
 define('KEKSE_LIMIT_JSON', 8);
 define('KEKSE_LIMIT_PARAM', 64);
 
+//connection.php
+define('KEKSE_CONNECTION_BUFFER', true);
+
 //filesystem.php
 define('KEKSE_KEEP', true);
 define('KEKSE_KEEP_HIDDEN', true);

@@ -6,11 +6,16 @@
 //
 namespace kekse;
 
+//
+const KEKSE_RESET = true;
+
+//
 require_once(__DIR__ . '/main.php');
 //require_once(__DIR__ . '/text.php');
 //require_once(__DIR__ . '/security.php');
 require_once(__DIR__ . '/parameter.php');
 
+//
 class Connection extends Quant
 {
 	public $parameter = null;
@@ -18,9 +23,29 @@ class Connection extends Quant
 	private $headers = [];
 	private $dataSent = false;
 
-	public function __construct($session = null, ... $args)
+	private $flushed;
+	private $buffer;
+	private $bufferLength;
+	
+	public static $EOL = '\r\n';
+
+	public function __construct($session = null, $buffer = KEKSE_CONNECTION_BUFFER, ... $args)
 	{
 		parent::__construct($session, ... $args);
+		
+		if($buffer === true)
+		{
+			$this->flushed = 0;
+			$this->buffer = '';
+			$this->bufferLength = 0;
+		}
+		else
+		{
+			$this->flushed = null;
+			$this->buffer = null;
+			$this->bufferLength = null;
+		}
+		
 		$this->parameter = new Parameter($this->session);
 	}
 
@@ -29,7 +54,54 @@ class Connection extends Quant
 		parent::__destruct();
 	}
 
-	public static function headers()
+	public function flush($reset = KEKSE_RESET)
+	{
+		if($this->flushed === null)
+		{
+			throw new \Error('Can\'t flush, since no buffer was used (as defined)');
+			//return false;
+		}
+
+		$result = '';
+		
+		if(! $this->dataSent)
+		{
+			foreach($this->headers as $key => $value)
+			{
+				$hdr = $key . ': ' . $value;
+				header($hdr);
+				$result .= $hdr . self::$EOL;
+			}
+			
+			if($result !== '')
+			{
+				$result .= self::$EOL;
+			}
+		}
+		
+		if($this->bufferLength > 0)
+		{
+			$this->realSend($this->buffer, $this->bufferLength);
+			$result .= $this->buffer;
+		}
+
+		if($reset)
+		{
+			$this->flushed = null;
+			$this->buffer = null;
+			$this->bufferLength = null;
+		}
+		else
+		{
+			++$this->flushed;
+			$this->buffer = '';
+			$this->bufferLength = 0;
+		}
+		
+		return strlen($result);
+	}
+	
+	public static function responseHeaders()
 	{
 		$result = [];
 		$orig;
@@ -54,17 +126,17 @@ class Connection extends Quant
 		return $result;
 	}
 
-	public function writeError($data, $length = null, $type = null, ... $args)
+	public function writeError($data, $length = null, $type = null)
 	{
-		return $this->send($data, $length, $type, true);
+		return $this->write($data, $length, $type);
 	}
 	
-	public function write($data, $length = null, $type = null, ... $args)
+	public function write($data, $length = null, $type = null)
 	{
-		return $this->send($data, $length, $type, false);
+		return $this->send($data, $length, $type);
 	}
 	
-	protected function send($data, $length = null, $type = null, $error = false)
+	protected function send($data, $length = null, $type = null)
 	{
 		if(!is_string($data))
 		{
@@ -82,16 +154,35 @@ class Connection extends Quant
 		{
 			$type = KEKSE_CONTENT_TYPE;
 		}
+		else if(!is_string($type) && is_string($length) && $length !== '')
+		{
+			$type = $length;
+		}
+		
+		if(!is_int($length) || $length < 0)
+		{
+			$length = null;
+		}
 
 		if(is_string($type) && $type !== '')
 		{
 			$this->setType($type);
 		}
 
-		$result;
-		if($error) $result = parent::writeError($data, $length);
-		else $result = parent::write($data, $length);
-
+		if($this->flushed !== null)
+		{
+			$this->buffer .= $data;
+			$this->bufferLength += strlen($data);
+			return true;
+		}
+		
+		return $this->realSend($data, $length);
+	}
+	
+	protected function realSend($data, $length = null)
+	{
+		$result = parent::writeError($data, $length);
+		
 		if($result !== false)
 		{
 			$this->dataSent = true;
@@ -198,10 +289,18 @@ class Connection extends Quant
 			$item = [ $item, $value ];
 		}
 
-		$result = $item[0] . ': ' . $item[1];
 		$this->headers[$item[0]] = $item[1];
 
-		header($result);
+		if($this->flushed !== null)
+		{
+			return null;
+		}
+		else if($this->dataSent)
+		{
+			throw new \Error('Data was already sent, so you can\'t send new headers');
+		}
+
+		header($item[0] . ': ' . $item[1]);
 		return true;
 	}
 	

@@ -3,17 +3,11 @@
 
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
-	# ?-parameter:
+	# 'php://input': returns all the raw data of the http request (after the header)
 
-		# das allg. design (w/ import(), etc.) bisschen besser machen (und automatisch alles, falls moeglich)
+			< https://stackoverflow.com/questions/8893574/php-php-input-vs-post >
 
-			# beachte v.a., dass $_GET @ tryCast(), und dann scheme-check!! *NICHT* direkt zum scheme passend casten!!
-
-		# 'php://input': returns all the raw data of the http request (after the header)
-
-				< https://stackoverflow.com/questions/8893574/php-php-input-vs-post >
-
-			# guck mal, ob das speziell parsen @ 'Parameter', also $_POST dazu statt $_GET?!??
+		@ Parameter: guck mal, ob das speziell parsen, also $_POST dazu statt $_GET?!??
 
 	# *moeglichst alle* freistehenden funktionen in extra klassen!!
 
@@ -26,14 +20,24 @@
 			# force root path (nicht nur check if); also use 'Path::normalize(..., $preserve = false)';
 
 		# ueberlege auch wg. 'Security::secure()', u.a. mit 'Path::secure()'... wg. filesystem-chroot sowieso....
+	
+	@ 'Connection'/'terminal'/...:
 
-	# Connection: bitte einen modus, wo alles nicht direkt gesendet wird.. fuer spaeteres 'flush{,Headers,Body}()`!!!! :-D
+		# Connection::flush() etc. is ready (can be enabled via 2nd constructor argument, or 'KEKSE_CONNECTION_BUFFER' @ constants.php);
 
-		# evtl. sogar ein 'lock', dass nicht geschrieben wird, bevor alles zu diesem lock-kontext fertig ist...
+			# but completely *untested*!
 
-			# sprich, brauch ich auch einen context dazu, sei's eine zufaellige id?!?
+		# eine art 'context'-buffer evtl..? auch fuer meine js-lib, etc.. evtl.?
 
-				# ja, ps: TODO is auch '[uu]id.php'..
+			# sprich, sammeln von ausgabe-daten in context(s), ..
+		       
+				# .. um keine weitere, nicht zusammenhangende ausgabe "mittendrin" zu erzeugen..
+
+				# .. und um je nachdem auch ausgabe (@ flush()) zu gruppieren? je nachdem [priority] evtl., o.ae..
+
+			# evtl. extra 'Context'-klasse? @ stdio w/ [INPUT,OUTPUT,ERROR];
+
+	# [uu]id.php is also todo..
 
 	@ 'kekse/constants.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
@@ -68,3 +72,4 @@
 	# VOR ALLEM @ "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 
 		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
+

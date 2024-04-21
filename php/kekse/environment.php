@@ -25,7 +25,7 @@ class Environment extends Quant
 		if(php_sapi_name() !== 'cli')
 		{
 			require_once(__DIR__ . '/connection.php');
-			$this->headers = Connection::headers();
+			$this->headers = Connection::responseHeaders();
 		}
 		
 		parent::__construct($session, ... $args);

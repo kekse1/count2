@@ -143,13 +143,13 @@ throw new \Exception('TODO');
 		return $this->write($data, $length, KEKSE_CONTENT_HTML, ... $args);
 	}
 
-	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE, ... $args)
+	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE)
 	{
 		$this->tryType($type);
 		return self::swrite(1, $data, $length);
 	}
 
-	public function writeError($data, $length = null, $type = KEKSE_CONTENT_TYPE, ... $args)
+	public function writeError($data, $length = null, $type = KEKSE_CONTENT_TYPE)
 	{
 		$this->tryType($type);
 		return self::swrite(2, $data, $length);

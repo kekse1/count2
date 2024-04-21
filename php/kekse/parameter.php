@@ -6,10 +6,12 @@
 //
 namespace kekse;
 
+//
 require_once(__DIR__ . '/map.php');
 require_once(__DIR__ . '/text.php');
 require_once(__DIR__ . '/security.php');
 
+//
 class Parameter extends Map
 {
 	public function __construct($session = null, ... $args)
@@ -53,18 +55,19 @@ class Parameter extends Map
 	{
 		$result;
 		
-		if(is_string($string) && !empty($string) && $string !== '?')
+		if(! (is_string($string) && !empty($string) && $string !== '?'))
 		{
-			$result = self::parse($string, $cast);
+			if(self::hasQuery())
+			{
+				$string = $_SERVER['QUERY_STRING'];
+			}
+			else
+			{
+				throw new \Error('No query string available');
+			}
 		}
-		else if(self::hasQuery())
-		{
-			$result = self::parse($_SERVER['QUERY_STRING'], $cast);
-		}
-		else
-		{
-			return null;
-		}
+		
+		$result = self::parse($string, $cast);
 
 		if(!is_array($result))
 		{
