@@ -28,7 +28,7 @@ class Connection extends Quant
 	private $buffer;
 	private $bufferLength;
 	
-	public static $EOL = '\r\n';
+	public static $EOL = "\r\n";
 
 	public function __construct($session = null, $buffer = KEKSE_CONNECTION_BUFFER, ... $args)
 	{
@@ -75,7 +75,7 @@ class Connection extends Quant
 		}
 
 		$result = '';
-		
+
 		if(! $this->dataSent)
 		{
 			foreach($this->headers as $key => $value)
@@ -84,7 +84,7 @@ class Connection extends Quant
 				header($hdr);
 				$result .= $hdr . self::$EOL;
 			}
-			
+
 			if($result !== '')
 			{
 				$result .= self::$EOL;
@@ -332,6 +332,7 @@ class Connection extends Quant
 			$item = [ $item, $value ];
 		}
 
+		$item[0] = self::fixHeaderKey($item[0]);
 		$this->headers[$item[0]] = $item[1];
 
 		if($this->flushed !== null)
@@ -383,6 +384,47 @@ class Connection extends Quant
 
 		return null;
 	}
+
+	public static function fixHeaderKey($key, $sep = '-')
+	{
+		if(!is_string($key))
+		{
+			return null;
+		}
+		else if($key === '')
+		{
+			return '';
+		}
+
+		$result = strtoupper($key[0]);
+		$len = strlen($key);
+		$hadSep = false;
+
+		for($i = 1; $i < $len; ++$i)
+		{
+			if($key[$i] === $sep)
+			{
+				$hadSep = true;
+				$result .= $sep;
+			}
+			else
+			{
+				if($hadSep)
+				{
+					$result .= strtoupper($key[$i]);
+				}
+				else
+				{
+					$result .= $key[$i];
+				}
+
+				$hadSep = false;
+			}
+		}
+
+		return $result;
+	}
 }
 
+//
 ?>

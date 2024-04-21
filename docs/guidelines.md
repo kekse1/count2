@@ -36,11 +36,18 @@ three [ `stdin`, `stdout`, `stderr` ]!
 
 And if you want to send headers to your HTTP clients, please also do **not** use
 regular `header()` function, there's the `set()` (and `get()` or `has()`) functions
-in the `Connection` class.
+in the `Connection` class (see below).
 
-## `Connection`
-BTW: I designed this `Connection` **not** to be used statically or so, since my
-objections is: some day we could use **many** connections...
+### @ `Connection`
+If defined in the constructor, or by changing `KEKSE_CONNECTION_BUFFER` in `kekse/constants.php`,
+the connection will get buffered (and is usable like before, see above). So you also have the chance
+to change headers afterwards, since the final `.flush()` will send everything.
+
+So, it's really convenient to use the prepared functions instead of `echo` or `header()` or so!
+
+> [!NOTE]
+> I designed this `Connection` **not** to be used statically or so, since my objections is:
+> some day we could use **many** connections...
 
 ## Security (and Strings)
 There are some functions available at `kekse/security.php`. Also used to

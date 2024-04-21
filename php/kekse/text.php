@@ -428,6 +428,145 @@ class Text
 
 		return ($needle === $cmp);
 	}
+	
+	public static function strlen($string, $filter = true)
+	{
+		if(!is_string($string))
+		{
+			return null;
+		}
+		else if($string === '')
+		{
+			return 0;
+		}
+		else if(!$filter)
+		{
+			return strlen($string);
+		}
+		
+		$result = 0;
+		$open = false;
+		$rest = 0;
+		$len = strlen($string);
+		$start = self::filterStart(false);
+		$stop = self::filterStop(false);
+		
+		for($i = 0; $i < $len; ++$i)
+		{
+			if($open)
+			{
+				if($string[$i] === $stop)
+				{
+					$open = false;
+					$rest = 0;
+				}
+				else
+				{
+					++$rest;
+				}
+			}
+			else if($string[$i] === $start)
+			{
+				$open = true;
+				++$rest;
+			}
+			else
+			{
+				++$result;
+			}
+		}
+		
+		return $result;
+	}
+	
+	public static function less($string)
+	{
+		if(!is_string($string))
+		{
+			return null;
+		}
+		else if($string === '')
+		{
+			return '';
+		}
+
+		$result = '';
+		$open = false;
+		$rest = '';
+		$len = strlen($string);
+		$start = self::filterStart(false);
+		$stop = self::filterStop(false);
+		
+		for($i = 0; $i < $len; ++$i)
+		{
+			if($open)
+			{
+				if($string[$i] === $stop)
+				{
+					$open = false;
+					$rest = '';
+				}
+				else
+				{
+					$rest .= $string[$i];
+				}
+			}
+			else if($string[$i] === $start)
+			{
+				$open = true;
+				$rest .= $start;
+			}
+			else
+			{
+				$result .= $string[$i];
+			}
+		}
+		
+		if($open)
+		{
+			$result .= $rest;
+		}
+		
+		return $result;
+	}
+	
+	private static function filterStart($byte = false)
+	{
+		if(php_sapi_name() === 'cli')
+		{
+			if($byte)
+			{
+				return 27;
+			}
+			
+			return chr(27);
+		}
+		else if($byte)
+		{
+			return 60;
+		}
+		
+		return '<';
+	}
+	
+	private static function filterStop($byte = false)
+	{
+		if(php_sapi_name() === 'cli')
+		{
+			if($byte)
+			{
+				return 0;
+			}
+			
+			return chr(0);
+		}
+		else if($byte)
+		{
+			return 62;
+		}
+		
+		return '>';
+	}
 }
 
 //

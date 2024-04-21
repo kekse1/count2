@@ -21,7 +21,7 @@ class Parameter extends Map
 	
 	public static function hasQuery()
 	{
-		return (isset($_SERVER) && isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] !== '?');
+		return (isset($_SERVER) && isset($_SERVER['QUERY_STRING']));// && !empty($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] !== '?');
 	}
 	
 	public function import($string = null, $check = true)
@@ -63,18 +63,11 @@ class Parameter extends Map
 			}
 			else
 			{
-				throw new \Error('No query string available');
+				$string = '';
 			}
 		}
-		
-		$result = self::parse($string, $cast);
 
-		if(!is_array($result))
-		{
-			return null;
-		}
-		
-		return $result;
+		return self::parse($string, $cast);
 	}
 	
 	public function __destruct()
@@ -135,7 +128,7 @@ class Parameter extends Map
 		}
 		else if(!is_string($string) || $string === '')
 		{
-			return [];
+			return null;
 		}
 		
 		if($string[0] === '?')
