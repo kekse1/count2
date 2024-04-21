@@ -45,6 +45,8 @@
 
 		# neben/statt(?) 'Context' evtl. den BUFFER auch @ CLI mode, nicht nur @ COnnection!??!
 
+		# best: zusätzl. zu session->bytes() [ETC!] noch JE QUANT solche zählung!! :-D
+
 	@ 'kekse/constants.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
 		# evtl. dynamischer kosntruiert? dass quasi 'addContentType()' o.ae., etc..!?!
