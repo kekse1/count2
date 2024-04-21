@@ -50,7 +50,7 @@ class ANSI extends Format
 		return self::$SEQ[$type];
 	}
 	
-	public static function text($type, $close = null, $string, ... $params)
+	public static function text($type, $close = null, $string = null, ... $params)
 	{
 		if(!is_string($type) || $type === '')
 		{

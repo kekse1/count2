@@ -120,7 +120,10 @@ class Console extends Terminal
 	{
 	}
 
-	public function table(....
+	public function table()
+	{
+throw new \Exception('TODO(!!)');
+	}
 }
 
 ?>
