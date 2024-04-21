@@ -26,6 +26,21 @@ class Session extends Quant
 	public $connection = null;
 	public $parameter = null;
 
+	public $INPUT = 0;
+	public $OUTPUT = 0;
+	public $ERROR = 0;
+
+	public function bytes()
+	{
+		return [
+			'in' => $this->INPUT,
+			'out' => ($this->OUTPUT + $this->ERROR),
+			'input' => $this->INPUT,
+			'output' => $this->OUTPUT,
+			'error' => $this->ERROR
+		];
+	}
+
 	public function __construct($controller = null, ... $args)
 	{
 		parent::__construct($this, ... $args);

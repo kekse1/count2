@@ -13,21 +13,6 @@ require_once(__DIR__ . '/debug.php');
 //
 class IO
 {
-	private $input = 0;//TODO/!
-	private $output = 0;
-	private $error = 0;
-
-	public function bytes()
-	{
-		return [
-			'in' => $this->input,
-			'out' => ($this->output + $this->error),
-			'input' => $this->input,
-			'output' => $this->output,
-			'error' => $this->error
-		];
-	}
-
 	public function kekseDebug()
 	{
 		$error = null;
@@ -184,6 +169,11 @@ throw new \Exception('TODO');
 		return $this->session->connection->setLength($length, $force);
 	}
 
+	public function bytes()
+	{
+		return $this->session->bytes();
+	}
+
 	public function hasConnection()
 	{
 		return (isset($this->session) && isset($this->session->connection));
@@ -253,7 +243,7 @@ throw new \Exception('TODO');
 				$result = fwrite(OUTPUT, $data, $length);
 				if($result !== false && $quant !== null)
 				{
-					$quant->output += $result;
+					$quant->session->OUTPUT += $result;
 				}
 				break;
 			case 2:
@@ -264,7 +254,7 @@ throw new \Exception('TODO');
 				$result = fwrite(ERROR, $data, $length);
 				if($result !== false && $quant !== null)
 				{
-					$quant->error += $result;
+					$quant->session->ERROR += $result;
 				}
 				break;
 			default:
