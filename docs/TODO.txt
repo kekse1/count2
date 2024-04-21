@@ -79,6 +79,8 @@
 
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
+		# 'php_sapi_name' etc WO MÖGLICH durch 'parent::isCLI()' ersetzn..
+
 !!!!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
 
 		# dazu noch 'Text::bold()' und alle weiteren.. je nach modus entweder ansi escape seq. oder html.. falls nicht type=='text'!
