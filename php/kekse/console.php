@@ -119,6 +119,8 @@ class Console extends Terminal
 	public function debug(... $args)
 	{
 	}
+
+	public function table(....
 }
 
 ?>

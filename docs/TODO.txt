@@ -85,6 +85,10 @@
 
 				# und don't forget: ansi esc. seq. sollten bei mir mit \0 enden, allesamt [gibt keine bessere loesung, so ganz offiziell];
 
+			# bevorzugt, btw: gruener ton auf hell-graeulichem bg.. o.ae. ^_^
+
+				# e.g. [ [ 0, 240, 40 ], [ 90, 110, 130 ] ]; .. ;-)
+
 	# VOR ALLEM @ "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 
 		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
