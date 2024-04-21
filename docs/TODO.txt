@@ -15,9 +15,9 @@
 
 	# bitte alle *.inc.php => *.php...!?
 
-	# *moeglichst alle* so freistehenden funktionen in extra eigene klassen!!
+	# *moeglichst alle* freistehenden funktionen in extra klassen!!
 
-	# gleich einen autoloader!! siehe: < https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60/ >
+		# und dazu den autoloader..?! aber beachte die syntax.. evtl. alles w/ namespace dann!?
 
 	# `Security`(.inc.php) [w/ `String`, U.A.]: strategien genau ausarbeiten..!!
 
@@ -31,9 +31,13 @@
 
 		# evtl. sogar ein 'lock', dass nicht geschrieben wird, bevor alles zu diesem lock-kontext fertig ist...
 
+			# sprich, brauch ich auch einen context dazu, sei's eine zufaellige id?!?
+
+				# ja, ps: TODO is auch '[uu]id.inc.php'..
+
 	@ 'kekse/constants.inc.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
-	# evtl. sogar quant als ableitung einer noch hoeheren 'IO'-klasse oder so!!!
+		# evtl. dynamischer kosntruiert? dass quasi 'addContentType()', etc..!?!
 
 	# map: set() mit $scheme!?
 
@@ -59,9 +63,8 @@
 
 		# gucke, was alles noetig ist fuer alle module.. moeglichst nur wirklich verwendetes..
 
-	# VOR ALLEM!!!! "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
-
-		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
-
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
+	# VOR ALLEM @ "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
+
+		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
