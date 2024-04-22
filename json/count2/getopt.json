@@ -1,0 +1,18 @@
+{
+	"ansi": {
+		"type": "boolean",
+		"default": true
+	},
+	"colors": {
+		"type": "boolean",
+		"default": true
+	},
+	"fg": {
+		"type": "string",
+		"default": "rgb(0,240,40)"
+	},
+	"bg": {
+		"type": "string",
+		"default": ""
+	}
+}
