@@ -79,9 +79,9 @@ class HTML implements Style
 			case 1:
 				return self::renderParam($array[0]);
 			case 3:
-				return sprintf('rgb(%d, %d, %d)', ... $array);
+				return sprintf('rgb(%s, %s, %s)', ... $array);
 			case 4:
-				return sprintf('rgba(%d, %d, %d)', ... $array);
+				return sprintf('rgba(%s, %s, %s, %s)', ... $array);
 		}
 		
 		return '';
@@ -188,27 +188,20 @@ class HTML implements Style
 			}
 			else if(is_array($styles[$i]))
 			{
-				if(count($styles[$i]) === 3)
+				if($fg === null)
 				{
-					if($fg === null)
-					{
-						$fg = array_splice($styles, $i--, 1)[0];
-					}
-					else if($bg === null)
-					{
-						$bg = array_splice($styles, $i--, 1)[0];
-					}
-					else
-					{
-						throw new \Error('Too many color arrays given (only need [ fg, bg ])');
-					}
-					
-					--$count;
+					$fg = array_splice($styles, $i--, 1)[0];
+				}
+				else if($bg === null)
+				{
+					$bg = array_splice($styles, $i--, 1)[0];
 				}
 				else
 				{
-					throw new \Error('Both (optional) color arrays need to have a length of 3');
+					throw new \Error('Too many color arrays given (only need [ fg, bg ])');
 				}
+					
+				--$count;
 			}
 			else
 			{

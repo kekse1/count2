@@ -235,27 +235,20 @@ class ANSI implements Style
 			}
 			else if(is_array($styles[$i]))
 			{
-				if(count($styles[$i]) === 3)
+				if($fg === null)
 				{
-					if($fg === null)
-					{
-						$fg = array_splice($styles, $i--, 1)[0];
-					}
-					else if($bg === null)
-					{
-						$bg = array_splice($styles, $i--, 1)[0];
-					}
-					else
-					{
-						throw new \Error('Too many arrays given (only need [ fg, bg ])');
-					}
-					
-					--$count;
+					$fg = array_splice($styles, $i--, 1)[0];
+				}
+				else if($bg === null)
+				{
+					$bg = array_splice($styles, $i--, 1)[0];
 				}
 				else
 				{
-					throw new \Error('Both (optional) color arrays need to have a length of 3');
+					throw new \Error('Too many arrays given (only need [ fg, bg ])');
 				}
+					
+				--$count;
 			}
 			else
 			{
