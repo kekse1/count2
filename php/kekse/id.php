@@ -130,7 +130,7 @@ class UUID
 class ID extends UUID
 {
 	const SEPARATOR = '/';
-	const RADIX = 36;
+	const RADIX = 1;
 	
 	public static function random($sep = true, $uuidSep = null)
 	{
