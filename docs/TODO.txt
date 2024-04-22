@@ -3,6 +3,8 @@
 
 		# die file-links direkt unter dem (neuen) 'Back to Index'-link! falls der noch fehlt somewhere, bitte zusaetzlich nachruesten! thx.
 
+	@ number::randomDouble(): nachkomma-anteil % (max % 1 || 1);
+
 	# if necessary, use 'php://memory' and 'php://temp'!!!
 
 	# 'php://input': returns all the raw data of the http request (after the header)
