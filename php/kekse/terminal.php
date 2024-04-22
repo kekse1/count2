@@ -8,8 +8,8 @@ namespace kekse;
 
 //
 //require_once(__DIR__ . '/main.php');
-//require_once(__DIR__ . '/ansi.php'); //TODO/!!!!1
 require_once(__DIR__ . '/environment.php');
+require_once(__DIR__ . '/style.ansi.php');
 
 //
 class Terminal extends Quant
