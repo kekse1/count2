@@ -2,7 +2,7 @@
 
 namespace kekse;
 
-require_once(__DIR__ . '/../kekse/ansi.php');
+require_once(__DIR__ . '/../kekse/style.ansi.php');
 
 echo (ANSI::bold('bold') . PHP_EOL);
 echo (ANSI::color('colored string', [0,240,40], [90,110,130]) . PHP_EOL);

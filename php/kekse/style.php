@@ -7,6 +7,10 @@
 namespace kekse;
 
 //
+//THIS IS JUST A SIMPLE "STYLE ENGINE", w/ `style.{html,ansi}.php`;
+//NO any real "big thing", and `style.html.php` is merely to complete this a bit..
+//'d be better to implement smth. better, *l8rs*! ..
+//
 interface Style
 {
 	public static function text($type, $close = null, $string = null, ... $params);

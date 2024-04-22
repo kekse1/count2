@@ -2,7 +2,7 @@
 
 namespace kekse;
 
-require_once(__DIR__ . '/../kekse/html.php');
+require_once(__DIR__ . '/../kekse/style.html.php');
 header('Content-Type: text/html; charset=UTF-8');
 
 echo (HTML::bold('bold') . '<br>' . PHP_EOL);

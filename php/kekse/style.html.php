@@ -40,6 +40,11 @@ class HTML implements Style
 		
 		return self::$SEQ[$type];
 	}
+
+	public static function none($count = 1)
+	{
+		return str_repeat('</span>', $count);
+	}
 	
 	private static function renderParam($param)
 	{
