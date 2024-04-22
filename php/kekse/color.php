@@ -134,7 +134,7 @@ class Color extends Quant
 	{
 		if(is_array($value))
 		{
-			return self::colorCheck($value);
+			return self::check($value);
 		}
 		else if(is_string($value))
 		{
@@ -267,7 +267,7 @@ class Color extends Quant
 		return '';
 	}
 	
-	public static function colorCheck($array)
+	public static function check($array)
 	{
 		if(!is_array($array))
 		{
@@ -320,7 +320,7 @@ class Color extends Quant
 		return extension_loaded('gd');
 	}
 	
-	public static function getColor($value, $gd = null)
+	public static function parse($value, $gd = null)
 	{
 		$len;
 		
@@ -331,7 +331,7 @@ class Color extends Quant
 		
 		if(!is_string($value))
 		{
-			if(self::colorCheck($value))
+			if(self::check($value))
 			{
 				return self::fixColor($value, $gd);
 			}
@@ -358,26 +358,29 @@ class Color extends Quant
 		if(substr($value, 0, 5) === 'rgba(')
 		{
 			$value = substr($value, 5);
+			$len -= 5;
 		}
 		else if(substr($value, 0, 4) === 'rgb(')
 		{
 			$value = substr($value, 4);
+			$len -= 4;
 		}
 		
 		if($value[$len - 1] === ')')
 		{
 			$value = substr($value, 0, -1);
+			--$len;
 		}
 		
 		$result;
 		
 		if(self::colorIsHexadecimal($value))
 		{
-			$result = self::getColorHexadecimal($value);
+			$result = self::parseHexadecimal($value);
 		}
 		else if(self::colorIsList($value))
 		{
-			$result = self::getColorList($value);
+			$result = self::parseList($value);
 		}
 		
 		if($result !== null)
@@ -388,11 +391,11 @@ class Color extends Quant
 		return $result;
 	}
 	
-	public static function getColorHexadecimal($string)
+	public static function parseHexadecimal($string)
 	{
 		if(!is_string($string))
 		{
-			if(self::colorCheck($string))
+			if(self::check($string))
 			{
 				return $string;
 			}
@@ -470,7 +473,6 @@ class Color extends Quant
 		$l = 8;
 		$string = $result;
 		$result = [];
-		$tmp = '';
 		
 		for($i = 0, $j = 0; $i < $l; $i += 2, ++$j)
 		{
@@ -480,11 +482,11 @@ class Color extends Quant
 		return $result;
 	}
 	
-	public static function getColorList($string)
+	public static function parseList($string)
 	{
 		if(!is_string($string))
 		{
-			if(self::colorCheck($string))
+			if(self::check($string))
 			{
 				return $string;
 			}
@@ -523,7 +525,7 @@ class Color extends Quant
 		
 		if($len === 3)
 		{
-			$split[3] = '1';
+			$split[3] = '1.0';
 		}
 		else if($len !== 4)
 		{
@@ -532,17 +534,25 @@ class Color extends Quant
 		
 		for($i = 0; $i < 3; ++$i)
 		{
-			if(Number::isNumber($split[$i]))
+			$result[$i] = (int)Text::trim($split[$i]);
+		}
+
+		if(str_contains($split[3], '.'))
+		{
+			if(($result[3] = (double)$split[3]) <= 0.0)
 			{
-				$result[$i] = (int)str_replace('.', '', $split[$i]);
+				$result[3] = 0.0;
 			}
-			else
+			else if($result[3] > 1.0)
 			{
-				return null;
+				$result[3] = 1.0;
 			}
 		}
+		else
+		{
+			$result[3] = (int)$split[3];
+		}
 		
-		$result[3] = (double)$split[3];
 		return $result;
 	}
 }

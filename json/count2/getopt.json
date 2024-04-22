@@ -1,18 +1,22 @@
 {
 	"ansi": {
 		"type": "boolean",
-		"default": true
+		"default": true,
+		"short": "A"
 	},
 	"colors": {
 		"type": "boolean",
-		"default": true
+		"default": true,
+		"short": "C"
 	},
-	"fg": {
+	"foreground": {
 		"type": "string",
-		"default": "rgb(0,240,40)"
+		"default": "rgb(100,250,40)",
+		"short": false
 	},
-	"bg": {
+	"background": {
 		"type": "string",
-		"default": ""
+		"default": "rgb(80,100,129)",
+		"short": false
 	}
 }

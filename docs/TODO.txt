@@ -75,6 +75,10 @@
 
 !1		# [ [ 100, 255, 40 ], [ 80, 100, 120 ] ]; ... ;-D
 
+1		# nutze auch 'color.php' w/ 'parse*()' @ 'rgb()', etc..!!1
+
+			# color.php evtl ganz neu, again!?
+
 		# dazu siehe 'Style' w/ 'ANSI' und 'HTML' (w/ .php alle);
 
 			# `Text::{less,strlen}()` gibt's auch schon dafuer.
