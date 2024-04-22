@@ -2,11 +2,6 @@
 
 namespace kekse;
 
-if(php_sapi_name() !== 'cli')
-{
-	throw new \Exception('ANSI examples only work in CLI mode');
-}
-
 require_once(__DIR__ . '/../kekse/ansi.php');
 
 echo (ANSI::bold('bold') . PHP_EOL);
