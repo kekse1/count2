@@ -22,7 +22,7 @@ class Environment extends Quant
 		$this->file = $details[0];
 		$this->real = $details[1];
 
-		if(php_sapi_name() !== 'cli')
+		if(!parent::isCLI())
 		{
 			require_once(__DIR__ . '/connection.php');
 			$this->headers = Connection::requestHeaders();

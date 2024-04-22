@@ -315,7 +315,7 @@ class Color extends Quant
 	
 	public static function withGD()
 	{
-		if(php_sapi_name() === 'cli') return false;
+		if(parent::isCLI()) return false;
 		return extension_loaded('gd');
 	}
 	

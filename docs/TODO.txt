@@ -25,14 +25,6 @@
 	
 	@ 'Connection'/'terminal'/...:
 
-		# Connection::flush() etc. is ready, but merely *untested*..
-	
-	 		# and don't know if true/false as default, see 'KEKSE_CONNECTION_BUFFER' @ constants.inc.php
-
-				# but can't be too bad (in most environments!!), since .flush() @ 'register_shutdown_function()'! ;-)
-
-					# so YES, set it as default (e.g. one can change header variables afterwards! ;-)
-
 		# eine art 'context'-buffer evtl..? auch fuer meine js-lib, etc.. evtl.?
 
 			# sprich, sammeln von ausgabe-daten in context(s), ..
@@ -43,9 +35,11 @@
 
 			# evtl. extra 'Context'-klasse? @ stdio w/ [INPUT,OUTPUT,ERROR];
 
-		# neben/statt(?) 'Context' evtl. den BUFFER auch @ CLI mode, nicht nur @ COnnection!??!
+		# neben/statt(?) 'Context' evtl. den BUFFER auch @ CLI mode, *nicht nur* @ Connection!??!
 
 		# best: zusätzl. zu session->bytes() [ETC!] noch JE QUANT solche zählung!! :-D
+
+			# gucke aber ueberhaupt, ob korrekt gezaehlt atm..
 
 	@ 'kekse/constants.php': weitere content types, und dazu noch @ 'Quant' dazu..
 
@@ -79,8 +73,6 @@
 
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
-		# 'php_sapi_name' etc WO MÖGLICH durch 'parent::isCLI()' ersetzn..
-
 !!!!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
 
 		# dazu noch 'Text::bold()' und alle weiteren.. je nach modus entweder ansi escape seq. oder html.. falls nicht type=='text'!
@@ -102,5 +94,4 @@
 	# VOR ALLEM @ "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 
 		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
-
 
