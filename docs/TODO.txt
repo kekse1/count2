@@ -69,8 +69,6 @@
 
 		# gucke, was alles noetig ist fuer alle module.. moeglichst nur wirklich verwendetes..
 
-	# '[uu]id.php' is still TODO!
-
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
 !!!!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!

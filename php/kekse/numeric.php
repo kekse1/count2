@@ -382,7 +382,7 @@ class Number
 		
 		while($rest >= $radix)
 		{
-			$result = $alpha[(int)($rest % $radix)] . $result;
+			$result = $alpha[(int)$rest % $radix] . $result;
 			$rest /= $radix;
 		}
 		
@@ -850,6 +850,71 @@ class Number
 		{
 			return null;
 		}
+	}
+
+	public static function randomInt($max = null, $min = 0)
+	{
+		if(!is_int($max))
+		{
+			$max = mt_getrandmax();
+		}
+
+		if(!is_int($min))
+		{
+			$min = 0;
+		}
+
+		return mt_rand((int)$min, (int)$max);
+	}
+
+	public static function randomDouble($max = null, $min = 0)
+	{
+		if(!self::isNumber($max))
+		{
+			$max = mt_getrandmax();
+		}
+
+		if(!self::isNumber($min))
+		{
+			$min = 0;
+		}
+
+		$result = (double)self::randomInt($max, $min);
+		$result += self::random();
+
+		return $result;
+	}
+
+	public static function randomFloat($max = null, $min = 0)
+	{
+		return self::randomDouble($max, $min);
+	}
+
+	public static function randomNumber($max = null, $min = 0)
+	{
+		if(!self::isNumber($max))
+		{
+			$max = mt_getrandmax();
+		}
+
+		if(!self::isNumber($min))
+		{
+			$min = 0;
+		}
+
+		$result = self::randomDouble($max, $min);
+
+		if(fmod($result, 1) == 0)
+		{
+			$result = (int)$result;
+		}
+
+		return $result;
+	}
+
+	public static function random()
+	{
+		return ((double)mt_rand() / (double)mt_getrandmax());
 	}
 }
 

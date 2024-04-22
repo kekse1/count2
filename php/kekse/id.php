@@ -8,78 +8,149 @@ namespace kekse;
 
 //
 require_once(__DIR__ . '/numeric.php');
+require_once(__DIR__ . '/main.php');
 
 //
 class UUID
 {
-	private static $separator = '-';
-	private static $scheme = [ 8, 4, 4, 4, 12 ];
-	private static $radix = 16;
+	const SEPARATOR = '-';
+	const SCHEME = [ 8, 4, 4, 4, 12 ];
+	const RADIX = 16;
 
-	protected static function getLength($separator = null)
+	protected static function stringLength($separator = null)
 	{
-		if(!is_string($separator) || $separator === '')
+		if(!is_string($separator) || strlen($separator) !== 1)
 		{
-			$separator = self::$separator;
+			$separator = self::SEPARATOR;
 		}
 		
 		$result = 0;
-		$scheme = self::$scheme;
-		$sepLen = strlen($separator);
+		$scheme = self::SCHEME;
 		
 		foreach($scheme as $sub)
 		{
-			$result += $sub + $sepLen;
+			$result += $sub + 1;
 		}
 		
-		return ($result - $sepLen);
+		return ($result - 1);
 	}
 	
 	public static function random($separator = null)
 	{
-throw new \Error('TODO');
-		if(!is_string($separator) || $separator === '')
+		if(!is_string($separator) || strlen($separator) !== 1)
 		{
-			$separator = self::$separator;
+			$separator = self::SEPARATOR;
+		}
+
+		$alphabet = Number::alphabet(self::RADIX);
+		$alphabetLen = strlen($alphabet);
+		$scheme = self::SCHEME;
+		$schemeLen = count($scheme);
+		$result = '';
+		
+		for($i = 0; $i < $schemeLen; ++$i)
+		{
+			for($j = 0; $j < $scheme[$i]; ++$j)
+			{
+				$result .= $alphabet[Number::randomInt($alphabetLen - 1, 0)];
+			}
+			
+			$result .= $separator;
 		}
 		
-		$scheme = self::$scheme;
-		$result = '';
+		return substr($result, 0, -1);
 	}
 	
-	public static function isValid($uuid)
+	public static function isValid($value)
 	{
-throw new \Error('TODO');
-		if(!is_string($uuid) || $uuid === '')
+		if(!is_string($value))
+		{
+			return null;
+		}
+		else if($value === '')
 		{
 			return false;
 		}
 		
-		$len = strlen($uuid);
+		$uuidLen = self::stringLength();
+		$valueLen = strlen($value);
+		
+		if($valueLen !== $uuidLen)
+		{
+			return false;
+		}
+		
+		$alphabet = Number::alphabet(self::RADIX);
+		
+		if(!$alphabet)
+		{
+			throw new \Error('Unable to get alphabet (for radix ' . (string)self::RADIX . ')');
+		}
+		
+		$alphabetLen = strlen($alphabet);
+		$scheme = self::SCHEME;
+		$schemeLen = count($scheme);
+		$symbol = $value[$scheme[0]];
+
+		if(str_contains($alphabet, $symbol))
+		{
+			return false;
+		}
+		
+		for($i = 1, $mul = $scheme[0]; $i < $schemeLen - 1; ++$i)
+		{
+			if($value[($mul += $scheme[$i]) + $i] !== $symbol)
+			{
+				return false;
+			}
+		}
+		
+		$string = '';
+		
+		for($i = 0, $mul = 0; $i < $schemeLen; ++$i)
+		{
+			$string .= substr($value, $mul + $i, $scheme[$i]);
+			$mul += $scheme[$i];
+		}
+		
+		$stringLen = strlen($string);
+		
+		for($i = 0; $i < $stringLen; ++$i)
+		{
+			if(! str_contains($alphabet, $string[$i]))
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }
 
 class ID extends UUID
 {
-	private static $radix = 36;
-	private static $separator = '/';
+	const SEPARATOR = '/';
+	const RADIX = 36;
 	
-	public static function random(... $args)
+	public static function random($sep = true, $uuidSep = null)
 	{
-		return (parent::random() . self::getRest(true));
+		return (parent::random($uuidSep) . self::getRest($sep));
 	}
 	
 	public static function isValid($id)
 	{
-		if(!is_string($id) || $id === '')
+		if(!is_string($id))
+		{
+			return null;
+		}
+		else if($id === '')
 		{
 			return false;
 		}
 		
-		$uuidLength = parent::getLength();
-		$separator = self::$separator;
+		$uuidLength = parent::stringLength();
 		
-		if(strlen($id) <= ($uuidLength + strlen($separator)))
+		if(strlen($id) <= ($uuidLength + 1))
 		{
 			return false;
 		}
@@ -89,183 +160,29 @@ class ID extends UUID
 	
 	private static function getRest($sep = true)
 	{
-		$result = Number::renderInt(timestamp(), self::$radix);
+		$result = Number::renderInt(timestamp(), self::RADIX);
+		
+		if($sep === true)
+		{
+			$sep = self::SEPARATOR;
+		}
+		else if($sep === false)
+		{
+			$sep = ' ';
+		}
+		else if(!is_string($sep) || strlen($sep) !== 1)
+		{
+			$sep = self::SEPARATOR;
+		}
 		
 		if($sep)
 		{
-			$result = self::$separator . $result;
+			$result = $sep . $result;
 		}
 		
 		return $result;
 	}
 }
-
-//
-//debug/test/!
-var_dump(UUID::random());
-exit(123);
-//
-
-
-
-
-
-
-
-
-
-//original from the lib.js/v4/:
-
-/*
-
-//
-const DEFAULT_CRYPTO = false;
-const DEFAULT_SEP = '/';
-
-//
-const uuid = global.uuid = (... _args) => uuid.random(... _args);
-const id = global.id = (... _args) => id.random(... _args);
-id.uuid = uuid;
-
-export default id;
-export { uuid, id };
-
-//
-id.random = id.create = (_crypto = DEFAULT_CRYPTO, _radix = 36, _sep = DEFAULT_SEP) => {
-	//
-	if(typeof _crypto !== 'boolean')
-	{
-		_crypto = DEFAULT_CRYPTO;
-	}
-
-	if(! Number.isInt(_radix))
-	{
-		_radix = 36;
-	}
-
-	if(! String.isString(_sep, false))
-	{
-		_sep = DEFAULT_SEP;
-	}
-
-	//
-	var result = uuid.random(_crypto);
-	return (result + _sep + Date.now().toString(_radix));
-};
-
-id.isID = (_string) => {
-	if(! String.isString(_string, 37))
-	{
-		return false;
-	}
-
-	return uuid.isUUID(_string.substr(0, 36));
-};
-
-uuid.isUUID = (_string) => {
-	if(! String.isString(_string, 36))
-	{
-		return false;
-	}
-	else if(_string.length > 36)
-	{
-		return false;
-	}
-
-	const scheme = uuid.scheme;
-	const symbol = _string[scheme[0]];
-
-	if(typeof symbol !== 'string')
-	{
-		return false;
-	}
-	else
-	{
-		const p = parseInt(symbol, uuid.radix);
-
-		if(! isNaN(p))
-		{
-			p = false;
-		}
-	}
-
-	for(var i = 1, mul = scheme[0]; i < scheme.length - 1; ++i)
-	{
-		if(_string[(mul += scheme[i]) + i] !== symbol)
-		{
-			return false;
-		}
-	}
-
-	var string = '';
-
-	for(var i = 0, mul = 0; i < scheme.length; ++i)
-	{
-		string += _string.substr(mul + i, scheme[i]);
-		mul += scheme[i];
-	}
-
-	const isValidRadixChar = (_char, _radix = uuid.radix) => {
-		return !isNaN(parseInt(_char, _radix));
-	};
-
-	for(var i = 0; i < string.length; ++i)
-	{
-		if(! isValidRadixChar(string[i]))
-		{
-			return false;
-		}
-	}
-
-	return true;
-};
-
-//
-uuid.random = uuid.create = (_crypto = DEFAULT_CRYPTO, ... _args) => {
-	if(typeof _crypto !== 'boolean')
-	{
-		_crypto = DEFAULT_CRYPTO;
-	}
-
-	if(_crypto && typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
-	{
-		return crypto.randomUUID(... _args);
-	}
-
-	var result = '';
-	const scheme = uuid.scheme;
-	const alpha = uuid.alphabet;
-	const sep = uuid.sep;
-
-	for(var i = 0; i < scheme.length; ++i)
-	{
-		for(var j = 0; j < scheme[i]; ++j)
-		{
-			result += alpha[Math.random.int(alpha.length, 0, false)];
-		}
-
-		result += sep;
-	}
-
-	return result.slice(0, -1);
-};
-
-//
-Reflect.defineProperty(uuid, 'alphabet', { get: () => {
-	return '0123456789abcdef';
-}});
-
-Reflect.defineProperty(uuid, 'scheme', { get: () => {
-	return [ 8, 4, 4, 4, 12 ];
-}});
-
-Reflect.defineProperty(uuid, 'radix', { get: () => { return 16; }});
-Reflect.defineProperty(uuid, 'sep', { get: () => { return '-'; }});
- */
-
-//
-
-
 
 //
 ?>
