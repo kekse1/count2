@@ -43,29 +43,6 @@ class ERROR extends Quant
 		return false;
 	}
 
-	public static function tryContentType($type = KEKSE_CONTENT_TYPE)
-	{
-		if(php_sapi_name() === 'cli')
-		{
-			return null;
-		}
-		else if(!is_string($type) || $type === '')
-		{
-			$type = KEKSE_CONTENT_TYPE;
-		}
-		
-		try
-		{
-			@header('Content-Type: ' . $type);
-		}
-		catch(\Throwable $err)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 	public static function errorHandler($no, ... $args)
 	{
 		$error = (isset($GLOBALS['ERROR']) ? $GLOBALS['ERROR'] : null);
@@ -73,9 +50,7 @@ class ERROR extends Quant
 		if($error && $error->kekseDebug())
 		{
 			array_unshift($args, $no);
-			self::tryContentType();
-			$result = print_r($args, true);
-			parent::swrite(2, $result);
+			$error->writeError(print_r($args, true), null, KEKSE_CONTENT_TEXT, true, false);
 			exit(KEKSE_EXIT_CODE);
 		}
 		
@@ -105,9 +80,7 @@ class ERROR extends Quant
 				$result = $throw;
 			}
 
-			self::tryContentType();
-			$result = print_r($result, true);
-			parent::swrite(2, $result);
+			$error->writeError(print_r($result, true), null, KEKSE_CONTENT_TEXT, true, false);
 			exit(KEKSE_EXIT_CODE);
 		}
 
@@ -161,7 +134,7 @@ class ERROR extends Quant
 		
 		if(!parent::isCLI())
 		{
-			self::tryContentType();
+			@header('Content-Type: ' . (defined('KEKSE_CONTENT_TEXT') ? KEKSE_CONTENT_TEXT : 'text/plain;charset=UTF-8'));
 		}
 		else
 		{
@@ -252,39 +225,23 @@ class ERROR extends Quant
 
 	public function put2user($data)
 	{
-		$result = $this->make(false, $data);
-
-		if(isset($this->session))
-		{
-			if(isset($this->session->console))
-			{
-				return $this->session->console->writeError($result . PHP_EOL);
-			}
-			else if(isset($this->session->connection))
-			{
-				return $this->session->connection->writeError($result, null, true);
-			}
-		}
-
-		if(!parent::isCLI())
-		{
-			self::tryContentType();
-		}
-		else
-		{
-			$result .= PHP_EOL;
-		}
-
-		return parent::swrite(2, $result);
+		return $this->writeError($this->make(false, $data), null, KEKSE_CONTENT_TEXT, true, false);
 	}
 
 	public function put2file($data)
 	{
 		if(!$this->targets) return false;
+		
 		if(isset($this->targets[0]))
+		{
 			self::appendToFile($this->targets[0], $this->make(true, $data) . PHP_EOL);
+		}
+		
 		if(isset($this->targets[1]))
+		{
 		       	self::appendToFile($this->targets[1], $this->make(false, $data) . PHP_EOL);
+		}
+		
 		return true;
 	}
 

@@ -181,11 +181,26 @@ class Map extends Quant
 					
 					continue;
 				}
-				else if(isset($value['default']) && self::getType($value['default']) !== $value['type'])
+				
+				$t = self::getType($value['default']);
+				
+				if($value['type'] === 'number')
+				{
+					if($t !== 'integer' && $t !== 'double')
+					{
+						if($throw)
+						{
+							throw new \Error('Invalid default value within key \'' . $key . '\' (is no \'number\' type)');
+						}
+					
+						continue;
+					}
+				}
+				else if(isset($value['default']) && $t !== $value['type'])
 				{
 					if($throw)
 					{
-						throw new \Error('Invalid default value within key \'' . $key . '\' (not the same as the type item)');
+						throw new \Error('Invalid default value within key \'' . $key . '\' (is no \'' . $value['type'] . '\' type)');
 					}
 				
 					continue;
@@ -238,6 +253,7 @@ class Map extends Quant
 						break;
 					case 'integer':
 					case 'double':
+					case 'number':
 						if($value['default'] < $value['min'])
 						{
 							if($throw)
@@ -300,6 +316,7 @@ class Map extends Quant
 						break;
 					case 'integer':
 					case 'double':
+					case 'number':
 						if($value['default'] > $value['max'])
 						{
 							if($throw)
@@ -390,7 +407,19 @@ class Map extends Quant
 			{
 				$type = self::getType($value);
 
-				if($scheme[$key]['type'] !== $type)
+				if($scheme[$key]['type'] === 'number')
+				{
+					if($type !== 'integer' && $type !== 'double')
+					{
+						if($throw)
+						{
+							throw new \Exception('Value type for key \'' . $key . '\' doesn\'t match scheme (is \'' . $type . '\', but should be \'' . $scheme[$key]['type'] . '\')');
+						}
+						
+						continue;
+					}
+				}
+				else if($scheme[$key]['type'] !== $type)
 				{
 					if($throw)
 					{
@@ -421,7 +450,20 @@ class Map extends Quant
 							break;
 						case 'integer':
 						case 'double':
-							$v = ($scheme[$key]['type'] === 'integer' ? self::castToInteger($value) : self::castToDouble($value));
+						case 'number':
+							$v;
+							switch($scheme[$key]['type'])
+							{
+								case 'integer':
+									$v = self::castToInteger($value);
+									break;
+								case 'double':
+									$v = self::castToDouble($value);
+									break;
+								case 'number':
+									$v = self::castToNumber($value);
+									break;
+							}
 							if($v < $scheme[$key]['min'])
 							{
 								if($throw)
@@ -459,7 +501,20 @@ class Map extends Quant
 							break;
 						case 'integer':
 						case 'double':
-							$v = ($scheme[$key]['type'] === 'integer' ? self::castToInteger($value) : self::castToDouble($value));
+						case 'number':
+							$v;
+							switch($scheme[$key]['type'])
+							{
+								case 'integer':
+									$v = self::castToInteger($value);
+									break;
+								case 'double':
+									$v = self::castToDouble($value);
+									break;
+								case 'number':
+									$v = self::castToNumber($value);
+									break;
+							}
 							if($v > $scheme[$key]['max'])
 							{
 								if($throw)
@@ -567,6 +622,7 @@ class Map extends Quant
 			case 'boolean':
 			case 'double':
 			case 'integer':
+			//case 'number':
 				return $type;
 		}
 		

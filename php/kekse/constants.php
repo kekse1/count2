@@ -10,6 +10,13 @@ define('KEKSE_LIMIT_PARAM', 64);
 
 //connection.php
 define('KEKSE_CONNECTION_BUFFER', true);
+define('KEKSE_CONNECTION_RESET', true);
+
+//"all"
+define('KEKSE_THROW_CONNECTION', false);
+define('KEKSE_THROW_MATH', true);
+define('KEKSE_THROW_NUMERIC', false);
+
 
 //filesystem.php
 define('KEKSE_KEEP', true);

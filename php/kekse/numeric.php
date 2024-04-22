@@ -7,7 +7,6 @@
 namespace kekse;
 
 //
-const KEKSE_NUMERIC_THROW = false;
 const KEKSE_NUMERIC_ZERO_LIMIT = 8;
 const KEKSE_NUMERIC_RADIX = 10;
 
@@ -134,27 +133,27 @@ class Number
 		return true;
 	}
 		
-	public static function parseInt($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function parseInt($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::parse($string, $radix, false, $throw);
 	}
 
-	public static function parseDouble($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function parseDouble($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::parse($string, $radix, true, $throw);
 	}
 
-	public static function parseFloat($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function parseFloat($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::parseDouble($string, $radix, $throw);
 	}
 
-	public static function parseNumber($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function parseNumber($string, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::parse($string, $radix, null, $throw);
 	}
 	
-	public static function parse($string, $radix = KEKSE_NUMERIC_RADIX, $double = null, $throw = KEKSE_NUMERIC_THROW)
+	public static function parse($string, $radix = KEKSE_NUMERIC_RADIX, $double = null, $throw = KEKSE_THROW_NUMERIC)
 	{
 		if(!is_string($string))
 		{
@@ -310,27 +309,27 @@ class Number
 		return $result;
 	}
 	
-	public static function renderInt($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function renderInt($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::render($value, $radix, false, $throw);
 	}
 
-	public static function renderDouble($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function renderDouble($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::render($value, $radix, true, $throw);
 	}
 
-	public static function renderFloat($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function renderFloat($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::renderDouble($value, $radix, $throw);
 	}
 
-	public static function renderNumber($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_NUMERIC_THROW)
+	public static function renderNumber($value, $radix = KEKSE_NUMERIC_RADIX, $throw = KEKSE_THROW_NUMERIC)
 	{
 		return self::render($value, $radix, null, $throw);
 	}
 
-	public static function render($value, $radix = KEKSE_NUMERIC_RADIX, $double = null, $throw = KEKSE_NUMERIC_THROW)
+	public static function render($value, $radix = KEKSE_NUMERIC_RADIX, $double = null, $throw = KEKSE_THROW_NUMERIC)
 	{
 		if(is_string($value))
 		{

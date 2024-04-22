@@ -119,54 +119,54 @@ throw new \Exception('TODO');
 		return fgets(IN);
 	}
 
-	public function text($data, $length = null, $force = false)
+	public function text($data, $length = null, $force = false, ... $args)
 	{
-		return $this->write($data, $length, KEKSE_CONTENT_TEXT, $force);
+		return $this->write($data, $length, KEKSE_CONTENT_TEXT, $force, ... $args);
 	}
 
-	public function html($data, $length = null, $force = false)
+	public function html($data, $length = null, $force = false, ... $args)
 	{
-		return $this->write($data, $length, KEKSE_CONTENT_HTML, $force);
+		return $this->write($data, $length, KEKSE_CONTENT_HTML, $force, ... $args);
 	}
 
-	public function write($data, $length = null, $type = KEKSE_CONTENT_TYPE, $force = false)
-	{
-		if($this->hasConnection())
-		{
-			return $this->session->connection->write($data, $length, $type, $force);
-		}
-
-		return self::swrite(1, $data, $length, $this);
-	}
-
-	public function writeError($data, $length = null, $type = KEKSE_CONTENT_TYPE, $force = false)
+	public function write($data, $length = null, $type = null, $force = false, ... $args)
 	{
 		if($this->hasConnection())
 		{
-			return $this->session->connection->write($data, $length, $type, $force);
+			return $this->session->connection->write($data, $length, $type, $force, ... $args);
 		}
 
-		return self::swrite(2, $data, $length, $this);
+		return self::swrite(1, $data, $length, $this, ... $args);
 	}
 
-	public function type($type, $force = false)
+	public function writeError($data, $length = null, $type = null, $force = false, ... $args)
+	{
+		if($this->hasConnection())
+		{
+			return $this->session->connection->write($data, $length, $type, $force, ... $args);
+		}
+
+		return self::swrite(2, $data, $length, $this, ... $args);
+	}
+
+	public function setType($type, $force = false, ... $args)
 	{
 		if(!$this->hasConnection())
 		{
 			return false;
 		}
 		
-		return $this->session->connection->setType($type, $force);
+		return $this->session->connection->setType($type, $force, ... $args);
 	}
 	
-	public function length($length, $force = false)
+	public function setLength($length, $force = false, ... $args)
 	{
 		if(!$this->hasConnection())
 		{
 			return false;
 		}
 		
-		return $this->session->connection->setLength($length, $force);
+		return $this->session->connection->setLength($length, $force, ... $args);
 	}
 
 	public function bytes()
@@ -217,7 +217,7 @@ throw new \Exception('TODO');
 throw new \Exception('TODO');
 	}
 	
-	public static function swrite($stream, $data, $length = null, $quant = null)
+	public static function swrite($stream, $data, $length = null, $quant = null, ... $args)
 	{
 		if(!is_int($length) || $length < 0)
 		{

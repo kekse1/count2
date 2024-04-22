@@ -7,9 +7,6 @@
 namespace kekse;
 
 //
-const KEKSE_UNIT_THROW = true;
-
-//
 require_once(__DIR__ . '/constants.php');
 
 //
@@ -42,7 +39,7 @@ class Math
 					$max = (count(KEKSE_UNIT_1000) - 1);
 					break;
 				default:
-					if(KEKSE_UNIT_THROW)
+					if(KEKSE_THROW_MATH)
 					{
 						throw new \Error('Invalid $base argument [ 1024, 1000 ]');
 					}

@@ -9,9 +9,11 @@
 		"string",
 		"boolean",
 		"integer",
-		"double"
+		"double",
+		"number"
 	],
 	"limits": [
+		"number",
 		"integer",
 		"double",
 		"string"

@@ -7,13 +7,9 @@
 namespace kekse;
 
 //
-const KEKSE_RESET = true;
-const KEKSE_THROW = true;
-
-//
-require_once(__DIR__ . '/main.php');
-//require_once(__DIR__ . '/text.php');
-//require_once(__DIR__ . '/security.php');
+//require_once(__DIR__ . '/main.php');
+require_once(__DIR__ . '/text.php');
+require_once(__DIR__ . '/security.php');
 require_once(__DIR__ . '/parameter.php');
 
 //
@@ -67,7 +63,7 @@ class Connection extends Quant
 		return $this->flush(true);
 	}
 
-	public function flush($reset = KEKSE_RESET, $throw = KEKSE_THROW)
+	public function flush($reset = KEKSE_CONNECTION_RESET, $throw = KEKSE_THROW_CONNECTION)
 	{
 		if(!$this->buffered())
 		{
@@ -79,7 +75,7 @@ class Connection extends Quant
 			return false;
 		}
 
-		$result = '';
+		$result = 0;
 
 		if(! $this->dataSent)
 		{
@@ -87,19 +83,13 @@ class Connection extends Quant
 			{
 				$hdr = $key . ': ' . $value;
 				header($hdr);
-				$result .= $hdr . self::$EOL;
-			}
-
-			if($result !== '')
-			{
-				$result .= self::$EOL;
+				$result += strlen($hdr . self::$EOL);
 			}
 		}
 
 		if($this->bufferLength > 0)
 		{
-			$this->realSend($this->buffer, $this->bufferLength);
-			$result .= $this->buffer;
+			$result += $this->realSend($this->buffer, $this->bufferLength);
 		}
 
 		if($reset)
@@ -114,8 +104,8 @@ class Connection extends Quant
 			$this->buffer = '';
 			$this->bufferLength = 0;
 		}
-		
-		return strlen($result);
+
+		return $result;
 	}
 	
 	public static function requestHeaders()
@@ -187,17 +177,17 @@ class Connection extends Quant
 		return $result;
 	}
 	
-	public function writeError($data, $length = null, $type = null, $force = false)
+	public function writeError($data, $length = null, $type = null, $force = false, $throw = KEKSE_THROW_CONNECTION, ... $args)
 	{
-		return $this->send($data, $length, $type, $force);
+		return $this->send($data, $length, $type, $force, $throw, ... $args);
 	}
 	
-	public function write($data, $length = null, $type = null, $force = false)
+	public function write($data, $length = null, $type = null, $force = false, $throw = KEKSE_THROW_CONNECTION, ... $args)
 	{
-		return $this->send($data, $length, $type, $force);
+		return $this->send($data, $length, $type, $force, $throw, ... $args);
 	}
 	
-	protected function send($data, $length = null, $type = null, $force = false)
+	protected function send($data, $length = null, $type = null, $force = false, $throw = KEKSE_THROW_CONNECTION, ... $args)
 	{
 		if(!is_string($data))
 		{
@@ -219,7 +209,7 @@ class Connection extends Quant
 		{
 			$type = $length;
 		}
-		
+
 		if(!is_int($length) || $length < 0)
 		{
 			$length = null;
@@ -227,7 +217,7 @@ class Connection extends Quant
 
 		if(is_string($type) && $type !== '')
 		{
-			$this->setType($type);
+			$this->setType($type, $force, $throw);
 		}
 
 		if($this->buffered())
@@ -258,7 +248,7 @@ class Connection extends Quant
 		return $result;
 	}
 
-	public function setType($type, $force = false, $throw = KEKSE_THROW)
+	public function setType($type, $force = false, $throw = KEKSE_THROW_CONNECTION, ... $args)
 	{
 		if($this->has('type')) return false;
 		else if(!is_string($type)) { if($throw) throw new \Exception('Invalid $type argument'); return null; }
@@ -268,7 +258,7 @@ class Connection extends Quant
 		return $this->set('Content-Type', $type, $force, $throw);
 	}
 
-	public function setLength($length, $force = false, $throw = KEKSE_THROW)
+	public function setLength($length, $force = false, $throw = KEKSE_THROW_CONNECTION, ... $args)
 	{
 		if($this->has('length')) return false;
 		else if(is_int($length)) $length = (string)$length;
@@ -279,7 +269,7 @@ class Connection extends Quant
 		return $this->set('Content-Length', $length, $force, $throw);
 	}
 
-	public function set($item, $value = null, $force = false, $throw = KEKSE_THROW)
+	public function set($item, $value = null, $force = false, $throw = KEKSE_THROW_CONNECTION, ... $args)
 	{
 		if($this->dataSent)
 		{
@@ -396,7 +386,9 @@ class Connection extends Quant
 			return false;
 		}
 
-		header($item[0] . ': ' . $item[1]);
+		$string = ($item[0] . ': ' . $item[1]);
+		header($string);
+		$this->session->OUTPUT += strlen($string . self::$EOL);
 		return true;
 	}
 	

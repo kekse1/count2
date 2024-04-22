@@ -53,11 +53,11 @@
 
 	# map: set() mit $scheme!?
 
+		# sprich, atm wird nur der aktuelle typ getestet, nicht der scheme-ziel-typ...
+
 		# und values mit strings und cast oder direkt weitere types??
 
 		# bisschen noch ueberdenken alles besser..
-
-		@ scheme: ist 'number' als type erlaubt?!? SOLLTE EIG.!!! ;-D
 
  	# alle (string) zu (int) sowie (double) casts EVTL.(!!) eher durch 'parse()', etc.. @ numeric.php..?!?
 
