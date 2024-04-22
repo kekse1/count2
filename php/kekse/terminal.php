@@ -7,7 +7,6 @@
 namespace kekse;
 
 //
-//require_once(__DIR__ . '/main.php');
 require_once(__DIR__ . '/environment.php');
 require_once(__DIR__ . '/style.ansi.php');
 

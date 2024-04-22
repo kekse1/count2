@@ -7,7 +7,8 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/main.php');
+require_once(__DIR__ . '/quant.php');
+require_once(__DIR__ . '/text.php');
 
 //
 class Template extends Quant
@@ -23,4 +24,5 @@ class Template extends Quant
 	}
 }
 
+//
 ?>

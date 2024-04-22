@@ -7,4 +7,7 @@
 namespace kekse\index;
 require_once(__DIR__ . '/controller.php');
 $index = $GLOBALS['index'] = new Controller();
+var_dump($index);
+
+//
 ?>

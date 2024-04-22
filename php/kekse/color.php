@@ -6,9 +6,10 @@
 //
 namespace kekse;
 
-require_once(__DIR__ . '/main.php');
-//require_once(__DIR__ . '/text.php');
-//require_once(__DIR__ . '/security.php');
+//
+require_once(__DIR__ . '/quant.php');
+require_once(__DIR__ . '/text.php');
+require_once(__DIR__ . '/security.php');
 
 //
 class Color extends Quant
@@ -546,4 +547,5 @@ class Color extends Quant
 	}
 }
 
+//
 ?>

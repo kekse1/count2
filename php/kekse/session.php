@@ -7,9 +7,9 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/main.php');
-//require_once(__DIR__ . '/error.php');
-//require_once(__DIR__ . '/environment.php');
+require_once(__DIR__ . '/quant.php');
+require_once(__DIR__ . '/error.php');
+require_once(__DIR__ . '/environment.php');
 require_once(__DIR__ . '/configuration.php');
 
 //
@@ -77,4 +77,5 @@ class Session extends Quant
 
 $GLOBALS['ERROR'] = null;
 
+//
 ?>

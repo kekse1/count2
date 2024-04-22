@@ -7,7 +7,7 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/main.php');
+require_once(__DIR__ . '/quant.php');
 
 //
 class Mail extends Quant
@@ -23,4 +23,5 @@ class Mail extends Quant
 	}
 }
 
+//
 ?>

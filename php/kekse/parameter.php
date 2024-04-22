@@ -44,7 +44,7 @@ class Parameter extends Map
 		}
 		catch(\Throwable $err)
 		{
-			$this->writeError($err->getMessage());
+			$this->writeError($err->getMessage(), null, KEKSE_CONTENT_TEXT, true, false);
 			exit(1);
 		}
 

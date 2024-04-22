@@ -3,13 +3,17 @@
 	/* Copyright (c) Sebastian Kucharczyk <kuchen@kekse.biz>
 	 * https://kekse.biz/ https://github.com/kekse1/count2/ */
 
+//
 namespace kekse;
 
+//
 const KEKSE_DEFAULT_EXIT_CODE = 255;
 
-require_once(__DIR__ . '/main.php');
+//
+require_once(__DIR__ . '/quant.php');
 require_once(__DIR__ . '/filesystem.php');
 
+//
 class ERROR extends Quant
 {
 	public static $ext = '.log';
@@ -251,7 +255,9 @@ class ERROR extends Quant
 	}
 }
 
+//
 set_error_handler('\kekse\ERROR::errorHandler');
 set_exception_handler('\kekse\ERROR::exceptionHandler');
 
+//
 ?>

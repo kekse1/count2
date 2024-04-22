@@ -5,7 +5,9 @@
 # `Number`
 Some functions are maybe of interest..
 
-## Radix/base conversion
+## Features
+
+### Radix/base conversion
 Here I think about the encoding of counting values (@ [`count2`](../count2.md)) in the file system:
 instead of storing 20 characters in a file, encoding the values in binary radix (256) we need only
 8 full bytes.
@@ -40,12 +42,21 @@ Etc.. pp.
 * **`Number::positiveRadix($radix)`**
 * **`Number::negativeRadix($radix)`**
 * **`Number::alphabet($radix = KEKSE_NUMERIC_RADIX)`**
+* **`Number::randomInt($max, $min)`**
+* **`Number::randomDouble($max, $min)`**
+* `Number::randomFloat($max, $min)`
+* **`Number::randomNumber($max, $min)`**
+* **`Number::random()`**
+* **`Number::ord($value)`**
+* **`Number::chr($value)`**
 
 ## Functions
 These are just aliases to the static class functions (above):
 
 * `is_numeric($value, $radix = KEKSE_NUMERIC_RADIX, $double = null)`
 * `is_number($value, $radix = null, $double = true)`
+* `chr($value)`
+* `ord($value)`
 
-//TODO/
+//**TODO**/
 

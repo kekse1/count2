@@ -8,7 +8,7 @@ namespace kekse;
 
 //
 require_once(__DIR__ . '/numeric.php');
-require_once(__DIR__ . '/main.php');
+require_once(__DIR__ . '/functions.php');
 
 //
 class UUID

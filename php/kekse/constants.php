@@ -17,6 +17,8 @@ define('KEKSE_THROW_CONNECTION', false);
 define('KEKSE_THROW_MATH', true);
 define('KEKSE_THROW_NUMERIC', false);
 
+//numeric.php
+define('KEKSE_NUMERIC_PARSE', 'break');//['continue','break','null']//TODO @ render()!???
 
 //filesystem.php
 define('KEKSE_KEEP', true);
@@ -31,7 +33,6 @@ define('KEKSE_FILE_CHUNK', 4096);
 
 define('KEKSE_STDIO_BINARY', true);
 
-define('KEKSE_INSTANT_HEADER', false);
 define('KEKSE_CONTENT_TEXT', 'text/plain;charset=UTF-8');
 define('KEKSE_CONTENT_HTML', 'text/html;charset=UTF-8');
 define('KEKSE_CONTENT_TYPE', KEKSE_CONTENT_TEXT);

@@ -7,10 +7,8 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/main.php');
+require_once(__DIR__ . '/quant.php');
 require_once(__DIR__ . '/path.php');
-//require_once(__DIR__ . '/constants.php');
-//require_once(__DIR__ . '/security.php');
 
 //
 class FileSystem extends Quant
@@ -758,4 +756,5 @@ class FileSystem extends Quant
 	}
 }
 
+//
 ?>

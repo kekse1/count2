@@ -11,9 +11,9 @@ const KEKSE_DEFAULT_META_SCHEME = (__DIR__ . '/../../json/kekse/map.json');
 const KEKSE_DEFAULT_META_SCHEME_KEYS = [ 'keys', 'types', 'limits' ];
 
 //
-require_once(__DIR__ . '/main.php');
-//require_once(__DIR__ . '/text.php');
-//require_once(__DIR__ . '/security.php');
+require_once(__DIR__ . '/quant.php');
+require_once(__DIR__ . '/text.php');
+require_once(__DIR__ . '/security.php');
 require_once(__DIR__ . '/filesystem.php');
 
 //
@@ -1268,4 +1268,5 @@ class Map extends Quant
 	}
 }
 
+//
 ?>

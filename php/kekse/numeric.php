@@ -231,7 +231,7 @@ class Number
 		{
 			if($byteRadix)
 			{
-				$b = ord($split[0][$i]);
+				$b = \ord($split[0][$i]);
 
 				if(!$negativeRadix)
 				{
@@ -252,9 +252,22 @@ class Number
 					{
 						throw new \Exception('Character \'' . $split[0][$i] . '\' not found in alphabet for radix with len = ' . $radix);
 					}
-
-					break;
-					//return null;
+					else if(KEKSE_NUMERIC_PARSE === 'continue')
+					{
+						continue;
+					}
+					else if(KEKSE_NUMERIC_PARSE === 'break')
+					{
+						break;
+					}
+					else if(KEKSE_NUMERIC_PARSE === 'null')
+					{
+						return null;
+					}
+					else
+					{
+						break;
+					}
 				}
 				
 				$result += ($mul * $pos);
@@ -277,9 +290,22 @@ class Number
 					{
 						throw new \Exception('Character \'' . $split[1][$i] . '\' not found in alphabet for radix with len = ' . $radix);
 					}
-
-					break;
-					//return null;
+					else if(KEKSE_NUMERIC_PARSE === 'continue')
+					{
+						continue;
+					}
+					else if(KEKSE_NUMERIC_PARSE === 'break')
+					{
+						break;
+					}
+					else if(KEKSE_NUMERIC_PARSE === 'null')
+					{
+						return null;
+					}
+					else
+					{
+						break;
+					}
 				}
 				
 				$result += ($mul * $pos);
@@ -379,10 +405,21 @@ class Number
 		//
 		$result = '';
 		$rest = (double)$value;
+		$sub;
 		
 		while($rest >= $radix)
 		{
-			$result = $alpha[(int)$rest % $radix] . $result;
+			$sub = (int)$rest % $radix;
+
+			if($byteRadix)
+			{
+				$result = \chr($negativeRadix ? (255 - $sub) : $sub) . $result;
+			}
+			else
+			{
+				$result = $alpha[$sub] . $result;
+			}
+			
 			$rest /= $radix;
 		}
 		
@@ -818,13 +855,13 @@ class Number
 
 					if(!$cont)
 					{
-						$result .= chr($i);
+						$result .= \chr($i);
 					}
 				}
 
 				for($i = 0; $i < $prefer; ++$i)
 				{
-					$result .= chr(256 - $prefer + $i);
+					$result .= \chr(256 - $prefer + $i);
 				}
 			}
 
@@ -916,6 +953,96 @@ class Number
 	{
 		return ((double)mt_rand() / (double)mt_getrandmax());
 	}
+
+	public static function ord($value)
+	{
+		if(is_string($value))
+		{
+			if($value === '')
+			{
+				return null;
+			}
+
+			$len = strlen($value);
+
+			if($len === 1)
+			{
+				return \ord($value);
+			}
+
+			$result = [];
+			$index = 0;
+
+			for($i = 0; $i < $len; ++$i)
+			{
+				$result[$index++] = ord($value[$i]);
+			}
+
+			return $result;
+		}
+		else if(is_int($value))
+		{
+			return $value;
+		}
+
+		return null;
+	}
+
+	public static function chr($value)
+	{
+		if(is_int($value))
+		{
+			return \chr($value);
+		}
+		else if(is_array($value))
+		{
+			$len = count($value);
+
+			if($len === 0)
+			{
+				return null;
+			}
+			else if($len === 1)
+			{
+				return chr($value[0]);
+			}
+
+			$array = [];
+
+			for($i = 0; $i < $len; ++$i)
+			{
+				$array[$i] = chr($value[$i]);
+			}
+
+			$string = '';
+
+			for($i = 0; $i < $len; ++$i)
+			{
+				if(is_string($array[$i]))
+				{
+					$string .= $array[$i];
+				}
+				else
+				{
+					$string = null;
+					break;
+				}
+			}
+
+			if($string !== null)
+			{
+				return $string;
+			}
+
+			return $array;
+		}
+		else if(is_string($value))
+		{
+			return $value;
+		}
+
+		return null;
+	}
 }
 
 //
@@ -927,6 +1054,16 @@ function is_number($value, $radix = null, $double = true)
 function is_numeric($value, $radix = KEKSE_NUMERIC_RADIX, $double = null)
 {
 	return Number::isNumeric($value, $radix, $double);
+}
+
+function chr($value)
+{
+	return Number::chr($value);
+}
+
+function ord($value)
+{
+	return Number::ord($value);
 }
 
 //
