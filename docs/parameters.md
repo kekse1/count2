@@ -13,14 +13,14 @@ Here are all the possible parameters or configuration items for all these three 
 //TODO/
 
 ### `$_GET[]` parameters
-Vector defined in the [`json/param.json`](/json/count2/param.json).
+Vector defined in the [`json/count2/param.json`](/json/count2/param.json).
 
 ## CLI mode
 //TODO//..
 
 ### Possible Command line parameters
-Vector defined in the [`json/getopt.json`](/json/count2/getopt.json).
+Vector defined in the [`json/count2/getopt.json`](/json/count2/getopt.json).
 
 ## Configuration(s)
 Please also take a look at the [Configuration section](configuration.md)!
-Their vector is defined in the [`json/config.json`](/json/count2/config.json).
+Their vector is defined in the [`json/count2/config.json`](/json/count2/config.json).
