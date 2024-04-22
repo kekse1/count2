@@ -7,8 +7,8 @@
 namespace kekse;
 
 //
-const KEKSE_META_SCHEME = (__DIR__ . '/../../json/kekse/map.json');
-const KEKSE_META_SCHEME_KEYS = [ 'keys', 'types', 'limits' ];
+const KEKSE_DEFAULT_META_SCHEME = (__DIR__ . '/../../json/kekse/map.json');
+const KEKSE_DEFAULT_META_SCHEME_KEYS = [ 'keys', 'types', 'limits' ];
 
 //
 require_once(__DIR__ . '/main.php');
@@ -39,7 +39,7 @@ class Map extends Quant
 		return $this->scheme;
 	}
 
-	private static function loadMetaScheme($force = false, $path = KEKSE_META_SCHEME, $check = true, $throw = true)
+	private static function loadMetaScheme($force = false, $path = KEKSE_DEFAULT_META_SCHEME, $check = true, $throw = true)
 	{
 		if(is_array(self::$metaScheme) && !$force)
 		{
@@ -47,7 +47,7 @@ class Map extends Quant
 		}
 		else if(!is_string($path))
 		{
-			$path = KEKSE_META_SCHEME;
+			$path = KEKSE_DEFAULT_META_SCHEME;
 		}
 		else
 		{
@@ -98,11 +98,11 @@ class Map extends Quant
 		{
 			foreach($scheme as $key => $value)
 			{
-				if(!in_array($key, KEKSE_META_SCHEME_KEYS))
+				if(!in_array($key, KEKSE_DEFAULT_META_SCHEME_KEYS))
 				{
 					if($throw)
 					{
-						throw new \Error('In the meta scheme only the keys in `KEKSE_META_SCHEME_KEYS[]` are allowed.');
+						throw new \Error('In the meta scheme only the keys in `KEKSE_DEFAULT_META_SCHEME_KEYS[]` are allowed.');
 					}
 				}
 				else

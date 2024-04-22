@@ -7,8 +7,8 @@
 namespace kekse;
 
 //
-const KEKSE_CAMEL = '-';
-const KEKSE_CAMEL_FIX = true;
+const KEKSE_DEFAULT_CAMEL = '-';
+const KEKSE_DEFAULT_CAMEL_FIX = true;
 
 //
 require_once(__DIR__ . '/text.php');
@@ -16,7 +16,7 @@ require_once(__DIR__ . '/text.php');
 //
 class CamelCase
 {
-	public static function isCamelCase($string, $camel = KEKSE_CAMEL)
+	public static function isCamelCase($string, $camel = KEKSE_DEFAULT_CAMEL)
 	{
 		if(!is_string($string))
 		{
@@ -42,7 +42,7 @@ class CamelCase
 		return null;
 	}
 
-	public static function enable($string, $camel = KEKSE_CAMEL, $fix = KEKSE_CAMEL_FIX)
+	public static function enable($string, $camel = KEKSE_DEFAULT_CAMEL, $fix = KEKSE_DEFAULT_CAMEL_FIX)
 	{
 		if(self::isCamelCase($string, $camel) !== false)
 		{
@@ -70,7 +70,7 @@ class CamelCase
 		return $result;
 	}
 
-	public static function disable($string, $camel = KEKSE_CAMEL, $fix = KEKSE_CAMEL_FIX)
+	public static function disable($string, $camel = KEKSE_DEFAULT_CAMEL, $fix = KEKSE_DEFAULT_CAMEL_FIX)
 	{
 		if(self::isCamelCase($string, $camel) !== true)
 		{

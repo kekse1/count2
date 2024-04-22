@@ -429,7 +429,7 @@ class Text
 		return ($needle === $cmp);
 	}
 	
-	public static function strlen($string, $filter = true)
+	public static function strlen($string, $filter = false)
 	{
 		if(!is_string($string))
 		{

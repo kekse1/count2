@@ -7,12 +7,10 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/ansi.php');
-require_once(__DIR__ . '/html.php');
-
-//
-class Format
+interface Style
 {
+	public static function text($type, $close = null, $string = null, ... $params);
+	public static function style($string, ... $styles);
 }
 
 //

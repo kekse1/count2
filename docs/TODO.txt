@@ -75,21 +75,9 @@
 
 !!!!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
 
-		# dazu noch 'Text::bold()' und alle weiteren.. je nach modus entweder ansi escape seq. oder html.. falls nicht type=='text'!
+		# dazu siehe 'Style' w/ 'ANSI' und 'HTML' (w/ .php alle);
 
-			# bedenke: 'Text::{less,strlen}()' steht jetzt auch zur verfuegung..
-
-				# gerade bei tabellen brauche ich die pure text-laenge, ohne jede ansi-esc-seq. o.ae..
-
-				# und don't forget: ansi esc. seq. sollten bei mir mit \0 enden, allesamt [gibt keine bessere loesung, so ganz offiziell];
-
-			# bevorzugt, btw: gruener ton auf hell-graeulichem bg.. o.ae. ^_^
-
-				# e.g. [ [ 0, 240, 40 ], [ 90, 110, 130 ] ]; .. ;-)
-
-		# siehe auch noch 'format.php' sowie 'html.php'(!!!!);
-
-			@ 'Text::text()' o.ae., allg. also!???!
+			# `Text::{less,strlen}()` gibt's auch schon dafuer.
 
 	# VOR ALLEM @ "click count(er)"!!!! direkt in meinem `v4` nutzen dann, pls..!!!
 

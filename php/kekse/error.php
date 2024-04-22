@@ -5,7 +5,7 @@
 
 namespace kekse;
 
-const KEKSE_EXIT_CODE = 255;
+const KEKSE_DEFAULT_EXIT_CODE = 255;
 
 require_once(__DIR__ . '/main.php');
 require_once(__DIR__ . '/filesystem.php');
@@ -51,7 +51,7 @@ class ERROR extends Quant
 		{
 			array_unshift($args, $no);
 			$error->writeError(print_r($args, true), null, KEKSE_CONTENT_TEXT, true, false);
-			exit(KEKSE_EXIT_CODE);
+			exit(KEKSE_DEFAULT_EXIT_CODE);
 		}
 		
 		if(!($no & E_WARNING))
@@ -81,7 +81,7 @@ class ERROR extends Quant
 			}
 
 			$error->writeError(print_r($result, true), null, KEKSE_CONTENT_TEXT, true, false);
-			exit(KEKSE_EXIT_CODE);
+			exit(KEKSE_DEFAULT_EXIT_CODE);
 		}
 
 		return self::handler('Exception',
@@ -99,7 +99,7 @@ class ERROR extends Quant
 			{
 				case 'Error':
 				case 'Exception':
-					exit(KEKSE_EXIT_CODE);
+					exit(KEKSE_DEFAULT_EXIT_CODE);
 				case 'Warning':
 				default:
 					break;
@@ -129,7 +129,7 @@ class ERROR extends Quant
 		if(isset($GLOBALS['ERROR']))
 		{
 			$GLOBALS['ERROR']->put($string);
-			return $ret(KEKSE_EXIT_CODE);
+			return $ret(KEKSE_DEFAULT_EXIT_CODE);
 		}
 		
 		if(!parent::isCLI())
@@ -142,7 +142,7 @@ class ERROR extends Quant
 		}
 
 		parent::swrite(2, $string);
-		return $ret(KEKSE_EXIT_CODE);
+		return $ret(KEKSE_DEFAULT_EXIT_CODE);
 	}
 
 	private static function makeLogFilePath($path)

@@ -7,10 +7,10 @@
 namespace kekse;
 
 //
-require_once(__DIR__ . '/format.php');
+require_once(__DIR__ . '/style.php');
 
 //
-class ANSI extends Format
+class ANSI implements Style
 {
 	private static $SEQ = [
 		'delim' => "\0",
@@ -31,7 +31,7 @@ class ANSI extends Format
 		'bg' => '[48;2;%03d;%03d;%03dm'
 	];
 
-	public static function getSequence($type)
+	private static function sequence($type)
 	{
 		if(!is_string($type))
 		{
@@ -54,23 +54,25 @@ class ANSI extends Format
 	{
 		if(!is_string($type) || $type === '')
 		{
-			throw new \Exception('Invalid $type argument (incorrect sequence)');
+			throw new \Exception('Invalid $type argument (no valid String)');
 		}
 		
-		$seq = self::getSequence($type);
+		$seq = self::sequence($type);
+		$isString = is_string($string);
 		
 		if(!$seq)
 		{
-			return (is_string($string) ? $string : '');
+			return ($isString ? $string : '');
 			//throw new \Exception('Invalid $type argument (sequence unknown)');
 		}
+		else if(!is_bool($close))
+		{
+			$close = $isString;
+		}
 		
-		$isString = is_string($string);
-		if(!is_bool($close)) $close = $isString;
-		
-		$result = self::getSequence('escape');
+		$result = self::sequence('escape');
 		$result .= sprintf($seq, ... $params);
-		$result .= self::getSequence('delim');
+		$result .= self::sequence('delim');
 		
 		if($isString)
 		{
@@ -87,7 +89,7 @@ class ANSI extends Format
 	
 	public static function none()
 	{
-		return (self::getSequence('escape') . self::getSequence('none') . self::getSequence('delim'));
+		return (self::sequence('escape') . self::sequence('none') . self::sequence('delim'));
 	}
 	
 	public static function bold($string, $close = null)
@@ -140,14 +142,19 @@ class ANSI extends Format
 		return self::text('bg', $close, $string, $red, $green, $blue);
 	}
 	
-	public static function color($string, $fg, $bg, $close = null)
+	public static function color($string, $fg = null, $bg = null, $close = null)
 	{
+		if($fg === null && $bg === null)
+		{
+			return (is_string($string) ? $string : '');
+		}
+		
 		$result = '';
 		
 		try
 		{
-			$result .= self::fg(null, $fg[0], $fg[1], $fg[2], false);
-			$result .= self::bg(null, $bg[0], $bg[1], $bg[2], false);
+			if($fg !== null) $result .= self::fg(null, $fg[0], $fg[1], $fg[2], false);
+			if($bg !== null) $result .= self::bg(null, $bg[0], $bg[1], $bg[2], false);
 		}
 		catch(\Throwable $err)
 		{
@@ -186,19 +193,44 @@ class ANSI extends Format
 
 		for($i = 0; $i < $count; ++$i)
 		{
-			if(is_bool($styles[$i]))
+			if($styles[$i] === null)
 			{
-				$close = array_splice($styles, $i--, 1)[0];
-			}
-			else if(is_string($styles[$i]) && $styles[$i] !== '')
-			{
-				if(!($style = self::getSequence($styles[$i])))
+				if($fg === null)
 				{
-					throw new \Error('Invalid ...$styles[' . (string)$i . '] (no sequence for style \'' . $styles[$i] . '\' found)');
+					$fg = true;
+					array_splice($styles, $i--, 1);
+					--$count;
 				}
 				else
 				{
-					$styles[$i] = self::getSequence('escape') . $style . self::getSequence('delim');
+					throw new \Error('Foreground array is already defined, so a (null) parameter doesn\'t make any sense.');
+				}
+			}
+			else if(is_bool($styles[$i]))
+			{
+				$close = array_splice($styles, $i--, 1)[0];
+				--$count;
+			}
+			else if(is_string($styles[$i]))
+			{
+				if($styles[$i] === '')
+				{
+					array_splice($styles, $i--, 1);
+					--$count;
+				}
+				else
+				{
+					$style;
+				
+					if(!($style = self::sequence($styles[$i])))
+					{
+						array_splice($styles, $i--, 1);
+						--$count;
+					}
+					else
+					{
+						$styles[$i] = self::sequence('escape') . $style . self::sequence('delim');
+					}
 				}
 			}
 			else if(is_array($styles[$i]))
@@ -215,20 +247,25 @@ class ANSI extends Format
 					}
 					else
 					{
-						throw new \Error('Too many arrays (defining fg, then bg)');
+						throw new \Error('Too many arrays given (only need [ fg, bg ])');
 					}
 					
 					--$count;
 				}
 				else
 				{
-					throw new \Error('Both (optional) arrays need to have a length of 3');
+					throw new \Error('Both (optional) color arrays need to have a length of 3');
 				}
 			}
 			else
 			{
 				throw new \Error('Invalid ...$styles[' . (string)$i . '] argument');
 			}
+		}
+		
+		if($fg === true)
+		{
+			$fg = null;
 		}
 		
 		if($fg !== null || $bg !== null) try
@@ -245,7 +282,7 @@ class ANSI extends Format
 		}
 		catch(\Throwable $err)
 		{
-			throw new \Error('Unable to apply at least one of your $fg/$bg color(s) (arrays need a length of three [ r, g, b ])');
+			throw new \Error('Unable to apply at least one of your $fg/$bg color parameters');
 		}
 
 		foreach($styles as $style)
