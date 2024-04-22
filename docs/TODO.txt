@@ -71,7 +71,9 @@
 
 	# terminal, console(.{log,info,..}), ansi, getopt, ... etc. ... alles fuer CLI mode.
 
-!!!!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
+!!!		# diesmal mit 'Text::table()' (um bessere tabellen-ansicht im CLI-mode v.a..!)!!
+
+!1		# [ [ 100, 255, 40 ], [ 80, 100, 120 ] ]; ... ;-D
 
 		# dazu siehe 'Style' w/ 'ANSI' und 'HTML' (w/ .php alle);
 
