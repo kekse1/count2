@@ -12,6 +12,10 @@ aber immerhin verzichte ich dann auf die IP-Adressen.. und zuletzt bessere `git`
 sowie uebersichtlichere Dokumentation. ^_^
 ```
 
+## Status
+Currently **suspended** for a while, since my [**Norbert**](https://github.com/kekse1/norbert/) projekt
+enjoys all my free time atm.!
+
 ## Documentation
 This is just the beginning of the documentation. The project itself is more
 important to get finished, but I'm also extending this part from time to time.
