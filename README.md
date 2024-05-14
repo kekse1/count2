@@ -13,8 +13,9 @@ sowie uebersichtlichere Dokumentation. ^_^
 ```
 
 ## Status
-Currently **suspended** for a while, since my [**Norbert**](https://github.com/kekse1/norbert/) projekt
-enjoys all my free time atm.!
+> [!IMPORTANT]
+> Currently **suspended** for a while (because my [**`Norbert`**](https://github.com/kekse1/norbert/)
+> project enjoys all my free time atm.)!
 
 ## Documentation
 This is just the beginning of the documentation. The project itself is more
