@@ -91,3 +91,5 @@
 
 	# bitte die console-ausgabe der values auch als optionaler json-export..!
 
+		# evtl. ALARM, wenn ein wert kleiner als der letzte.. hatte das schon *einmal* in `count.php`...
+
