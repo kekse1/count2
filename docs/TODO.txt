@@ -89,3 +89,5 @@
 
 		@ 'page.js': automatische <a>-innerHTML-erweiterung um die zahlen..! :-D
 
+	# bitte die console-ausgabe der values auch als optionaler json-export..!
+
