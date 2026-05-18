@@ -1,5 +1,17 @@
 <img src="https://kekse.biz/github.php?draw&override=github:count2" />
 
+<br>
+
+> [!WARNING]
+> This "**was**" just an initial idea. It's **not** really under development,
+> and especially **not** ready to be used. I just wanted it to stay here, don't
+> know how long..
+
+> [!TIP]
+> So I'm redirecting you right here to my original [**`count.php`**](https://github.com/kekse1/count.php/).
+
+<br><br>
+
 # **`count2`**
 I'm currently planning and working on my newer version of my original [**`count.php`**](https://github.com/kekse1/count.php/),
 as [already discussed with the community](https://www.php.de/forum/stellenangebote-und-projektausschreibungen/projekthilfe/1613771-%60count-php%60).
